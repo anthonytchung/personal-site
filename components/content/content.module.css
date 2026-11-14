@@ -11,7 +11,7 @@
 .content ul { padding-left: 1.25rem; list-style: disc; }
 .content li { margin-block: 0.75rem; }
 .content a { text-decoration: underline; }
-@media (max-width: 40rem) {
+@media (max-width: 700px) {
   .body { grid-template-columns: 1fr; }
   .secondary { display: flex; flex-wrap: wrap; border-right: 0; border-bottom: 1px solid #d8e2ec; }
 }
