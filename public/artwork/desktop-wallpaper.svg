@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<defs>
+ <radialGradient id="sky" cx="66%" cy="36%" r="85%"><stop stop-color="#36c9ed"/><stop offset=".38" stop-color="#0875bc"/><stop offset=".72" stop-color="#064e98"/><stop offset="1" stop-color="#062a62"/></radialGradient>
+ <radialGradient id="light"><stop stop-color="#c3ffff" stop-opacity=".65"/><stop offset="1" stop-color="#57cdff" stop-opacity="0"/></radialGradient>
+ <linearGradient id="green" x1="0" y1="1" x2=".8" y2="0"><stop stop-color="#99ce35" stop-opacity=".8"/><stop offset=".45" stop-color="#45d1a9" stop-opacity=".35"/><stop offset="1" stop-color="#8af5ed" stop-opacity="0"/></linearGradient>
+ <linearGradient id="ribbon" x2=".3" y2="1"><stop stop-color="#e2ffff" stop-opacity="0"/><stop offset=".6" stop-color="#c0faff" stop-opacity=".28"/><stop offset="1" stop-color="#65deec" stop-opacity="0"/></linearGradient>
+ <filter id="blur"><feGaussianBlur stdDeviation="26"/></filter>
+</defs>
+<path fill="url(#sky)" d="M0 0h1920v1080H0z"/>
+<ellipse cx="1370" cy="380" rx="640" ry="560" fill="url(#light)"/>
+<path d="M-200 1100C480 400 950 1300 1990 520L2050 1160Z" fill="url(#green)"/>
+<path d="M-90 1030C570 600 1050 1190 1980 430" fill="none" stroke="#c0ffe3" stroke-opacity=".25" stroke-width="12" filter="url(#blur)"/>
+<path d="M-90 1030C570 600 1050 1190 1980 430" fill="none" stroke="#d1fff2" stroke-opacity=".45" stroke-width="1.5"/>
+<path d="M740-100C1200 110 910 460 1480 750S1900 900 2050 1100L1900 1100C1620 850 1000 710 1060 280S800 0 740-100" fill="url(#ribbon)"/>
+<path d="M760-90C1180 110 940 470 1480 750S1900 900 2040 1090" fill="none" stroke="#c8faff" stroke-opacity=".25" stroke-width="2"/>
+<path d="M2050 30C1320 430 1630 710 740 1100" fill="none" stroke="#8cf6ff" stroke-opacity=".17" stroke-width="70" filter="url(#blur)"/>
+<g fill="none" stroke="#d3fff0" stroke-opacity=".35">
+ <path d="M1490 950q40-155 185-235M1540 852q-8-58 36-99M1580 805q58 3 97-35M1510 916q-45-36-30-89M1530 880q72 18 123-24"/>
+</g>
+<g fill="#e3ffff"><circle cx="1350" cy="790" r="2" opacity=".6"/><circle cx="1480" cy="695" r="2.5" opacity=".5"/><circle cx="1660" cy="635" r="1.5" opacity=".65"/><circle cx="1260" cy="875" r="2" opacity=".4"/><circle cx="1570" cy="910" r="2" opacity=".6"/></g>
+</svg>

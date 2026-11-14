@@ -1,0 +1,92 @@
+.desktop { min-height: 100svh; background: #075a9b url('/artwork/desktop-wallpaper.svg') center/cover fixed no-repeat; color: #172c40; isolation: isolate; }
+.shortcuts { position: fixed; inset: 14px auto 58px 12px; width: 88px; display: flex; flex-direction: column; gap: 11px; z-index: 1; }
+.shortcut { width: 88px; min-height: 84px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border: 1px solid transparent; border-radius: 3px; color: white; font-size: 12px; line-height: 1.35; text-align: center; text-shadow: 1px 1px 3px #001d40, -1px -1px 3px #001d40; text-decoration: none; }
+.shortcut:hover, .shortcut:focus-visible { background: #b6deff30; border-color: #d6f0ff80; box-shadow: inset 0 0 0 1px #fff2; text-decoration: none; }
+.shortcutArt { position: relative; filter: drop-shadow(1px 2px 2px #002f6a80); }
+.shortcutArrow { position: absolute; bottom: 1px; left: 0; width: 13px; height: 13px; border: 1px solid #477492; background: #f5fbff; color: #22558c; font: bold 13px/11px Arial; text-shadow: none; }
+.workspace { padding: 60px 50px 90px 145px; min-height: 100svh; }
+.homeWorkspace { height: 100svh; min-height: 0; display: grid; align-items: center; padding-block: 35px 85px; }
+.windowPosition { position: relative; width: min(900px, 100%); margin: 0 auto; z-index: 2; }
+.homeWorkspace .windowPosition { width: min(660px, 100%); }
+.applicationWindow { --w7-w-bg: #9fc9e4; border-radius: 7px; }
+.windowPosition .applicationWindow { box-shadow: 0 10px 35px #00204388, 0 0 0 1px #12374b80, inset 0 0 0 1px #f2fcff; }
+.windowPosition .titleBar { min-height: 34px; padding-left: 9px; }
+.titleText { display: flex; align-items: center; gap: 7px; color: #102d42; text-shadow: 0 0 5px white, 0 0 8px white; white-space: nowrap; }
+.windowPosition .windowBody { background: white; }
+.homeWorkspace .windowBody { max-height: calc(100svh - 160px); overflow-y: auto; }
+.homeWorkspace .maximized { width: 100%; }
+.maximized .applicationWindow { min-height: calc(100svh - 120px); display: flex; flex-direction: column; }
+.maximized .windowBody { flex: 1; }
+.homeWorkspace .dismissed { display: none; }
+.desktopSignature { position: fixed; right: 38px; bottom: 82px; color: #edfcffb3; text-shadow: 0 1px 3px #04528a; text-align: right; pointer-events: none; z-index: 0; }
+.desktopSignature > span { display: block; font-size: 22px; font-weight: 300; }
+.desktopSignature small { font-size: 11px; letter-spacing: 1px; }
+.taskbar { position: fixed; bottom: 0; left: 0; right: 0; height: 46px; display: flex; align-items: center; gap: 8px; padding: 0 0 0 8px; z-index: 20; border-top: 1px solid #b3dcf8b3; box-shadow: 0 -1px 0 #123c62, inset 0 1px 0 #ffffff40; background: linear-gradient(#b6dcf75e 0%, #6c9abc66 45%, #123c659e 48%, #143858c9 100%); backdrop-filter: blur(16px); }
+.startRoot { align-self: stretch; display: flex; align-items: center; }
+.startButton { border: 0; background: none; padding: 0; width: 52px; height: 46px; cursor: pointer; }
+.orb { width: 43px; height: 43px; display: grid; place-items: center; border-radius: 50%; border: 1px solid #c9eaffb0; background: radial-gradient(ellipse at 50% 90%, #42d5fa, transparent 57%), linear-gradient(#75a7bd, #133e69 48%, #102e52 52%, #23608b); box-shadow: 0 0 4px #00152d, inset 0 1px 3px white; }
+.startButton:hover .orb, .startButton[aria-expanded=true] .orb { box-shadow: 0 0 14px #65dcff, inset 0 1px 3px white; }
+.flag { display: grid; grid-template-columns: repeat(2, 11px); grid-template-rows: repeat(2, 11px); gap: 2px; transform: rotate(-9deg) skewY(5deg); filter: drop-shadow(0 1px 2px #173750); }
+.flag i { background: linear-gradient(130deg,#ffb66b,#e35323); }
+.flag i:nth-child(2) { background: linear-gradient(130deg,#c2ea6c,#67a72e); }
+.flag i:nth-child(3) { background: linear-gradient(130deg,#77cbf0,#238bc8); }
+.flag i:nth-child(4) { background: linear-gradient(130deg,#fff2a6,#efbd25); }
+.pinned { display: flex; gap: 2px; }
+.pinned a { width: 51px; height: 42px; display: grid; place-items: center; border: 1px solid transparent; border-radius: 3px; }
+.pinned a:hover { background: linear-gradient(#ffffff35,#b3e4ff50); border-color: #dbf1ff80; box-shadow: inset 0 0 0 1px #284c6e; }
+.taskEntry { display: flex; align-items: center; justify-content: center; gap: 8px; height: 39px; min-width: 120px; padding: 0 13px; border: 1px solid #183c5d; border-radius: 3px; color: white; font: 12px "Segoe UI", sans-serif; text-shadow: 0 1px 2px #123; background: linear-gradient(#ffffff40,#d4e8fa1a); box-shadow: inset 0 0 0 1px #ffffff4d; cursor: pointer; }
+.taskActive, .taskEntry:hover { background: linear-gradient(#ffffff70,#a6d4f140 50%,#d8f3ff66); }
+.tray { margin-left: auto; display: flex; align-items: center; gap: 15px; height: 100%; padding-left: 12px; }
+.trayMark { color: white; text-shadow: 0 1px #123; }
+.clock { min-width: 93px; color: white; font: 11px/1.6 "Segoe UI", sans-serif; text-shadow: 0 1px 2px #123; text-align: center; }
+.clock span { display: block; }
+.showDesktop { width: 13px; align-self: stretch; border-left: 1px solid #0a2f4e; box-shadow: inset 1px 0 #d4efff80; background: linear-gradient(110deg,#effaff66,#9dd1f133); }
+.showDesktop:hover { background: #d9f5ff88; }
+.startMenu { position: absolute; bottom: 47px; left: 6px; width: 405px; max-height: calc(100svh - 64px); overflow-y: auto; display: grid; grid-template-columns: 250px 1fr; padding: 7px; border: 1px solid #183c5a; border-radius: 7px 7px 0 0; background: linear-gradient(100deg,#b1d9f2e8,#2b6089f5); box-shadow: inset 0 0 0 1px #e4f5ff90, 0 0 20px #001d4c70; }
+.programs { background: #fff; border: 1px solid #52718b; border-radius: 4px; padding: 6px; }
+.programs a { display: flex; align-items: center; gap: 10px; min-height: 55px; padding: 5px 8px; border: 1px solid transparent; border-radius: 3px; color: #182d3e; font-size: 13px; text-decoration: none; }
+.programs a:hover, .programs a:focus-visible { border-color: #a6cee9; background: linear-gradient(#eff8ff,#dcefff); }
+.programs small { display: block; font-size: 10px; color: #627584; }
+.startAside { padding: 3px 8px 8px 13px; display: flex; flex-direction: column; gap: 8px; }
+.startAside strong { font-size: 13px; color: #fff; font-weight: 500; text-shadow: 0 1px 2px #123; margin-bottom: 4px; }
+.startAside a { padding: 8px 4px; color: white; font-size: 12px; border: 1px solid transparent; text-shadow: 0 1px 2px #123; text-decoration: none; }
+.startAside a:hover { background: #b4def133; border-color: #c7e4f477; border-radius: 3px; }
+.userPortrait { padding: 2px; width: 60px; border: 1px solid #d6f2ff; border-radius: 5px; background: linear-gradient(#bfdff3,#386d97); box-shadow: 0 1px 5px #1239; }
+.menuDivider { height: 1px; background: #c4e4f55e; }
+.startFooter { padding: 11px 9px 5px; color: #17334a; font-size: 11px; grid-column: 1/-1; }
+.skipLink { position: fixed; left: 115px; top: 6px; padding: 8px 14px; background: white; z-index: 30; transform: translateY(-200%); }
+.skipLink:focus { transform: translateY(0); }
+.mobileHeading, .mobileStartLabel { display: none; }
+@media (min-width: 701px) and (max-height: 650px) {
+  .shortcuts { gap: 0; }
+  .shortcut { min-height: 70px; }
+  .shortcutArt svg { width: 39px; height: 39px; }
+  .homeWorkspace { padding-block: 14px 64px; }
+  .homeWorkspace .windowBody { max-height: calc(100svh - 115px); }
+}
+@media (max-width: 700px) {
+  .desktop { background: linear-gradient(150deg,#084c85,#0876a0); padding: 25px 18px 82px; }
+  .mobileHeading { display: flex; flex-direction: column; color: white; margin-bottom: 24px; }
+  .mobileHeading > span { font-size: 11px; letter-spacing: 2px; }
+  .mobileHeading a { font-size: 42px; line-height: 1.1; font-weight: 300; color: white; }
+  .shortcuts { position: static; width: auto; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-bottom: 20px; }
+  .shortcut { width: auto; min-height: 100px; background: #00639c; border: 1px solid #66c1e477; border-radius: 0; font-size: 13px; text-shadow: none; }
+  .shortcutArrow { display: none; }
+  .workspace, .homeWorkspace { display: block; min-height: 0; height: auto; padding: 0; }
+  .windowPosition, .homeWorkspace .windowPosition, .homeWorkspace .dismissed { display: block; width: 100%; }
+  .windowPosition .applicationWindow { border: 0; border-radius: 0; box-shadow: none; background: white; min-height: 0; }
+  .windowPosition .titleBar { display: none; }
+  .windowPosition .windowBody { margin: 0; border: 0; max-height: none; overflow: visible; box-shadow: none; }
+  .desktopSignature, .pinned, .taskEntry, .trayMark, .showDesktop { display: none; }
+  .taskbar { height: 56px; background: #073b60f5; padding-inline: 18px; }
+  .startButton { display: flex; align-items: center; gap: 10px; width: auto; }
+  .orb { width: 34px; height: 34px; }
+  .flag { transform: scale(.75) rotate(-9deg); }
+  .mobileStartLabel { display: inline; color: white; font-size: 15px; }
+  .startMenu { width: calc(100vw - 20px); left: 10px; bottom: 57px; max-height: calc(100svh - 76px); grid-template-columns: minmax(0,1fr) 125px; }
+  .startAside { padding-left: 9px; }
+  .clock { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .desktop *, .desktop *::before, .desktop *::after { transition: none !important; animation: none !important; }
+}

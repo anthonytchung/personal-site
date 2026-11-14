@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Anthony's Desktop
 
-## Getting Started
+A Windows 7-inspired personal portfolio built with Next.js App Router,
+React, TypeScript, and CSS Modules. The current implementation is the route
+foundation and first visual desktop milestone, with explicit placeholders for
+future portfolio content.
 
-First, run the development server:
+Read [the design specification](docs/DESIGN.md) and
+[architecture proposal](docs/ARCHITECTURE.md) before extending the site.
+Read the installed Next.js guides as required by AGENTS.md.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Development
+
+Use Bun 1.3.14 and the committed lockfile:
+
+```sh
+bun install --frozen-lockfile
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Checks
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+bun run lint
+bun run build
+bun run start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The build includes TypeScript validation. The homepage uses scoped 7.css, original
+wallpaper and icons, an accessible Start menu, and a session-aware Welcome. Full
+window management, dragging, MDX ingestion, and final content remain future phases.
