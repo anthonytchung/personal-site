@@ -18,7 +18,7 @@ type Props = {
 };
 
 export function PrimaryWindow({ children, pathname, title, icon, hidden, maximized, onMinimize, onMaximize, onClose }: Props) {
-  const { frameRef, style, positioned, center, handleProps } = useWindowPosition(maximized || hidden);
+  const { frameRef, style, positioned, center, handleProps, resizeProps } = useWindowPosition(maximized || hidden);
   const bodyRef = useRef<HTMLDivElement>(null);
   const previousPath = useRef(pathname);
 
@@ -69,6 +69,16 @@ export function PrimaryWindow({ children, pathname, title, icon, hidden, maximiz
         </div>
       </div>
       <div ref={bodyRef} className={`window-body ${styles.body}`}>{children}</div>
+      <button
+        {...resizeProps}
+        className={styles.resizeHandle}
+        aria-label="Resize window"
+        aria-describedby="window-resize-help"
+        aria-controls="primary-window"
+        title="Resize window. Arrow keys resize; Shift uses smaller steps."
+        disabled={maximized}
+      ><span aria-hidden="true">◢</span></button>
+      <span id="window-resize-help" className={styles.srOnly}>Drag to resize, or focus this handle and use Left and Right to change width and Up and Down to change height. Shift uses one-pixel steps. Escape cancels a drag. You can also use the Maximize button to enlarge the window.</span>
     </section>
   </div>;
 }

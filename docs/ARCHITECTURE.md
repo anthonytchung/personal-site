@@ -301,8 +301,8 @@ Use available space and input capability, not user-agent sniffing, to adapt.
 
 Anthony wants both primary and utility windows draggable. Start the primary
 window centered; preserve its position through internal route navigation and
-reset on reload. Keep maximize/restore geometry separate. No resizing,
-snapping, or dragging out of maximized mode is required for the first version.
+reset on reload. Keep maximize/restore geometry separate. Primary resizing is
+implemented below; snapping and dragging out of maximized mode remain deferred.
 
 Treat 7.css as a visual skin. A separate outer positioning element owns window
 coordinates, bounds, and stacking; the inner element owns library classes and
@@ -337,6 +337,30 @@ the window. Maximized windows must be restored before dragging. Mobile ignores
 desktop geometry and hidden state. ResizeObserver reclamps stored positions after
 viewport/content-size changes. Long desktop content scrolls inside the main reading pane;
 mobile uses normal document scrolling. Independent utility apps remain deferred.
+
+### Bounded primary resizing
+
+`useWindowPosition` owns restored size and position together, extending the
+existing pointer controller with move/resize gestures. The bottom-right button
+captures the pointer and resizes each axis independently, anchored at the
+top-left corner. Limits are 520 × 360 pixels or the available desktop space,
+whichever is smaller, with an 8-pixel inset above the taskbar. Arrow keys on the
+grip resize by 10 pixels; Shift uses 1 pixel. Escape/pointer cancellation restores
+the geometry from before the gesture. Lost capture or pointer release ends it.
+
+CSS variables apply dimensions to the existing frame and window skin. Maximizing
+temporarily overrides those dimensions; it never writes over the restored size.
+ResizeObserver reconciles both size and position when desktop bounds change or
+when restoring a hidden/maximized window. Frame-size observation must not end an
+active resize gesture. Mobile ignores these variables and hides the grip, while
+keeping desktop geometry in memory. Reload resets geometry as before.
+
+The main reading pane remains a programmatic focus destination on navigation and
+taskbar restoration. Its outline is suppressed specifically because it is a
+noninteractive reading container; focus is still transferred for assistive
+technology. Links, the resize grip, title bar, and other controls retain keyboard
+focus indicators. `tests/resizing.spec.ts` covers these contracts together with
+navigation persistence, viewport constraints, and internal reading scroll.
 
 ## Verification
 
