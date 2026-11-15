@@ -233,7 +233,9 @@ available. Welcome may retain its smaller introductory window. Mobile drops the
 fixed dimensions and vertical sidebar in favor of a natural document flow with
 wrapping section links.
 
-Toolbars contain only useful section context or functioning content links.
+The command bar is optional and contains only useful, functioning actions. Hide
+it entirely when a route has no actions, with no empty strip or reserved space.
+Do not use it for subtitles or repeat titles already visible elsewhere.
 Status bars show relevant information, such as actual archive entry counts,
 publication dates, or page purpose. Do not carry project counters or simulated
 filesystem commands into unrelated sections.

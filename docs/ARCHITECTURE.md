@@ -102,8 +102,10 @@ sidebar, toolbar, status, and title-bar controls stay available. The sidebar can
 scroll separately on short desktops. Maximize/restore retains the same geometry
 contract, and Welcome keeps its intentionally smaller introductory presentation.
 
-Toolbars display relevant section context or real links such as the Gilman page
-and article archive return. Status information contains real archive counts,
+The optional command bar contains functioning actions only, such as the Gilman
+Scholarship link or article archive return. Routes without useful actions omit
+the bar entirely, without reserved height. Descriptive section subtitles do not
+belong in the command bar. Status information contains real archive counts,
 article publication dates, or page purpose; static information pages do not show
 project counters. No filesystem commands, search boxes, or inactive actions are
 simulated. On mobile the shell flows naturally, navigation wraps above content,

@@ -9,7 +9,7 @@ export async function WritingArchive({ kind }: { kind: WritingKind }) {
   const entries = await getEntries(kind);
   const section = writingSections[kind];
   return <ExplorerLayout title={section.title} sectionHref={section.href} icon={kind === "journal" ? "journal" : "travel"}
-    toolbar={kind === "journal" ? "Writing archive" : <><span>Travel archive</span><Link href="/travellogs/gilman">Gilman Scholarship</Link></>}
+    toolbar={kind === "travel" ? <Link href="/travellogs/gilman">Gilman Scholarship</Link> : undefined}
     status={`${entries.length} published ${entries.length === 1 ? "entry" : "entries"}`}>
     <div className={styles.archive} data-kind={kind}>
     <header className={styles.archiveHeader}>

@@ -14,7 +14,7 @@ type Props = {
   icon?: IconKind;
 };
 
-export function ContentPage({ title, children, status = title, sectionHref, parents, toolbar = title, icon }: Props) {
+export function ContentPage({ title, children, status = title, sectionHref, parents, toolbar, icon }: Props) {
   const section = [...primaryNavigation, ...secondaryNavigation].find(item => item.label === title);
   return <ExplorerLayout title={title} sectionHref={sectionHref ?? section?.href ?? ""} parents={parents} toolbar={toolbar} status={status} icon={icon}>
     <div className={styles.content}><h1>{title}</h1>{children}</div>

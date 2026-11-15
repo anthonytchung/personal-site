@@ -9,7 +9,6 @@ const sections = [
 
 test("primary routes share chrome, dimensions, and direct content navigation", async ({ page }) => {
   let initial: { width: number; height: number } | undefined;
-  let contentTop: number | undefined;
   for (const [route, title, sectionHref] of sections) {
     expect((await page.goto(route))!.status()).toBe(200);
     await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
@@ -18,13 +17,15 @@ test("primary routes share chrome, dimensions, and direct content navigation", a
     initial ??= box;
     expect(box.width).toBe(initial.width);
     expect(box.height).toBe(initial.height);
-    const mainBox = (await page.getByRole("main").boundingBox())!;
-    contentTop ??= mainBox.y;
-    expect(mainBox.y).toBe(contentTop);
     await expect(page.getByRole("main")).toHaveCount(1);
     await expect(window.getByRole("navigation", { name: "Main navigation", exact: true })).toHaveCount(0);
     await expect(window.getByRole("navigation", { name: "Breadcrumb", exact: true })).toHaveCount(1);
-    await expect(window.getByRole("group", { name: "Section tools", exact: true })).toBeVisible();
+    const commands = window.getByRole("group", { name: "Section tools", exact: true });
+    await expect(commands).toHaveCount(route === "/travellogs" ? 1 : 0);
+    const chromeBottom = route === "/travellogs"
+      ? await commands.evaluate(element => element.getBoundingClientRect().bottom)
+      : await window.getByRole("navigation", { name: "Breadcrumb", exact: true }).evaluate(element => element.parentElement!.getBoundingClientRect().bottom);
+    expect((await page.getByRole("main").boundingBox())!.y).toBe(chromeBottom);
     await expect(window.getByRole("group", { name: "Section information", exact: true })).toBeVisible();
     const sidebar = window.getByRole("complementary", { name: "Explorer navigation" });
     await expect(sidebar.getByRole("link").first()).toHaveText("Projects");
@@ -79,3 +80,21 @@ for (const viewport of [{ width: 1366, height: 768 }, { width: 390, height: 844 
     }
   });
 }
+
+
+test("Travel Logs command remains useful and keyboard accessible on desktop and mobile", async ({ page }) => {
+  for (const width of [1366, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto("/travellogs");
+    const commands = page.getByRole("group", { name: "Section tools", exact: true });
+    await expect(commands).toHaveText("Gilman Scholarship");
+    await expect(commands.getByRole("link")).toHaveCount(1);
+    await commands.getByRole("link", { name: "Gilman Scholarship", exact: true }).focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/\/travellogs\/gilman$/);
+    await expect(page.getByRole("heading", { name: "Gilman", exact: true })).toBeVisible();
+    await expect(page.getByRole("group", { name: "Section tools", exact: true })).toHaveCount(0);
+    await page.goBack();
+    await expect(commands).toBeVisible();
+  }
+});

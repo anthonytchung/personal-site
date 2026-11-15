@@ -10,7 +10,7 @@ type Props = {
   sectionHref: string;
   icon?: IconKind;
   parents?: readonly { title: string; href: string }[];
-  toolbar: ReactNode;
+  toolbar?: ReactNode;
   status: ReactNode;
 };
 
@@ -27,7 +27,7 @@ export function ExplorerLayout({ children, title, sectionHref, icon = "welcome",
         </ol>
       </nav>
     </div>
-    <div className={styles.commandBar} role="group" aria-label="Section tools">{toolbar}</div>
+    {toolbar && <div className={styles.commandBar} role="group" aria-label="Section tools">{toolbar}</div>}
     <div className={styles.body}>
       <aside className={styles.sidebar} aria-label="Explorer navigation">
         <nav aria-label="Sections">
