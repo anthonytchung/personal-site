@@ -216,17 +216,17 @@ test("long window content scrolls without moving the desktop or hiding controls"
     article.style.height = "2500px";
     main.append(article);
   });
-  const body = await bounds(page.locator(".window-body"));
+  const body = await bounds(page.getByRole("main"));
   await page.mouse.move(body.x + body.width / 2, body.y + 100);
   await page.mouse.wheel(0, 700);
-  await expect.poll(() => page.locator(".window-body").evaluate(body => body.scrollTop)).toBeGreaterThan(0);
+  await expect.poll(() => page.getByRole("main").evaluate(body => body.scrollTop)).toBeGreaterThan(0);
   await expect(control(page, "Close")).toBeVisible();
   await expectInsideDesktop(page);
   await control(page, "Minimize").click();
   await page.locator("#primary-task").click();
-  expect(await page.locator(".window-body").evaluate(body => body.scrollTop)).toBeGreaterThan(0);
+  expect(await page.getByRole("main").evaluate(body => body.scrollTop)).toBeGreaterThan(0);
   await shortcut(page, "Journal").click();
-  await expect.poll(() => page.locator(".window-body").evaluate(body => body.scrollTop)).toBe(0);
+  await expect.poll(() => page.getByRole("main").evaluate(body => body.scrollTop)).toBe(0);
 });
 
 for (const size of [{ width: 1920, height: 1080 }, { width: 1440, height: 900 }, { width: 800, height: 600 }]) {

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getEntry } from "@/lib/content/writing";
 import { formatDate, writingSections, type WritingKind } from "@/lib/content/metadata";
 import styles from "./writing.module.css";
+import { ExplorerLayout } from "./explorer-layout";
 
 export async function writingMetadata(kind: WritingKind, slug: string): Promise<Metadata> {
   const entry = await getEntry(kind, slug);
@@ -23,11 +24,11 @@ export async function WritingArticle({ kind, slug }: { kind: WritingKind; slug: 
   if (!entry) notFound();
   const section = writingSections[kind];
   const { Content } = entry;
-  return <article className={styles.article} data-kind={kind}>
-    <nav className={styles.breadcrumbs} aria-label="Breadcrumb"><ol>
-      <li><Link href={section.href}>{section.title}</Link></li>
-      <li><span aria-current="page">{entry.title}</span></li>
-    </ol></nav>
+  return <ExplorerLayout title={entry.title} sectionHref={section.href} icon={kind === "journal" ? "journal" : "travel"}
+    parents={[{ title: section.title, href: section.href }]}
+    toolbar={<Link href={section.href}>← Back to {section.title}</Link>}
+    status={`Published ${formatDate(entry.date)}`}>
+    <article className={styles.article} data-kind={kind}>
     <header className={styles.articleHeader}>
       <p className={styles.eyebrow}>{section.title}</p>
       <h1>{entry.title}</h1>
@@ -41,6 +42,7 @@ export async function WritingArticle({ kind, slug }: { kind: WritingKind; slug: 
       img: ({ src, alt, width, height }) => <Image src={src ?? ""} alt={alt ?? ""} width={Number(width) || 1600} height={Number(height) || 1000} unoptimized className={styles.inlineImage}/>,
       a: ({ href, children, ...props }) => href ? <Link href={href} {...props}>{children}</Link> : <a {...props}>{children}</a>,
     }}/></div>
-    <nav className={styles.articleFooter} aria-label="Article navigation"><Link href={section.href}>← Back to {section.title}</Link>{kind === "travel" && <Link href="/travellogs/gilman">Gilman Scholarship</Link>}</nav>
-  </article>;
+    {kind === "travel" && <nav className={styles.articleFooter} aria-label="Article navigation"><Link href="/travellogs/gilman">Gilman Scholarship</Link></nav>}
+    </article>
+  </ExplorerLayout>;
 }

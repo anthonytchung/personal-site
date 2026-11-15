@@ -74,26 +74,45 @@ Projects has an Explorer navigation foundation and an explicit empty library;
 Journal and Travel Logs share a working local MDX publishing foundation.
 Resume and contact still have explicit content placeholders.
 
-### Projects Explorer foundation
+### Shared Explorer application shell
 
-At `/projects`, the shared `ExplorerLayout` selects `ProjectsExplorer` using the
-pathname already owned by DesktopShell. It stays inside the existing primary
-window and owns the same single main landmark and focus target. Other routes
-retain their existing navigation. Unknown project detail URLs still return 404.
+All primary content routes use one `components/content/explorer-layout.tsx`
+Server Component and one `explorer-layout.module.css`. Projects previously had
+its own complete Explorer wrapper while the remaining routes used the original
+horizontal navigation and articles supplied a third breadcrumb treatment. These
+presentation forks have been removed.
 
-The Explorer uses the existing 7.css window skin and status bar, with scoped CSS
-for a section-only breadcrumb address bar, section sidebar, selected
-Projects link, and readable content pane. All navigation uses ordinary Next
-Links and the shared section registry. No independent route state, simulated
-history, inactive commands, project fixtures, or content dependencies are added.
-The empty library and zero count are intentional until project content is added;
-cards, filtering, case studies, and MDX ingestion are deferred.
+Routes now supply title, actual parent breadcrumbs, active section href, toolbar
+content, and status information to the same layout. `ContentPage` wraps static
+information pages; WritingArchive and WritingArticle wrap their existing content;
+Projects supplies its browsing presentation. The layout owns the location bar,
+section sidebar, toolbar, one main reading pane, and 7.css status bar. It does not
+load MDX or infer article titles from URL segments. Article metadata and content
+loaders are unchanged. There is no second navigation state or window manager.
 
-On mobile the sidebar becomes wrapping, touch-friendly section links above the
-content. Breadcrumbs and existing desktop launcher links remain available.
-`tests/projects.spec.ts` covers direct load/reload, current-page semantics,
-content breadcrumbs/sidebar links, browser history, keyboard activation, and
-desktop/mobile overflow and touch targets.
+DesktopShell passes server-rendered route children into the existing persistent
+PrimaryWindow. Moving route chrome out of the client shell keeps content metadata
+on the server. React Activity may retain hidden route trees, so window restoration
+and route-change focus select the visible main pane rather than the first cached
+main element. PrimaryWindow retains its existing movement and visibility state.
+
+Non-home primary windows share a 900px by 680px default envelope, constrained to
+the available desktop. The reading pane scrolls independently while location,
+sidebar, toolbar, status, and title-bar controls stay available. The sidebar can
+scroll separately on short desktops. Maximize/restore retains the same geometry
+contract, and Welcome keeps its intentionally smaller introductory presentation.
+
+Toolbars display relevant section context or real links such as the Gilman page
+and article archive return. Status information contains real archive counts,
+article publication dates, or page purpose; static information pages do not show
+project counters. No filesystem commands, search boxes, or inactive actions are
+simulated. On mobile the shell flows naturally, navigation wraps above content,
+and the reading pane has no fixed height or internal scrolling.
+
+`tests/explorer.spec.ts` checks all primary routes for common chrome, dimensions,
+active sidebar links, and stable chrome during long reading. It captures desktop
+and mobile screenshots of Projects, Journal, Travel Logs, and Gilman. Existing
+window tests continue to cover movement, minimize/maximize, history, and refresh.
 
 ### Content navigation contract
 
@@ -105,9 +124,9 @@ pages must supply their actual titles and link only to existing parent content
 pages; do not infer titles or create parent links from arbitrary URL segments.
 Unknown routes do not receive a fabricated breadcrumb hierarchy.
 
-The shared ExplorerLayout renders breadcrumbs for existing non-Projects pages;
-ProjectsExplorer keeps its own address-bar presentation. Both use Next Links,
-with current-page semantics and no additional navigation state or abstraction.
+The shared ExplorerLayout renders the same breadcrumb location bar on every
+primary route. Pages supply validated titles and real parents. All navigation
+uses Next Links with current-page semantics and no additional navigation state.
 Window controls retain their existing behavior independently of content links.
 The Projects empty state is a quiet message with no fictional items.
 
@@ -193,7 +212,7 @@ evaluated. Content directories are explicitly included in server file tracing.
 Shared WritingArchive/WritingArticle server components render both sections.
 Journal uses document-like archive entries; Travel Logs adds destinations, date
 ranges, photography, and editorial article headings. Nested article breadcrumbs
-use validated titles and real archive parents inside the main reading pane.
+use validated titles and real archive parents in the shared location bar.
 Article metadata includes canonical URLs, Open Graph, Twitter, and cover images.
 MDX links use Next Link; standard images and Markdown elements have responsive
 reading styles. The root metadata base is the confirmed primary domain.
@@ -314,7 +333,7 @@ Arrow keys move the focused title bar (Shift uses one-pixel steps), Home centers
 it, and Escape cancels a drag. The icon at the left of the title bar also centers
 the window. Maximized windows must be restored before dragging. Mobile ignores
 desktop geometry and hidden state. ResizeObserver reclamps stored positions after
-viewport/content-size changes. Long desktop content scrolls inside the window;
+viewport/content-size changes. Long desktop content scrolls inside the main reading pane;
 mobile uses normal document scrolling. Independent utility apps remain deferred.
 
 ## Verification

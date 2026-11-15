@@ -3,10 +3,9 @@
 .archive h1, .article h1 { margin: 0.35rem 0 1rem; color: #174c78; font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 500; line-height: 1.2; }
 .archiveHeader > p { margin: 0.5rem 0; }
 .eyebrow { color: #526779; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
-.count, .date { color: #526779; font-size: 0.85rem; }
-.count { margin-block: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e4ebf1; }
+.date { color: #526779; font-size: 0.85rem; }
 .empty { padding: 1rem 0; color: #526779; }
-.entries { margin: 0; padding: 0; list-style: none; }
+.entries { margin: 1.5rem 0 0; padding: 0; list-style: none; }
 .entries > li + li { margin-top: 1.5rem; }
 .card { overflow: hidden; border: 1px solid #d3e0eb; border-radius: 4px; background: #fbfdff; }
 .cardBody { padding: 1.25rem; }
@@ -16,13 +15,7 @@
 .cover { max-height: 22rem; object-fit: cover; }
 .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1rem 0 0; padding: 0; list-style: none; }
 .tags li { padding: 0.1rem 0.5rem; border: 1px solid #d5e2ed; border-radius: 3px; color: #435d73; background: #f0f5fa; font-size: 0.8rem; }
-.scholarship { display: inline-flex; align-items: center; min-height: 44px; }
 .article { max-width: 72ch; margin-inline: auto; }
-.breadcrumbs { margin-bottom: 2rem; font-size: 0.85rem; }
-.breadcrumbs ol { display: flex; flex-wrap: wrap; margin: 0; padding: 0; list-style: none; }
-.breadcrumbs li { display: flex; align-items: center; min-width: 0; }
-.breadcrumbs li + li::before { content: "›"; margin-inline: 0.5rem; color: #526779; }
-.breadcrumbs a, .breadcrumbs span { display: inline-flex; align-items: center; min-height: 44px; }
 .articleHeader { margin-bottom: 2rem; }
 .summary { font-size: 1.1rem; color: #435d73; }
 .destination { color: #385e69; font-size: 0.95rem; }

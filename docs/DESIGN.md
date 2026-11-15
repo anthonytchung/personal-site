@@ -220,7 +220,23 @@ Pinned shortcuts may be added when their behavior is clearly distinguished from 
 
 ### Main content navigation
 
-Every primary page includes consistent navigation, preferably styled as Windows Explorer breadcrumbs or a navigation sidebar.
+Every primary content route uses the same Explorer-inspired application shell:
+location/breadcrumb bar, section sidebar, contextual toolbar, reading pane, and
+status bar. Projects, About, Experience, Resume, Journal, Travel Logs, Gilman,
+Contact, and article pages share this chrome; content keeps its own presentation.
+Do not add a competing horizontal section navigation or article breadcrumb style.
+
+Desktop primary windows use consistent default dimensions (900 × 680 pixels,
+constrained to the viewport). Short content does not shrink the window. Long
+content scrolls in the reading pane while navigation and window controls remain
+available. Welcome may retain its smaller introductory window. Mobile drops the
+fixed dimensions and vertical sidebar in favor of a natural document flow with
+wrapping section links.
+
+Toolbars contain only useful section context or functioning content links.
+Status bars show relevant information, such as actual archive entry counts,
+publication dates, or page purpose. Do not carry project counters or simulated
+filesystem commands into unrelated sections.
 
 The desktop is the environment, not an intermediate destination required for
 navigation. Section links directly display their content and never act as window

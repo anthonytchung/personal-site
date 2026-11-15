@@ -29,7 +29,11 @@ export function PrimaryWindow({ children, pathname, title, icon, hidden, maximiz
       // Next controls the URL; this scroll container owns desktop reading position.
       if (window.location.hash) return;
       if (bodyRef.current) bodyRef.current.scrollTop = 0;
-      bodyRef.current?.querySelector<HTMLElement>("main")?.focus({ preventScroll: true });
+      // React Activity can retain hidden route trees; only reset/focus the active pane.
+      const main = Array.from(bodyRef.current?.querySelectorAll<HTMLElement>("main") ?? [])
+        .find(element => element.getClientRects().length > 0);
+      if (main) main.scrollTop = 0;
+      main?.focus({ preventScroll: true });
     });
     return () => cancelAnimationFrame(frame);
   }, [pathname]);

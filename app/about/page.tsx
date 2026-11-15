@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "About", description: "Biography, int
 
 export default function Page() {
   return (
-    <ContentPage title="About">
+    <ContentPage title="About" icon="about" status="Biography & background">
       <p>I build software, explore ideas, and make things for the fun of it.</p>
       <section id="why-windows-7" style={{ scrollMarginTop: "2rem" }}>
         <h2>Why Windows 7?</h2>

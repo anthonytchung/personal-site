@@ -3,17 +3,19 @@ import Image from "next/image";
 import { getEntries } from "@/lib/content/writing";
 import { formatDate, writingSections, type WritingKind } from "@/lib/content/metadata";
 import styles from "./writing.module.css";
+import { ExplorerLayout } from "./explorer-layout";
 
 export async function WritingArchive({ kind }: { kind: WritingKind }) {
   const entries = await getEntries(kind);
   const section = writingSections[kind];
-  return <div className={styles.archive} data-kind={kind}>
+  return <ExplorerLayout title={section.title} sectionHref={section.href} icon={kind === "journal" ? "journal" : "travel"}
+    toolbar={kind === "journal" ? "Writing archive" : <><span>Travel archive</span><Link href="/travellogs/gilman">Gilman Scholarship</Link></>}
+    status={`${entries.length} published ${entries.length === 1 ? "entry" : "entries"}`}>
+    <div className={styles.archive} data-kind={kind}>
     <header className={styles.archiveHeader}>
       <p className={styles.eyebrow}>{kind === "journal" ? "Writing archive" : "Places & perspectives"}</p>
       <h1>{section.title}</h1><p>{section.summary}</p>
-      {kind === "travel" && <Link className={styles.scholarship} href="/travellogs/gilman">Gilman Scholarship →</Link>}
     </header>
-    <p className={styles.count}>{entries.length} {entries.length === 1 ? "entry" : "entries"}</p>
     {entries.length === 0 ? <p className={styles.empty}>No {kind === "journal" ? "journal" : "travel"} entries published yet.</p> :
       <ul className={styles.entries}>{entries.map(entry => <li key={entry.slug}>
         <article className={styles.card}>
@@ -27,5 +29,6 @@ export async function WritingArchive({ kind }: { kind: WritingKind }) {
           </div>
         </article>
       </li>)}</ul>}
-  </div>;
+    </div>
+  </ExplorerLayout>;
 }
