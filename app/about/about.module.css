@@ -3,7 +3,7 @@
 .about h3 { margin: 0.5rem 0; color: #244e6d; font-size: 1.1rem; font-weight: 600; }
 .about p:last-child { margin-bottom: 0; }
 .about .eyebrow { margin: 0 0 0.5rem; color: #526b7f; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
-.introduction h2 { font-size: clamp(1.8rem, 5vw, 2.5rem); line-height: 1.2; color: #203247; }
+.introduction h2 { font-size: clamp(1.8rem, 5cqi, 2.5rem); line-height: 1.2; color: #203247; }
 .introduction .lead { font-size: 1.2rem; color: #244e6d; }
 .origin { scroll-margin-top: 2rem; padding: 1.5rem; border: 1px solid #c7dce9; border-left: 4px solid #4988b7; border-radius: 4px; background: linear-gradient(135deg, #eef7fc, #f8fbfd); }
 .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
@@ -16,4 +16,10 @@
   .notes, .photo { grid-template-columns: 1fr; }
   .photoFrame { max-width: 12rem; width: 100%; aspect-ratio: 4 / 3; }
   .origin { padding: 1.25rem; }
+}
+
+@container window-body (max-width: 650px) {
+  .notes, .photo { grid-template-columns: 1fr; }
+  .photoFrame { max-width: 12rem; width: 100%; aspect-ratio: 4 / 3; }
+  .origin { padding: 1rem; }
 }

@@ -1,6 +1,7 @@
 /* Coordinates apply to this wrapper; 7.css only styles the inner window. */
 .position {
   position: absolute;
+  pointer-events: auto;
   z-index: 2;
   width: var(--window-width, min(900px, calc(100% - 160px)));
   left: var(--window-x, calc(50% + 45px));
@@ -50,7 +51,7 @@
   font-size: 12px;
 }
 .dragHandle:focus-visible { outline: 2px solid #174e78; outline-offset: -2px; }
-.position .body { flex: 1; min-height: 0; overflow: auto; background: white; }
+.position .body { container-type: inline-size; container-name: window-body; flex: 1; min-height: 0; overflow: auto; background: white; }
 .position:not([data-home=true]) .body { display: flex; flex-direction: column; overflow: hidden; }
 /* main is a programmatic reading target, not an interactive control. Its links
    and controls retain their normal :focus-visible indicators. */
@@ -103,5 +104,5 @@
   }
   .position .titleBar { display: none; }
   .position .resizeHandle { display: none; }
-  .position .body, .position:not([data-home=true]) .body { display: block; flex: auto; margin: 0; border: 0; overflow: visible; box-shadow: none; }
+  .position .body, .position:not([data-home=true]) .body { container-type: normal; display: block; flex: auto; margin: 0; border: 0; overflow: visible; box-shadow: none; }
 }

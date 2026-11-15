@@ -55,7 +55,9 @@ test("minimize retains URL; taskbar, current-section shortcuts, and Start restor
   await shortcut(page, "Projects").click();
   await expect(primary(page)).toBeVisible();
   await control(page, "Minimize").click();
-  await page.getByRole("navigation", { name: "Pinned shortcuts" }).getByRole("link", { name: "Projects" }).click();
+  // The current section has one running entry rather than a duplicate pinned link.
+  await expect(page.getByRole("navigation", { name: "Pinned shortcuts" }).getByRole("link", { name: "Projects" })).toHaveCount(0);
+  await page.locator("#primary-task").click();
   await expect(primary(page)).toBeVisible();
   await control(page, "Minimize").click();
   await page.getByRole("button", { name: "Start", exact: true }).click();

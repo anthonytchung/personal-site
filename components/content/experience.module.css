@@ -14,3 +14,9 @@
   .item::before { left: calc(-1rem - 7px); }
   .card { padding: 1rem; }
 }
+
+@container window-body (max-width: 650px) {
+  .timeline { padding-left: 1rem; }
+  .item::before { left: calc(-1rem - 7px); }
+  .card { padding: 1rem; }
+}

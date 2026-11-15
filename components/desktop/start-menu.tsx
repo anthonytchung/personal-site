@@ -1,15 +1,17 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { primaryNavigation, secondaryNavigation } from "@/lib/navigation";
 import { DesktopIcon, type IconKind } from "./desktop-icon";
 import styles from "./desktop-shell.module.css";
 
 export const sectionIcons: Record<string, IconKind> = {
-  "/projects": "projects", "/blog": "journal", "/travellogs": "travel", "/about": "about", "/resume": "resume",
+  "/projects": "projects", "/blog": "journal", "/travellogs": "travel", "/about": "about", "/resume": "resume", "/experience": "projects", "/contact": "about",
 };
 
 export function StartMenu({ onWelcome, onNavigate }: { onWelcome: () => void; onNavigate: () => void }) {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -40,15 +42,22 @@ export function StartMenu({ onWelcome, onNavigate }: { onWelcome: () => void; on
       <span className={styles.orb} aria-hidden="true"><span className={styles.flag}><i/><i/><i/><i/></span></span>
       <span className={styles.mobileStartLabel}>Start</span>
     </button>
-    {open && <nav id="start-navigation" aria-label="Start menu" className={styles.startMenu}>
+    {open && <nav id="start-navigation" aria-label="Start menu" className={styles.startMenu} onKeyDown={event => {
+      if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key) || event.altKey || event.ctrlKey || event.metaKey) return;
+      const links = Array.from(event.currentTarget.querySelectorAll<HTMLAnchorElement>("a"));
+      const current = links.indexOf(document.activeElement as HTMLAnchorElement);
+      const next = event.key === "Home" ? 0 : event.key === "End" ? links.length - 1 : (current + (event.key === "ArrowDown" ? 1 : -1) + links.length) % links.length;
+      event.preventDefault();
+      links[next]?.focus();
+    }}>
       <div className={styles.programs}>
         <Link ref={firstLink} href="/" onNavigate={() => { onWelcome(); trigger.current?.focus(); setOpen(false); }}><DesktopIcon kind="welcome" size={36}/><span>Welcome<small>Anthony&apos;s Desktop</small></span></Link>
-        {primaryNavigation.map(({href, label}) => <Link key={href} href={href} onNavigate={() => { onNavigate(); setOpen(false); }}><DesktopIcon kind={sectionIcons[href]} size={36}/><span>{label}</span></Link>)}
+        {primaryNavigation.map(({href, label}) => <Link key={href} href={href} aria-current={pathname === href ? "page" : undefined} onNavigate={() => { onNavigate(); setOpen(false); }}><DesktopIcon kind={sectionIcons[href]} size={36}/><span>{label}</span></Link>)}
       </div>
       <div className={styles.startAside}>
-        <div className={styles.userPortrait}><DesktopIcon kind="about" size={54}/></div>
+        <Link className={styles.userPortrait} href="/about" aria-label="Anthony’s profile" onNavigate={() => { onNavigate(); setOpen(false); }}><DesktopIcon kind="about" size={54}/></Link>
         <strong>Anthony</strong>
-        {secondaryNavigation.map(({href, label}) => <Link key={href} href={href} onNavigate={() => { onNavigate(); setOpen(false); }}>{label}</Link>)}
+        {secondaryNavigation.map(({href, label}) => <Link key={href} href={href} aria-current={pathname === href ? "page" : undefined} onNavigate={() => { onNavigate(); setOpen(false); }}>{label}</Link>)}
         <Link href="/travellogs/gilman" onNavigate={() => { onNavigate(); setOpen(false); }}>Gilman</Link>
         <div className={styles.menuDivider}/>
         <Link href="/about#why-windows-7" onNavigate={() => { onNavigate(); setOpen(false); }}>Why Windows 7?</Link>

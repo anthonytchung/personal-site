@@ -589,3 +589,17 @@ The MVP should satisfy the following:
 - The website remains usable if animations, sound effects, or experimental applications fail.
 
 **The website succeeds when it feels personal and unusual while remaining easier to navigate than its visual complexity suggests.**
+
+### Confirmed Aero polish behavior
+
+The running taskbar button toggles minimize/restore. Pinned shortcuts for other
+sections stay distinct; the current section is represented only by its running
+entry. A lightweight hover/focus preview shows its icon, section summary, and
+window state. Escape dismisses the preview.
+
+Show Desktop temporarily hides/restores the primary window without navigation.
+Double-clicking its title bar maximizes/restores using the existing geometry.
+Start supports arrow-key and Home/End navigation alongside ordinary Tab and
+Escape behavior, and its portrait links directly to About. Narrow desktop windows
+adapt their content to actual window width, while mobile retains its independent
+flowing presentation.

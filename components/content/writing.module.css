@@ -1,6 +1,6 @@
 .archive, .article { color: #203247; font-size: 1rem; line-height: 1.7; overflow-wrap: anywhere; }
 .archiveHeader { padding-bottom: 1.5rem; border-bottom: 1px solid #d5e2ed; }
-.archive h1, .article h1 { margin: 0.35rem 0 1rem; color: #174c78; font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 500; line-height: 1.2; }
+.archive h1, .article h1 { margin: 0.35rem 0 1rem; color: #174c78; font-size: clamp(2rem, 4cqi, 2.75rem); font-weight: 500; line-height: 1.2; }
 .archiveHeader > p { margin: 0.5rem 0; }
 .eyebrow { color: #526779; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
 .date { color: #526779; font-size: 0.85rem; }

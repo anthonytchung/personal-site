@@ -388,3 +388,68 @@ It covers same-route and new-route restoration, close-to-desktop, Back/Forward,
 direct loads and refresh, Welcome persistence, pointer and keyboard movement,
 maximize/restore geometry, viewport bounds, mobile transitions, and long content.
 Assertions wait for committed route content and asynchronous resize reconciliation.
+
+## Aero quality pass
+
+The persistent shell still owns one route-driven window. Its taskbar button now
+minimizes the visible window and restores a minimized one. Pinned links omit the
+current section so it has only one taskbar representation; other pinned links
+remain plain navigation. Experience and Contact use the existing original icons,
+and Gilman's taskbar/title-bar label reflects the nested route.
+
+Show Desktop is a button, not navigation. It toggles the existing minimized state
+without changing URL, history, scroll position, or geometry. It is disabled when
+Welcome is dismissed and hidden on mobile. With only one primary window, no
+second visibility store or window manager is needed. Future utility windows will
+need a snapshot of all previously visible windows before extending this action.
+
+The taskbar preview uses navigation summaries and existing icons, not screenshots
+or duplicated route content. It appears on keyboard focus or fine-pointer hover;
+Escape dismisses it even when keyboard focus is elsewhere. It is supplementary
+visual information; the taskbar button announces its current action. Preview and
+Start motion obey the existing reduced-motion rule. Start retains ordinary link
+semantics and Tab navigation, with Arrow Up/Down and Home/End shortcuts, a profile
+link, current-page feedback, and the existing Escape/outside dismissal.
+
+Double-clicking the title-bar drag handle invokes the same maximize/restore
+callback as its button. Pointer resizing, keyboard geometry controls, and the
+position controller are unchanged. Restoration schedules reading-pane focus but
+checks that the user has not already selected another control. The workspace now
+forms an explicit stacking context above the wallpaper signature, while empty
+workspace areas pass pointer events through to desktop shortcuts.
+
+The window body is an inline-size container on desktop. Explorer spacing,
+sidebar width, About cards, Experience padding, and heading sizes respond to
+custom window dimensions. The desktop sidebar remains independently scrollable
+at minimum height; mobile retains natural document scrolling and touch targets.
+
+The Welcome session snapshot remains hydration-safe and server-rendered. Its
+known dismissed-on-reload flash is not masked by hiding the introduction or by
+adding an early DOM mutation script. Snap, hover Peek, launcher search, calendar
+flyouts, and animated closing remain deferred; none is needed for access to the
+existing content. No dependencies, assets, route structure, or MDX loaders changed.
+
+### Quality-pass validation
+
+`bun run lint`, `bun run build`, and all 13 unit tests passed. The full production
+Playwright run passed 44 tests; its two fixture-only article tests were skipped
+as designed, then both passed in `bun run test:writing` (four tests total). That
+command removed its temporary MDX files and rebuilt the real production output.
+All eight existing resizing tests remain unchanged and pass.
+
+New browser coverage includes taskbar toggling, hover-preview Escape dismissal,
+Show Desktop preserving reading scroll and geometry, same-section focus,
+title-bar double-click, Start arrow/Home/End navigation, reduced motion, and
+minimum-size windows. Screenshot/overflow sweeps cover all nine landing routes
+at 1440×900, 800×600, 390×844, and 320×568, plus Start at 720×420 and resized
+520×360 windows. Existing tests also cover 1920×1080, 1366×768, history, direct
+URLs, refresh, pointer cancellation, and mobile/desktop transitions. Desktop and
+mobile route contact sheets, Start, and taskbar preview screenshots were visually
+reviewed. Browser automation used the configured Chromium runner, not Safari or
+Firefox; cross-browser verification remains a release check.
+
+Remaining issues by impact: existing unfinished portfolio/resume/contact/Gilman
+content is the primary launch limitation; the Welcome dismissal flash is a minor
+cosmetic limitation. No failing behavior was identified in this pass's browser
+coverage. The Aero frame, original icons/wallpaper, title controls, and existing
+bounded movement/resizing were retained rather than replaced.

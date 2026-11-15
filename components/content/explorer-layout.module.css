@@ -14,9 +14,9 @@
 .sidebar a { display: flex; align-items: center; gap: 0.5rem; min-height: 44px; padding: 0.4rem 0.75rem; border: 1px solid transparent; border-radius: 3px; }
 .sidebar a:hover, .sidebar a[aria-current=page] { border-color: #a5cae4; background: linear-gradient(#eff8ff, #d5eafa); }
 .sidebar a[aria-current=page] { color: #163f60; font-weight: 600; }
-.main { overflow: auto; min-width: 0; padding: clamp(1.25rem, 3vw, 2.5rem); font-size: 1rem; line-height: 1.65; overflow-wrap: anywhere; }
+.main { overflow: auto; min-width: 0; padding: clamp(1.25rem, 3cqi, 2.5rem); scrollbar-color: #a3b9cb #f3f7fa; font-size: 1rem; line-height: 1.65; overflow-wrap: anywhere; }
 .explorer .statusBar { flex-shrink: 0; margin: 0; border: 0; border-top: 1px solid #d0dbe5; background: linear-gradient(#f8fafc, #eaf0f6); color: #435d73; font-size: 0.8rem; }
-.statusBar p { padding: 0.4rem 0.75rem; }
+.statusBar p { padding: 0.4rem 1.75rem 0.4rem 0.75rem; }
 .explorer a:focus-visible { outline: 3px solid #a05a00; outline-offset: -3px; }
 @media (max-width: 700px) {
   .explorer { display: block; border: 0; }
@@ -32,3 +32,18 @@
 
 .commandBar a { display: inline-flex; align-items: center; min-height: 44px; }
 .commandBar { min-height: 54px; align-items: center; }
+
+/* Respond to the resized window, not only the browser viewport. Keep the
+   sidebar independently scrollable at the minimum desktop height. */
+@container window-body (max-width: 650px) {
+  .body { grid-template-columns: 8.5rem minmax(0, 1fr); }
+  .sidebar { padding: 0.5rem 0.25rem; }
+  .sidebar a { gap: 0.35rem; padding-inline: 0.4rem; font-size: 0.8rem; }
+  .sidebar h2 { font-size: 0.75rem; }
+  .main { padding: 1rem; }
+  .breadcrumbs a, .breadcrumbs span { min-height: 36px; font-size: 0.85rem; }
+}
+@media (min-width: 701px) and (pointer: fine) {
+  .breadcrumbs a, .breadcrumbs span { min-height: 30px; }
+  .sidebar a { min-height: 34px; padding-block: 0.25rem; font-size: 0.85rem; }
+}
