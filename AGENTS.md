@@ -110,3 +110,36 @@ Read `docs/DESIGN.md` before making architectural or design decisions. Treat it 
 - Use Bun exclusively.
 - Keep `bun.lock` committed.
 - Do not introduce npm, Yarn, or pnpm lockfiles.
+
+## Codex Usage Efficiency
+
+- Work on one clearly defined milestone at a time.
+- Prefer the simplest implementation that satisfies requirements.
+- Avoid unnecessary planning loops and repeated codebase exploration.
+- Read only the files relevant to the current task.
+- Do not repeatedly read large design documents unless needed.
+- Reuse existing components and patterns.
+- Do not refactor unrelated files.
+- Keep final responses concise.
+
+### Delegation
+- Do not spawn subagents by default.
+- Use lightweight subagents for independent, bounded tasks.
+- Limit delegation to two agents unless explicitly requested.
+- Avoid parallel edits to shared files.
+- Do not delegate work that is simpler to complete directly.
+
+### Testing
+- Run lint and build once after a coherent set of changes.
+- Run focused tests for the modified behavior first.
+- Run the full test suite before milestone completion.
+- Avoid repeated full browser suites after minor CSS changes.
+- Fix actual test failures before rerunning.
+- Summarize test failures rather than dumping large logs.
+
+### Milestones
+- Each task must have clear acceptance criteria.
+- Do not expand scope without approval.
+- Once validated, create a focused Git commit.
+- Do not start the next milestone automatically.
+- Report outstanding issues and stop.
