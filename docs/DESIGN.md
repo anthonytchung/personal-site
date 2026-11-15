@@ -233,6 +233,13 @@ available. Welcome may retain its smaller introductory window. Mobile drops the
 fixed dimensions and vertical sidebar in favor of a natural document flow with
 wrapping section links.
 
+On desktop, a bottom-right grip resizes the primary window on each axis. The
+focused grip supports arrow keys (10 pixels, or 1 with Shift). Restored windows
+have a 520 × 360 minimum, reduced when necessary to fit the viewport. Size and
+position remain inside an 8-pixel desktop margin above the taskbar and persist
+across navigation, minimization, and maximize/restore. A smaller viewport clamps
+both; mobile ignores desktop geometry and hides the grip. Escape cancels a drag.
+
 The command bar is optional and contains only useful, functioning actions. Hide
 it entirely when a route has no actions, with no empty strip or reserved space.
 Do not use it for subtitles or repeat titles already visible elsewhere.

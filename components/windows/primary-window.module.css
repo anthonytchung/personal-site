@@ -2,23 +2,25 @@
 .position {
   position: absolute;
   z-index: 2;
-  width: min(900px, calc(100% - 160px));
+  width: var(--window-width, min(900px, calc(100% - 160px)));
   left: var(--window-x, calc(50% + 45px));
   top: var(--window-y, 50%);
   transform: translate(-50%, -50%);
 }
-.position[data-home=true] { width: min(660px, calc(100% - 160px)); }
+.position[data-home=true] { width: var(--window-width, min(660px, calc(100% - 160px))); }
 .position[data-positioned=true] { transform: none; }
 .position[data-hidden=true] { display: none; }
 .position .window {
   --w7-w-bg: #9fc9e4;
   display: flex;
+  position: relative;
   flex-direction: column;
-  max-height: calc(100dvh - 78px);
+  min-height: min(360px, calc(100dvh - 62px));
   border-radius: 7px;
   box-shadow: 0 10px 35px #00204388, 0 0 0 1px #12374b80, inset 0 0 0 1px #f2fcff;
 }
-.position:not([data-home=true]) .window { height: min(680px, calc(100dvh - 78px)); min-height: min(480px, calc(100dvh - 78px)); }
+.position .window { height: var(--window-height, auto); max-height: calc(100dvh - 62px); }
+.position:not([data-home=true]) .window { height: var(--window-height, min(680px, calc(100dvh - 78px))); }
 .position .titleBar { flex-shrink: 0; min-height: 34px; padding-left: 7px; gap: 6px; }
 .position .centerButton {
   all: unset;
@@ -50,6 +52,31 @@
 .dragHandle:focus-visible { outline: 2px solid #174e78; outline-offset: -2px; }
 .position .body { flex: 1; min-height: 0; overflow: auto; background: white; }
 .position:not([data-home=true]) .body { display: flex; flex-direction: column; overflow: hidden; }
+/* main is a programmatic reading target, not an interactive control. Its links
+   and controls retain their normal :focus-visible indicators. */
+.body main:focus { outline: none; }
+.position .resizeHandle {
+  all: unset;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: end;
+  padding: 0 3px 1px 0;
+  box-sizing: border-box;
+  cursor: nwse-resize;
+  touch-action: none;
+  user-select: none;
+  color: #526e85;
+  font-size: 13px;
+  line-height: 1;
+}
+.position .resizeHandle::before, .position .resizeHandle::after { display: none; }
+.position .resizeHandle:hover { color: #174e78; background: #d5eafa; }
+.position .resizeHandle:focus-visible { outline: 2px solid #174e78; outline-offset: -3px; }
+.position[data-maximized=true] .resizeHandle { display: none; }
 .position[data-maximized=true] {
   inset: 8px;
   width: auto;
@@ -75,5 +102,6 @@
     background: white;
   }
   .position .titleBar { display: none; }
+  .position .resizeHandle { display: none; }
   .position .body, .position:not([data-home=true]) .body { display: block; flex: auto; margin: 0; border: 0; overflow: visible; box-shadow: none; }
 }
