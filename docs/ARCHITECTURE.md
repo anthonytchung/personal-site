@@ -11,8 +11,8 @@ and Bun 1.3.14 with a committed bun.lock. Tailwind 4.3.3 is integrated
 through the Turbopack loader, restricted to globals.css. The previous *.css
 rule rewrote CSS Module extensions and lost class-name exports; native Next.js
 CSS Module handling now applies to component styles. 7.css 0.21.1 is installed
-with its scoped build imported once in the root layout. MDX tooling remains
-deferred. No state library, database, CMS, or drag library is installed.
+with its scoped build imported once in the root layout. The server-only `@mdx-js/mdx` compiler renders local writing. No state library,
+database, CMS, or drag library is installed.
 
 The existing cacheComponents and partialPrefetching settings are retained.
 The installed Next documentation explicitly supports their combination.
@@ -71,7 +71,8 @@ never hides its introduction. No independent utility window manager is present.
 
 The Why Windows 7 link goes to /about#why-windows-7 until the utility phase.
 Projects has an Explorer navigation foundation and an explicit empty library;
-writing, resume, and contact still have explicit content placeholders.
+Journal and Travel Logs share a working local MDX publishing foundation.
+Resume and contact still have explicit content placeholders.
 
 ### Projects Explorer foundation
 
@@ -140,13 +141,15 @@ content window and utilities that do not belong in the URL. Do not keep a
 second current-page value in context or replace routing with conditional
 rendering. Adding sections should not require editing a window reducer.
 
-## Future content structure
+## Content structure
 
-Add these only when content ingestion is implemented:
+Journal and Travel Logs are implemented. Project content and utility apps remain
+future work:
 
 ```
 content/projects/*.mdx
-content/writing/*.mdx
+content/journal/*.mdx         Local Journal entries
+content/travellogs/*.mdx      Local travel entries; gilman is reserved
 lib/content/                 Server-only loading and metadata validation
 components/content/         ArticleLayout, ProjectCard, PhotoGallery, breadcrumbs
 components/windows/         Manager, window chrome, controls, utility host
@@ -166,8 +169,40 @@ slugs and reserve `gilman` for the static resources page.
 Generate static params from published content, await params as required by
 this Next version, and call notFound for missing/unpublished entries. Use
 shared loaders for page rendering and metadata. Repository MDX is trusted
-author content; arbitrary user MDX must not be executed. No empty dynamic
-route scaffolds are included now: nonexistent detail URLs correctly return 404.
+author content; arbitrary user MDX must not be executed. Published writing slugs are generated statically. With Cache Components enabled,
+empty archives return the internal `__empty__` validation param, which always
+renders notFound; it is not published content. Article routes set
+`ensureStatic = "navigation"` so unknown and draft URLs return an actual HTTP 404
+instead of streaming a 200 fallback shell. No project detail route is included.
+
+### Writing implementation
+
+`lib/content/metadata.ts` defines and validates a discriminated Journal/travel
+model. Entries export a plain `metadata` object from MDX: title, slug, date,
+summary, categories, status, optional local cover with alt/dimensions, and travel
+specific destination/start/end dates. Dates and slug syntax are validated;
+duplicate slugs fail the build, including collisions with drafts. Only published
+entries reach listings, static params, and detail lookup.
+
+`lib/content/writing.ts` is guarded by `server-only`. Filesystem source reads use
+Next's `use cache` (required for prerendering async filesystem I/O); React cache
+shares MDX compilation during rendering. Compiled functions never enter Next's
+serializable source cache or the client graph. Only trusted repository MDX is
+evaluated. Content directories are explicitly included in server file tracing.
+
+Shared WritingArchive/WritingArticle server components render both sections.
+Journal uses document-like archive entries; Travel Logs adds destinations, date
+ranges, photography, and editorial article headings. Nested article breadcrumbs
+use validated titles and real archive parents inside the main reading pane.
+Article metadata includes canonical URLs, Open Graph, Twitter, and cover images.
+MDX links use Next Link; standard images and Markdown elements have responsive
+reading styles. The root metadata base is the confirmed primary domain.
+
+Draft templates are intentionally unpublished. See [WRITING.md](./WRITING.md)
+for exact authoring, photography, preview, and publication steps. The fixture
+verification command builds synthetic entries temporarily, tests both routes,
+removes fixtures, and rebuilds the real site. Metadata unit tests are separate
+from Playwright. No CMS, search, comments, or additional windows are introduced.
 
 ## Risks and behavior contracts for window implementation
 

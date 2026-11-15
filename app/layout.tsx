@@ -4,6 +4,7 @@ import { DesktopShell } from "@/components/desktop/desktop-shell";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://anthonychung.me"),
   title: { default: "Anthony's Desktop", template: "%s | Anthony's Desktop" },
   description: "Anthony's personal desktop: software, projects, writing, and travel.",
 };

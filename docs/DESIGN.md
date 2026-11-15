@@ -375,6 +375,22 @@ Travel entries include destination, travel dates, categories, and optional Gilma
 
 This allows new writing to be published without building new page components.
 
+The implementation uses `content/journal/` and `content/travellogs/` with a shared
+server-only MDX loader. Each file exports validated metadata and has an explicit
+draft/published status. Drafts are absent from public archives and return 404 at
+direct URLs. No personal stories or published posts are supplied as placeholders.
+See [WRITING.md](./WRITING.md) for the publishing workflow.
+
+Journal should feel like browsing personal documents, with inviting titles and
+short excerpts. Travel Logs uses the same infrastructure with stronger emphasis
+on cover photography, destinations, and editorial article typography. Reading
+pages prioritize comfortable line lengths and normal mobile document flow over
+file-manager simulation. Both remain inside the existing primary window.
+
+Explorer section navigation starts directly with Projects, without an
+Anthony's Desktop group heading. More about Anthony remains a separate group;
+the wallpaper signature is unchanged.
+
 ### Gilman service project
 
 The Gilman portion should include informative, reflective, and practically useful material.

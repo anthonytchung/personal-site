@@ -21,8 +21,7 @@ export function ProjectsExplorer({ children }: { children: ReactNode }) {
       </div>
       <div className={styles.body}>
         <aside className={styles.sidebar} aria-label="Explorer navigation">
-          <nav aria-labelledby="explorer-library">
-            <h2 id="explorer-library">Anthony&apos;s Desktop</h2>
+          <nav aria-label="Sections">
             {primaryNavigation.map(({ href, label }) => (
               <Link key={href} href={href} aria-current={href === "/projects" ? "page" : undefined}>
                 {label}

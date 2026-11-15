@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ContentPage } from "@/components/content/content-page";
+import { WritingArchive } from "@/components/content/writing-archive";
+import { writingSections } from "@/lib/content/metadata";
 
-export const metadata: Metadata = { title: "Travel Logs", description: "Travel writing, study abroad reflections, and photographs." };
+const section = writingSections.travel;
+export const metadata: Metadata = {
+  title: section.title, description: section.summary,
+  alternates: { canonical: section.href },
+  openGraph: { title: section.title, description: section.summary, url: section.href, type: "website" },
+};
 
-export default function Page() {
-  return (
-    <ContentPage title="Travel Logs">
-      <p>Travel entries are coming soon.</p>
-      <p><Link href="/travellogs/gilman">Gilman Scholarship</Link></p>
-    </ContentPage>
-  );
-}
+export default function Page() { return <WritingArchive kind="travel"/>; }
