@@ -1,7 +1,8 @@
 # Anthony's Desktop
 ## Personal Website & Portfolio Design Specification
 
-**Version:** 0.4  
+**Version:** 0.5
+
 **Status:** Design decisions confirmed, ready for wireframing  
 **Primary URL:** anthonychung.me  
 **Secondary URL:** anthonytchung.com (permanent redirect)
@@ -41,11 +42,12 @@ The website should be immediately understandable to a first-time visitor, while 
 | D07 | Project presentation | Windows Explorer / modern project card hybrid |
 | D08 | Blog naming | Journal, at `/blog` |
 | D09 | Travel Logs | Dedicated section of the blog at `/travellogs` |
-| D10 | Mobile | Simplified Windows-inspired interface |
+| D10 | Mobile | Mobile-first website with Windows visual identity; explore Windows Phone / Nokia-era design |
 | D11 | Audio | Disabled by default, optional toggle |
 | D12 | Playground | No interactive application required at launch |
 | D13 | Origin story | Short Welcome reference, full story in About This Computer |
 | D14 | Customization | Minimal at launch |
+| D15 | Main window movement | Draggable on desktop; no dragging on mobile |
 
 These choices form the baseline for implementation. Further changes should be made intentionally rather than introduced as incidental coding decisions.
 
@@ -127,6 +129,12 @@ No Playground icon should appear until it contains something visitors can actual
 
 The welcome window should convey who I am immediately and make navigation obvious.
 
+Confirmed desktop behavior: closing Welcome dismisses it for the current tab
+session, including refreshes, using sessionStorage. Start can reopen it, and a
+fresh session shows it again. Navigation to another section always shows that
+section, regardless of Welcome dismissal.
+On mobile, the introduction is normal homepage content without window controls.
+
 It should not require visitors to read a long personal introduction before exploring.
 
 ---
@@ -157,6 +165,7 @@ They may remain open while the visitor navigates between primary website section
 - Minimizing hides the window while preserving its current route.
 - Selecting its taskbar entry restores it.
 - Navigating to a new route restores the main window automatically.
+- The main content window can be dragged within the available desktop area.
 - Maximizing expands the main content window to the available desktop area.
 - Refreshing a content URL displays that content immediately.
 - Direct external links never require navigating through the homepage first.
@@ -393,15 +402,19 @@ It should be discoverable but never mandatory.
 
 ## 11. Mobile design
 
-Mobile uses a simplified Windows-inspired layout rather than a literal miniature Windows desktop.
+Mobile is designed first as a website for a phone, with its own layout and
+interaction patterns. Explore Windows Phone / Nokia-era typography, spacing,
+accent colors, and touch-friendly navigation as references, while retaining
+Windows 7-inspired visual elements. The desktop and mobile presentations share
+URLs and content, but mobile does not simulate desktop window management.
 
 Required:
 - Recognizable wallpaper and visual identity
 - Touch-friendly navigation
 - Clear access to primary sections
 - Full-width reading layouts
-- Simplified taskbar or app launcher
-- No mandatory window dragging
+- Mobile-native navigation or section launcher
+- No window dragging or minimize/maximize controls
 - No overlapping application windows
 
 The Journal and Travel Logs should prioritize reading and photography.
