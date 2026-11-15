@@ -70,7 +70,29 @@ Mobile uses a flowing reading layout and tile navigation; desktop dismissal
 never hides its introduction. No independent utility window manager is present.
 
 The Why Windows 7 link goes to /about#why-windows-7 until the utility phase.
-Projects, writing, resume, and contact still have explicit content placeholders.
+Projects has an Explorer navigation foundation and an explicit empty library;
+writing, resume, and contact still have explicit content placeholders.
+
+### Projects Explorer foundation
+
+At `/projects`, the shared `ExplorerLayout` selects `ProjectsExplorer` using the
+pathname already owned by DesktopShell. It stays inside the existing primary
+window and owns the same single main landmark and focus target. Other routes
+retain their existing navigation. Unknown project detail URLs still return 404.
+
+The Explorer uses the existing 7.css window skin and status bar, with scoped CSS
+for a breadcrumb address bar, parent Desktop link, section sidebar, selected
+Projects link, and readable content pane. All navigation uses ordinary Next
+Links and the shared section registry. No independent route state, simulated
+history, inactive commands, project fixtures, or content dependencies are added.
+The empty library and zero count are intentional until project content is added;
+cards, filtering, case studies, and MDX ingestion are deferred.
+
+On mobile the sidebar becomes wrapping, touch-friendly section links above the
+content. Breadcrumbs and existing desktop launcher links remain available.
+`tests/projects.spec.ts` covers direct load/reload, current-page semantics,
+parent/breadcrumb/sidebar links, browser history, keyboard activation, and
+desktop/mobile overflow and touch targets.
 
 ## Proposed component boundaries
 

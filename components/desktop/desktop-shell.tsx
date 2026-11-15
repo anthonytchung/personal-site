@@ -81,7 +81,7 @@ export function DesktopShell({ children }: { children: ReactNode }) {
           onMaximize={() => setMaximized(!maximized)}
           onClose={closeWindow}
         >
-          {home ? <main id="main-content" tabIndex={-1}>{children}</main> : <ExplorerLayout>{children}</ExplorerLayout>}
+          {home ? <main id="main-content" tabIndex={-1}>{children}</main> : <ExplorerLayout pathname={pathname}>{children}</ExplorerLayout>}
         </PrimaryWindow>
       </div>
       <div className={styles.desktopSignature} aria-hidden="true"><span>Anthony&apos;s Desktop</span><small>Make yourself at home.</small></div>
