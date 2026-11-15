@@ -18,7 +18,7 @@
   border-radius: 7px;
   box-shadow: 0 10px 35px #00204388, 0 0 0 1px #12374b80, inset 0 0 0 1px #f2fcff;
 }
-.position:not([data-home=true]) .window { min-height: min(420px, calc(100dvh - 78px)); }
+.position:not([data-home=true]) .window { height: min(680px, calc(100dvh - 78px)); min-height: min(480px, calc(100dvh - 78px)); }
 .position .titleBar { flex-shrink: 0; min-height: 34px; padding-left: 7px; gap: 6px; }
 .position .centerButton {
   all: unset;
@@ -49,6 +49,7 @@
 }
 .dragHandle:focus-visible { outline: 2px solid #174e78; outline-offset: -2px; }
 .position .body { flex: 1; min-height: 0; overflow: auto; background: white; }
+.position:not([data-home=true]) .body { display: flex; flex-direction: column; overflow: hidden; }
 .position[data-maximized=true] {
   inset: 8px;
   width: auto;
@@ -74,5 +75,5 @@
     background: white;
   }
   .position .titleBar { display: none; }
-  .position .body { flex: auto; margin: 0; border: 0; overflow: visible; box-shadow: none; }
+  .position .body, .position:not([data-home=true]) .body { display: block; flex: auto; margin: 0; border: 0; overflow: visible; box-shadow: none; }
 }

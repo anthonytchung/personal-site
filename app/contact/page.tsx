@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Contact", description: "Contact deta
 
 export default function Page() {
   return (
-    <ContentPage title="Contact">
+    <ContentPage title="Contact" status="Contact information">
       <p>Contact details are coming soon.</p>
     </ContentPage>
   );

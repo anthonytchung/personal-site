@@ -11,8 +11,8 @@ and Bun 1.3.14 with a committed bun.lock. Tailwind 4.3.3 is integrated
 through the Turbopack loader, restricted to globals.css. The previous *.css
 rule rewrote CSS Module extensions and lost class-name exports; native Next.js
 CSS Module handling now applies to component styles. 7.css 0.21.1 is installed
-with its scoped build imported once in the root layout. MDX tooling remains
-deferred. No state library, database, CMS, or drag library is installed.
+with its scoped build imported once in the root layout. The server-only `@mdx-js/mdx` compiler renders local writing. No state library,
+database, CMS, or drag library is installed.
 
 The existing cacheComponents and partialPrefetching settings are retained.
 The installed Next documentation explicitly supports their combination.
@@ -70,7 +70,67 @@ Mobile uses a flowing reading layout and tile navigation; desktop dismissal
 never hides its introduction. No independent utility window manager is present.
 
 The Why Windows 7 link goes to /about#why-windows-7 until the utility phase.
-Projects, writing, resume, and contact still have explicit content placeholders.
+Projects has an Explorer navigation foundation and an explicit empty library;
+Journal and Travel Logs share a working local MDX publishing foundation.
+Resume and contact still have explicit content placeholders.
+
+### Shared Explorer application shell
+
+All primary content routes use one `components/content/explorer-layout.tsx`
+Server Component and one `explorer-layout.module.css`. Projects previously had
+its own complete Explorer wrapper while the remaining routes used the original
+horizontal navigation and articles supplied a third breadcrumb treatment. These
+presentation forks have been removed.
+
+Routes now supply title, actual parent breadcrumbs, active section href, toolbar
+content, and status information to the same layout. `ContentPage` wraps static
+information pages; WritingArchive and WritingArticle wrap their existing content;
+Projects supplies its browsing presentation. The layout owns the location bar,
+section sidebar, toolbar, one main reading pane, and 7.css status bar. It does not
+load MDX or infer article titles from URL segments. Article metadata and content
+loaders are unchanged. There is no second navigation state or window manager.
+
+DesktopShell passes server-rendered route children into the existing persistent
+PrimaryWindow. Moving route chrome out of the client shell keeps content metadata
+on the server. React Activity may retain hidden route trees, so window restoration
+and route-change focus select the visible main pane rather than the first cached
+main element. PrimaryWindow retains its existing movement and visibility state.
+
+Non-home primary windows share a 900px by 680px default envelope, constrained to
+the available desktop. The reading pane scrolls independently while location,
+sidebar, toolbar, status, and title-bar controls stay available. The sidebar can
+scroll separately on short desktops. Maximize/restore retains the same geometry
+contract, and Welcome keeps its intentionally smaller introductory presentation.
+
+The optional command bar contains functioning actions only, such as the Gilman
+Scholarship link or article archive return. Routes without useful actions omit
+the bar entirely, without reserved height. Descriptive section subtitles do not
+belong in the command bar. Status information contains real archive counts,
+article publication dates, or page purpose; static information pages do not show
+project counters. No filesystem commands, search boxes, or inactive actions are
+simulated. On mobile the shell flows naturally, navigation wraps above content,
+and the reading pane has no fixed height or internal scrolling.
+
+`tests/explorer.spec.ts` checks all primary routes for common chrome, dimensions,
+active sidebar links, and stable chrome during long reading. It captures desktop
+and mobile screenshots of Projects, Journal, Travel Logs, and Gilman. Existing
+window tests continue to cover movement, minimize/maximize, history, and refresh.
+
+### Content navigation contract
+
+The desktop is the environment, not an intermediate navigation destination.
+Explorer navigation contains content links only; top-level breadcrumbs show the
+current section without an Up control or Desktop ancestor. The existing nested
+Gilman page links to its real Travel Logs parent. Future project and article
+pages must supply their actual titles and link only to existing parent content
+pages; do not infer titles or create parent links from arbitrary URL segments.
+Unknown routes do not receive a fabricated breadcrumb hierarchy.
+
+The shared ExplorerLayout renders the same breadcrumb location bar on every
+primary route. Pages supply validated titles and real parents. All navigation
+uses Next Links with current-page semantics and no additional navigation state.
+Window controls retain their existing behavior independently of content links.
+The Projects empty state is a quiet message with no fictional items.
 
 ## Proposed component boundaries
 
@@ -102,13 +162,15 @@ content window and utilities that do not belong in the URL. Do not keep a
 second current-page value in context or replace routing with conditional
 rendering. Adding sections should not require editing a window reducer.
 
-## Future content structure
+## Content structure
 
-Add these only when content ingestion is implemented:
+Journal and Travel Logs are implemented. Project content and utility apps remain
+future work:
 
 ```
 content/projects/*.mdx
-content/writing/*.mdx
+content/journal/*.mdx         Local Journal entries
+content/travellogs/*.mdx      Local travel entries; gilman is reserved
 lib/content/                 Server-only loading and metadata validation
 components/content/         ArticleLayout, ProjectCard, PhotoGallery, breadcrumbs
 components/windows/         Manager, window chrome, controls, utility host
@@ -128,8 +190,40 @@ slugs and reserve `gilman` for the static resources page.
 Generate static params from published content, await params as required by
 this Next version, and call notFound for missing/unpublished entries. Use
 shared loaders for page rendering and metadata. Repository MDX is trusted
-author content; arbitrary user MDX must not be executed. No empty dynamic
-route scaffolds are included now: nonexistent detail URLs correctly return 404.
+author content; arbitrary user MDX must not be executed. Published writing slugs are generated statically. With Cache Components enabled,
+empty archives return the internal `__empty__` validation param, which always
+renders notFound; it is not published content. Article routes set
+`ensureStatic = "navigation"` so unknown and draft URLs return an actual HTTP 404
+instead of streaming a 200 fallback shell. No project detail route is included.
+
+### Writing implementation
+
+`lib/content/metadata.ts` defines and validates a discriminated Journal/travel
+model. Entries export a plain `metadata` object from MDX: title, slug, date,
+summary, categories, status, optional local cover with alt/dimensions, and travel
+specific destination/start/end dates. Dates and slug syntax are validated;
+duplicate slugs fail the build, including collisions with drafts. Only published
+entries reach listings, static params, and detail lookup.
+
+`lib/content/writing.ts` is guarded by `server-only`. Filesystem source reads use
+Next's `use cache` (required for prerendering async filesystem I/O); React cache
+shares MDX compilation during rendering. Compiled functions never enter Next's
+serializable source cache or the client graph. Only trusted repository MDX is
+evaluated. Content directories are explicitly included in server file tracing.
+
+Shared WritingArchive/WritingArticle server components render both sections.
+Journal uses document-like archive entries; Travel Logs adds destinations, date
+ranges, photography, and editorial article headings. Nested article breadcrumbs
+use validated titles and real archive parents in the shared location bar.
+Article metadata includes canonical URLs, Open Graph, Twitter, and cover images.
+MDX links use Next Link; standard images and Markdown elements have responsive
+reading styles. The root metadata base is the confirmed primary domain.
+
+Draft templates are intentionally unpublished. See [WRITING.md](./WRITING.md)
+for exact authoring, photography, preview, and publication steps. The fixture
+verification command builds synthetic entries temporarily, tests both routes,
+removes fixtures, and rebuilds the real site. Metadata unit tests are separate
+from Playwright. No CMS, search, comments, or additional windows are introduced.
 
 ## Risks and behavior contracts for window implementation
 
@@ -241,7 +335,7 @@ Arrow keys move the focused title bar (Shift uses one-pixel steps), Home centers
 it, and Escape cancels a drag. The icon at the left of the title bar also centers
 the window. Maximized windows must be restored before dragging. Mobile ignores
 desktop geometry and hidden state. ResizeObserver reclamps stored positions after
-viewport/content-size changes. Long desktop content scrolls inside the window;
+viewport/content-size changes. Long desktop content scrolls inside the main reading pane;
 mobile uses normal document scrolling. Independent utility apps remain deferred.
 
 ## Verification

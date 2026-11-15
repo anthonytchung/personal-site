@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Resume", description: "Resume previe
 
 export default function Page() {
   return (
-    <ContentPage title="Resume">
+    <ContentPage title="Resume" icon="resume" status="Resume information">
       <p>My resume will be available here soon.</p>
     </ContentPage>
   );

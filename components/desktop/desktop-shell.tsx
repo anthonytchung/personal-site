@@ -3,7 +3,6 @@
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ExplorerLayout } from "@/components/content/explorer-layout";
 import { PrimaryWindow } from "@/components/windows/primary-window";
 import { primaryNavigation, secondaryNavigation } from "@/lib/navigation";
 import { DesktopIcon } from "./desktop-icon";
@@ -36,7 +35,11 @@ export function DesktopShell({ children }: { children: ReactNode }) {
 
   function restoreWindow() { setVisibility({ pathname, minimized: false }); }
   function focusContent() {
-    requestAnimationFrame(() => document.getElementById("main-content")?.focus({ preventScroll: true }));
+    requestAnimationFrame(() => {
+      const main = Array.from(document.querySelectorAll<HTMLElement>("#primary-window main"))
+        .find(element => element.getClientRects().length > 0);
+      main?.focus({ preventScroll: true });
+    });
   }
   function restoreWelcome() {
     setWelcomeDismissed(false);
@@ -81,7 +84,7 @@ export function DesktopShell({ children }: { children: ReactNode }) {
           onMaximize={() => setMaximized(!maximized)}
           onClose={closeWindow}
         >
-          {home ? <main id="main-content" tabIndex={-1}>{children}</main> : <ExplorerLayout>{children}</ExplorerLayout>}
+          {home ? <main id="main-content" tabIndex={-1}>{children}</main> : children}
         </PrimaryWindow>
       </div>
       <div className={styles.desktopSignature} aria-hidden="true"><span>Anthony&apos;s Desktop</span><small>Make yourself at home.</small></div>

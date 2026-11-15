@@ -220,9 +220,40 @@ Pinned shortcuts may be added when their behavior is clearly distinguished from 
 
 ### Main content navigation
 
-Every primary page includes consistent navigation, preferably styled as Windows Explorer breadcrumbs or a navigation sidebar.
+Every primary content route uses the same Explorer-inspired application shell:
+location/breadcrumb bar, section sidebar, contextual toolbar, reading pane, and
+status bar. Projects, About, Experience, Resume, Journal, Travel Logs, Gilman,
+Contact, and article pages share this chrome; content keeps its own presentation.
+Do not add a competing horizontal section navigation or article breadcrumb style.
 
-Visitors should not need to return to the desktop to move between sections.
+Desktop primary windows use consistent default dimensions (900 × 680 pixels,
+constrained to the viewport). Short content does not shrink the window. Long
+content scrolls in the reading pane while navigation and window controls remain
+available. Welcome may retain its smaller introductory window. Mobile drops the
+fixed dimensions and vertical sidebar in favor of a natural document flow with
+wrapping section links.
+
+The command bar is optional and contains only useful, functioning actions. Hide
+it entirely when a route has no actions, with no empty strip or reserved space.
+Do not use it for subtitles or repeat titles already visible elsewhere.
+Status bars show relevant information, such as actual archive entry counts,
+publication dates, or page purpose. Do not carry project counters or simulated
+filesystem commands into unrelated sections.
+
+The desktop is the environment, not an intermediate destination required for
+navigation. Section links directly display their content and never act as window
+closing actions. Explorer sidebars link to meaningful content sections, without
+a redundant Desktop link.
+
+Top-level breadcrumbs show only the current section, such as Projects or Journal,
+with no Desktop ancestor or Up button. Nested content shows real content hierarchy:
+Projects > Project Name, Journal > Article Name, or Travel Logs > Gilman. Only
+actual parent content pages are links; the current page is labeled as current.
+
+The title-bar controls keep their window behavior: Close reveals the desktop,
+Minimize preserves the URL for taskbar restoration, and Maximize/Restore changes
+window geometry. Empty project libraries use a subtle message without invented
+projects or instructions to navigate elsewhere.
 
 ### Browser behavior
 
@@ -361,6 +392,22 @@ Both Journal and Travel Logs use Markdown or MDX with structured metadata.
 Travel entries include destination, travel dates, categories, and optional Gilman-related metadata.
 
 This allows new writing to be published without building new page components.
+
+The implementation uses `content/journal/` and `content/travellogs/` with a shared
+server-only MDX loader. Each file exports validated metadata and has an explicit
+draft/published status. Drafts are absent from public archives and return 404 at
+direct URLs. No personal stories or published posts are supplied as placeholders.
+See [WRITING.md](./WRITING.md) for the publishing workflow.
+
+Journal should feel like browsing personal documents, with inviting titles and
+short excerpts. Travel Logs uses the same infrastructure with stronger emphasis
+on cover photography, destinations, and editorial article typography. Reading
+pages prioritize comfortable line lengths and normal mobile document flow over
+file-manager simulation. Both remain inside the existing primary window.
+
+Explorer section navigation starts directly with Projects, without an
+Anthony's Desktop group heading. More about Anthony remains a separate group;
+the wallpaper signature is unchanged.
 
 ### Gilman service project
 

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { ContentPage } from "@/components/content/content-page";
+import { WritingArchive } from "@/components/content/writing-archive";
+import { writingSections } from "@/lib/content/metadata";
 
-export const metadata: Metadata = { title: "Journal", description: "Personal thoughts, technical writing, and things worth sharing." };
+const section = writingSections.journal;
+export const metadata: Metadata = {
+  title: section.title, description: section.summary,
+  alternates: { canonical: section.href },
+  openGraph: { title: section.title, description: section.summary, url: section.href, type: "website" },
+};
 
-export default function Page() {
-  return (
-    <ContentPage title="Journal">
-      <p>Journal entries are coming soon.</p>
-    </ContentPage>
-  );
-}
+export default function Page() { return <WritingArchive kind="journal"/>; }
