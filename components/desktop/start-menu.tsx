@@ -9,7 +9,7 @@ export const sectionIcons: Record<string, IconKind> = {
   "/projects": "projects", "/blog": "journal", "/travellogs": "travel", "/about": "about", "/resume": "resume",
 };
 
-export function StartMenu({ onWelcome }: { onWelcome: () => void }) {
+export function StartMenu({ onWelcome, onNavigate }: { onWelcome: () => void; onNavigate: () => void }) {
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -42,16 +42,16 @@ export function StartMenu({ onWelcome }: { onWelcome: () => void }) {
     </button>
     {open && <nav id="start-navigation" aria-label="Start menu" className={styles.startMenu}>
       <div className={styles.programs}>
-        <Link ref={firstLink} href="/" onClick={() => { onWelcome(); trigger.current?.focus(); setOpen(false); }}><DesktopIcon kind="welcome" size={36}/><span>Welcome<small>Anthony&apos;s Desktop</small></span></Link>
-        {primaryNavigation.map(({href, label}) => <Link key={href} href={href} onClick={() => setOpen(false)}><DesktopIcon kind={sectionIcons[href]} size={36}/><span>{label}</span></Link>)}
+        <Link ref={firstLink} href="/" onNavigate={() => { onWelcome(); trigger.current?.focus(); setOpen(false); }}><DesktopIcon kind="welcome" size={36}/><span>Welcome<small>Anthony&apos;s Desktop</small></span></Link>
+        {primaryNavigation.map(({href, label}) => <Link key={href} href={href} onNavigate={() => { onNavigate(); setOpen(false); }}><DesktopIcon kind={sectionIcons[href]} size={36}/><span>{label}</span></Link>)}
       </div>
       <div className={styles.startAside}>
         <div className={styles.userPortrait}><DesktopIcon kind="about" size={54}/></div>
         <strong>Anthony</strong>
-        {secondaryNavigation.map(({href, label}) => <Link key={href} href={href} onClick={() => setOpen(false)}>{label}</Link>)}
-        <Link href="/travellogs/gilman" onClick={() => setOpen(false)}>Gilman</Link>
+        {secondaryNavigation.map(({href, label}) => <Link key={href} href={href} onNavigate={() => { onNavigate(); setOpen(false); }}>{label}</Link>)}
+        <Link href="/travellogs/gilman" onNavigate={() => { onNavigate(); setOpen(false); }}>Gilman</Link>
         <div className={styles.menuDivider}/>
-        <Link href="/about#why-windows-7" onClick={() => setOpen(false)}>Why Windows 7?</Link>
+        <Link href="/about#why-windows-7" onNavigate={() => { onNavigate(); setOpen(false); }}>Why Windows 7?</Link>
       </div>
       <div className={styles.startFooter}>A little nostalgia. A lot to explore.</div>
     </nav>}

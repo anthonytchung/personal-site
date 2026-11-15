@@ -1,6 +1,6 @@
 # Anthony's Desktop architecture
 
-Status: route foundation and first visual desktop milestone implemented; full window management remains proposed.
+Status: route foundation, visual desktop shell, and primary content window implemented; independent utility windows remain proposed.
 The confirmed choices in DESIGN.md remain authoritative.
 
 ## Configuration review
@@ -63,10 +63,11 @@ lib/
 Route pages remain Server Components and pass rendered content into the client
 DesktopShell. Every section has an ordinary URL, metadata, and readable HTML.
 The homepage now has original SVG wallpaper and icons, scoped 7.css Aero chrome,
-a default-open Welcome, pinned shortcuts, clock, and Start navigation. Welcome
-has local minimize/maximize controls and session-backed close/reopen behavior.
+a default-open Welcome, pinned shortcuts, clock, and Start navigation. The primary window
+has route-aware minimize/maximize/close controls and bounded dragging. Welcome
+retains session-backed close/reopen behavior.
 Mobile uses a flowing reading layout and tile navigation; desktop dismissal
-never hides its introduction. No dragging or utility window manager is present.
+never hides its introduction. No independent utility window manager is present.
 
 The Why Windows 7 link goes to /about#why-windows-7 until the utility phase.
 Projects, writing, resume, and contact still have explicit content placeholders.
@@ -228,8 +229,20 @@ cannot become unreachable, maximize/restore preserves geometry, and desktop
 positions never affect mobile layout. Model capability alone is not evidence
 that these interactions work; targeted browser tests are required.
 
-Only Welcome controls are implemented in this milestone. Dragging and general
-route-controlled window management remain deferred.
+Primary controls and dragging are implemented in `components/windows/`.
+`PrimaryWindow` owns chrome and reading-container focus; `useWindowPosition`
+owns coordinates, pointer capture, cancellation, keyboard movement, and bounds.
+The persistent DesktopShell resets minimization when the pathname changes and
+uses Link's onNavigate to restore same-section activations. Content close pushes
+`/`, preserving any existing Welcome dismissal. Reload resets geometry and
+minimization, while Welcome dismissal continues to follow sessionStorage.
+
+Arrow keys move the focused title bar (Shift uses one-pixel steps), Home centers
+it, and Escape cancels a drag. The icon at the left of the title bar also centers
+the window. Maximized windows must be restored before dragging. Mobile ignores
+desktop geometry and hidden state. ResizeObserver reclamps stored positions after
+viewport/content-size changes. Long desktop content scrolls inside the window;
+mobile uses normal document scrolling. Independent utility apps remain deferred.
 
 ## Verification
 
@@ -249,3 +262,11 @@ URL returned the expected 200/404 statuses. Browser checks covered Start focus,
 Escape and outside-click dismissal, keyboard activation, Welcome session
 persistence and reopening, minimize/restore, maximize/restore, and browser Back.
 The production browser reported no runtime errors. Lint and build passed.
+
+## Primary-window milestone validation
+
+`bun run test:e2e` runs the committed Playwright suite against a production build.
+It covers same-route and new-route restoration, close-to-desktop, Back/Forward,
+direct loads and refresh, Welcome persistence, pointer and keyboard movement,
+maximize/restore geometry, viewport bounds, mobile transitions, and long content.
+Assertions wait for committed route content and asynchronous resize reconciliation.
