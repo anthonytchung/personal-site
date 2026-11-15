@@ -81,7 +81,7 @@ window and owns the same single main landmark and focus target. Other routes
 retain their existing navigation. Unknown project detail URLs still return 404.
 
 The Explorer uses the existing 7.css window skin and status bar, with scoped CSS
-for a breadcrumb address bar, parent Desktop link, section sidebar, selected
+for a section-only breadcrumb address bar, section sidebar, selected
 Projects link, and readable content pane. All navigation uses ordinary Next
 Links and the shared section registry. No independent route state, simulated
 history, inactive commands, project fixtures, or content dependencies are added.
@@ -91,8 +91,24 @@ cards, filtering, case studies, and MDX ingestion are deferred.
 On mobile the sidebar becomes wrapping, touch-friendly section links above the
 content. Breadcrumbs and existing desktop launcher links remain available.
 `tests/projects.spec.ts` covers direct load/reload, current-page semantics,
-parent/breadcrumb/sidebar links, browser history, keyboard activation, and
+content breadcrumbs/sidebar links, browser history, keyboard activation, and
 desktop/mobile overflow and touch targets.
+
+### Content navigation contract
+
+The desktop is the environment, not an intermediate navigation destination.
+Explorer navigation contains content links only; top-level breadcrumbs show the
+current section without an Up control or Desktop ancestor. The existing nested
+Gilman page links to its real Travel Logs parent. Future project and article
+pages must supply their actual titles and link only to existing parent content
+pages; do not infer titles or create parent links from arbitrary URL segments.
+Unknown routes do not receive a fabricated breadcrumb hierarchy.
+
+The shared ExplorerLayout renders breadcrumbs for existing non-Projects pages;
+ProjectsExplorer keeps its own address-bar presentation. Both use Next Links,
+with current-page semantics and no additional navigation state or abstraction.
+Window controls retain their existing behavior independently of content links.
+The Projects empty state is a quiet message with no fictional items.
 
 ## Proposed component boundaries
 

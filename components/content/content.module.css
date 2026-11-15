@@ -1,3 +1,8 @@
+.breadcrumbs { padding: 0.5rem 1rem; border-bottom: 1px solid #bbcad9; background: linear-gradient(#edf6fc, #d5e5f2); }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; align-items: center; margin: 0; padding: 0; list-style: none; }
+.breadcrumbs li { display: flex; align-items: center; }
+.breadcrumbs li + li::before { content: "›"; margin-inline: 0.5rem; color: #526e85; }
+.breadcrumbs a, .breadcrumbs span { display: inline-flex; align-items: center; min-height: 44px; }
 .explorer { border: 1px solid #658bab; background: #fff; }
 .navigation { display: flex; flex-wrap: wrap; gap: 0.25rem 0.5rem; padding: 0.5rem; border-bottom: 1px solid #bbcad9; background: linear-gradient(#f8fcff, #e1edf7); }
 .navigation a, .secondary a { display: inline-flex; align-items: center; min-height: 44px; padding: 0.4rem 0.75rem; }

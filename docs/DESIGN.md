@@ -222,7 +222,20 @@ Pinned shortcuts may be added when their behavior is clearly distinguished from 
 
 Every primary page includes consistent navigation, preferably styled as Windows Explorer breadcrumbs or a navigation sidebar.
 
-Visitors should not need to return to the desktop to move between sections.
+The desktop is the environment, not an intermediate destination required for
+navigation. Section links directly display their content and never act as window
+closing actions. Explorer sidebars link to meaningful content sections, without
+a redundant Desktop link.
+
+Top-level breadcrumbs show only the current section, such as Projects or Journal,
+with no Desktop ancestor or Up button. Nested content shows real content hierarchy:
+Projects > Project Name, Journal > Article Name, or Travel Logs > Gilman. Only
+actual parent content pages are links; the current page is labeled as current.
+
+The title-bar controls keep their window behavior: Close reveals the desktop,
+Minimize preserves the URL for taskbar restoration, and Maximize/Restore changes
+window geometry. Empty project libraries use a subtle message without invented
+projects or instructions to navigate elsewhere.
 
 ### Browser behavior
 
