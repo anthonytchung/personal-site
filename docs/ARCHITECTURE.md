@@ -453,3 +453,29 @@ content is the primary launch limitation; the Welcome dismissal flash is a minor
 cosmetic limitation. No failing behavior was identified in this pass's browser
 coverage. The Aero frame, original icons/wallpaper, title controls, and existing
 bounded movement/resizing were retained rather than replaced.
+
+## Calendar and desktop Peek
+
+SystemClock now owns a transient date/time flyout. The trigger remains
+hydration-safe; dates and clock hands use the browser's local time. The default
+month follows today, while explicit month navigation remains fixed until Today
+or reopening resets it. Month arithmetic starts at day one to avoid month-end
+rollover. The nonmodal dialog has ordinary Tab navigation, labeled month controls,
+a semantic calendar table, today's date marker, and Close/Escape focus return.
+Outside pointer activation or focus leaving dismisses it. Mobile uses larger
+controls and a single calendar pane; the analog clock is desktop-only.
+
+Show Desktop hover uses a CSS visual treatment gated by desktop width, hover
+capability and a fine primary pointer. Leaving restores opacity immediately;
+there is no animation, including under reduced motion. Click keeps the existing
+minimize/restore contract. No URL, focus, scroll or geometry state changes during
+Peek, and touch-only pointers do not enable it.
+
+Top-edge Snap remains deferred after controller inspection. The existing
+`useWindowPosition` effect tears down active capture when its disabled state
+changes (including maximize). Reliable drag-away restoration would need a gesture
+transition that retains capture, restores clamped geometry, and defines Escape,
+pointer cancellation and viewport-change rollback across that transition. Adding
+only top-edge maximize would leave the paired drag-away behavior incomplete.
+This milestone therefore preserves the validated controller rather than adding
+half of Snap. No second window manager or new dependencies were introduced.
