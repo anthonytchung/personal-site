@@ -29,12 +29,12 @@ export default function Page() {
             <section className={styles.note} aria-labelledby="background-title">
               <span className={styles.placeholder}>Development placeholder</span>
               <h3 id="background-title">My background</h3>
-              <p>I've always really been interested in both people and technology, and the intersection between them. My sentimentality and curiosity are also big driving forces in my life, and the reason why I am where I am today. </p>
+              <p>I&apos;ve always really been interested in both people and technology, and the intersection between them. My sentimentality and curiosity are also big driving forces in my life, and the reason why I am where I am today. </p>
             </section>
             <section className={styles.note} aria-labelledby="interests-title">
               <span className={styles.placeholder}>Development placeholder</span>
               <h3 id="interests-title">Away from the keyboard</h3>
-              <p>Going down rabbit holes and learning about new topics is something I enjoy doing with a large part of my free time. The wealth of domain knowledge that's granted by access to the internet is something I deeply appreciate in modernity. Watching movies, watching the NBA (shoutout Sixers and Wizards) and keeping up to date on current news is a large part of my day-to-day.</p>
+              <p>Going down rabbit holes and learning about new topics is something I enjoy doing with a large part of my free time. The wealth of domain knowledge that&apos;s granted by access to the internet is something I deeply appreciate in modernity. Watching movies, watching the NBA (shoutout Sixers and Wizards) and keeping up to date on current news is a large part of my day-to-day.</p>
             </section>
           </div>
         </section>

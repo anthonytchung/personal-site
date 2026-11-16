@@ -25,7 +25,12 @@ export function DesktopShell({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     function dismissPreview(event: KeyboardEvent) {
-      if (event.key === "Escape") setPreviewDismissed(true);
+      if (event.key === "Escape") {
+        if (document.activeElement?.id === "primary-preview") {
+          document.getElementById("primary-task")?.focus();
+        }
+        setPreviewDismissed(true);
+      }
     }
     document.addEventListener("keydown", dismissPreview);
     return () => document.removeEventListener("keydown", dismissPreview);
@@ -118,10 +123,13 @@ export function DesktopShell({ children }: { children: ReactNode }) {
           aria-label={`${minimized ? "Restore" : "Minimize"} ${label}`}
           onClick={() => minimized ? restoreWindow() : minimizeWindow()}
         ><DesktopIcon kind={icon} size={24}/><span>{label}</span></button>
-          <div className={styles.taskPreview} aria-hidden="true">
-            <div className={styles.previewTitle}><DesktopIcon kind={icon} size={20}/><strong>{title}</strong></div>
-            <div className={styles.previewContent}><DesktopIcon kind={icon} size={48}/><span>{summary}<small>{minimized ? "Minimized — click to restore" : "Open — click to minimize"}</small></span></div>
-          </div>
+          <button id="primary-preview" className={styles.taskPreview} aria-label={`Switch to ${label}`} aria-controls="primary-window" onClick={() => {
+            restoreWindow();
+            setPreviewDismissed(true);
+          }}>
+            <span className={styles.previewTitle}><DesktopIcon kind={icon} size={20}/><strong>{title}</strong></span>
+            <span className={styles.previewContent}><DesktopIcon kind={icon} size={48}/><span>{summary}<small>{minimized ? "Minimized — click to restore" : "Open — click to switch"}</small></span></span>
+          </button>
         </div>}
         <div className={styles.tray}><SystemClock/></div>
         <button className={styles.showDesktop} title={minimized ? "Restore window" : "Show desktop"} aria-label="Show desktop" aria-pressed={minimized} aria-controls="primary-window" disabled={home && dismissed} onClick={() => {

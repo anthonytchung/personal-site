@@ -51,14 +51,14 @@ export function StartMenu({ onWelcome, onNavigate }: { onWelcome: () => void; on
       links[next]?.focus();
     }}>
       <div className={styles.programs}>
-        <Link ref={firstLink} href="/" onNavigate={() => { onWelcome(); trigger.current?.focus(); setOpen(false); }}><DesktopIcon kind="welcome" size={36}/><span>Welcome<small>Anthony&apos;s Desktop</small></span></Link>
+        <Link ref={firstLink} href="/" aria-current={pathname === "/" ? "page" : undefined} onNavigate={() => { onWelcome(); trigger.current?.focus(); setOpen(false); }}><DesktopIcon kind="welcome" size={36}/><span>Welcome<small>Anthony&apos;s Desktop</small></span></Link>
         {primaryNavigation.map(({href, label}) => <Link key={href} href={href} aria-current={pathname === href ? "page" : undefined} onNavigate={() => { onNavigate(); setOpen(false); }}><DesktopIcon kind={sectionIcons[href]} size={36}/><span>{label}</span></Link>)}
       </div>
       <div className={styles.startAside}>
         <Link className={styles.userPortrait} href="/about" aria-label="Anthony’s profile" onNavigate={() => { onNavigate(); setOpen(false); }}><DesktopIcon kind="about" size={54}/></Link>
         <strong>Anthony</strong>
         {secondaryNavigation.map(({href, label}) => <Link key={href} href={href} aria-current={pathname === href ? "page" : undefined} onNavigate={() => { onNavigate(); setOpen(false); }}>{label}</Link>)}
-        <Link href="/travellogs/gilman" onNavigate={() => { onNavigate(); setOpen(false); }}>Gilman</Link>
+        <Link href="/travellogs/gilman" aria-current={pathname === "/travellogs/gilman" ? "page" : undefined} onNavigate={() => { onNavigate(); setOpen(false); }}>Gilman</Link>
         <div className={styles.menuDivider}/>
         <Link href="/about#why-windows-7" onNavigate={() => { onNavigate(); setOpen(false); }}>Why Windows 7?</Link>
       </div>

@@ -29,7 +29,7 @@
 .taskEntry > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .taskGroup { position: relative; min-width: 0; }
 .taskGroup .taskEntry { max-width: 210px; }
-.taskPreview { position: absolute; left: 0; bottom: 100%; width: 270px; padding: 9px; border: 1px solid #285373; border-radius: 6px; background: linear-gradient(125deg, #d6ecfaf2, #8db7d5f5); box-shadow: inset 0 0 0 1px #ffffffa8, 0 5px 20px #001b4280; visibility: hidden; opacity: 0; transform: translateY(4px); transition: opacity 120ms, transform 120ms, visibility 120ms; }
+.taskPreview { cursor: pointer; text-align: left; font-family: inherit; position: absolute; left: 0; bottom: 100%; width: 270px; padding: 9px; border: 1px solid #285373; border-radius: 6px; background: linear-gradient(125deg, #d6ecfaf2, #8db7d5f5); box-shadow: inset 0 0 0 1px #ffffffa8, 0 5px 20px #001b4280; visibility: hidden; opacity: 0; transform: translateY(4px); transition: opacity 120ms, transform 120ms, visibility 120ms; }
 .taskGroup:not([data-preview-dismissed=true]):focus-within .taskPreview { visibility: visible; opacity: 1; transform: none; }
 @media (hover: hover) and (pointer: fine) {
   .taskGroup:not([data-preview-dismissed=true]):hover .taskPreview { visibility: visible; opacity: 1; transform: none; transition-delay: 250ms; }
@@ -41,6 +41,8 @@
 .previewContent small { display: block; margin-top: 5px; color: #526779; font-size: 11px; }
 .startButton:active .orb, .startButton[aria-expanded=true] .orb { background: radial-gradient(ellipse at 50% 90%, #54dafb, transparent 60%), linear-gradient(#325a79, #0d2e51); }
 .taskbar :is(button, a):focus-visible { outline: 2px solid white; outline-offset: -3px; }
+.taskbar .programs a:focus-visible, .taskbar .taskPreview:focus-visible { outline-color: #174e78; }
+.taskPreview:hover .previewContent, .taskPreview:focus-visible .previewContent { border-color: #367aa8; background: linear-gradient(#fff, #dcefff); }
 .shortcut:active { background: #c8e8ff50; border-color: #e1f5ffbb; }
 .showDesktop[aria-pressed=true] { background: #d9f5ff99; box-shadow: inset 1px 0 #fff, inset 0 0 5px #204e70; }
 .showDesktop:disabled { cursor: default; }
