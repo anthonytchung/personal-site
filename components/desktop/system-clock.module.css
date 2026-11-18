@@ -1,23 +1,25 @@
 .root { position: relative; height: 100%; }
 .trigger { height: 100%; padding: 0 4px; border: 1px solid transparent; border-radius: 3px; background: transparent; cursor: pointer; }
 .trigger:hover, .trigger[aria-expanded=true] { border-color: #d1eaff88; background: linear-gradient(#fff3, #b9dfff22); }
-.flyout { position: absolute; right: 0; bottom: calc(100% + 7px); width: 440px; max-width: calc(100vw - 24px); padding: 10px; border: 1px solid #285373; border-radius: 7px; background: linear-gradient(120deg,#d9edf9f5,#91b9d6f5); box-shadow: inset 0 0 0 1px #fffb, 0 5px 20px #001b4280; backdrop-filter: blur(16px); color: #203247; font-size: 12px; }
-.heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 2px 2px 10px; }
-.heading strong { font-weight: 500; }
+.flyout { position: absolute; right: 0; bottom: calc(100% + 2px); width: 366px; max-width: calc(100vw - 24px); padding: 6px; border: 1px solid #405565; border-radius: 6px; background: linear-gradient(125deg,#e8f4fc9e,#88a6bd8c 45%,#cfdfebaa); box-shadow: inset 0 0 0 1px #ffffffe0, 0 2px 8px #00142380; backdrop-filter: blur(12px); color: #111; font: 12px/1.4 "Segoe UI", Tahoma, Arial, sans-serif; }
+.heading { position: relative; display: flex; align-items: center; justify-content: center; min-height: 40px; padding: 9px 26px; border: 1px solid #8e9ca5; border-bottom: 0; background: #fff; color: #075bbb; }
+.heading strong { font-weight: 400; text-align: center; }
 .flyout button { cursor: pointer; }
-.heading button, .month button { border: 1px solid transparent; border-radius: 3px; background: transparent; min-width: 32px; min-height: 32px; font-size: 20px; }
-.flyout button:hover { border-color: #8eb9d5; background: #e4f3ff; }
-.contents { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 14px; padding: 10px; border: 1px solid #8daec5; background: #fff; box-shadow: 0 0 0 1px #fff8; }
-.month { display: flex; align-items: center; justify-content: space-between; }
-.month strong { font-weight: 500; }
-.grid { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 2px; text-align: center; }
-.grid th { font-size: 10px; font-weight: 400; color: #526779; }
+.heading button { position: absolute; right: 3px; top: 3px; width: 22px; height: 22px; border: 1px solid transparent; border-radius: 2px; background: transparent; color: #4b6274; font-size: 16px; }
+.month button { border: 1px solid transparent; border-radius: 2px; background: transparent; width: 23px; height: 23px; font-size: 18px; line-height: 1; color: #263b47; }
+.flyout button:hover { border-color: #9cc4df; background: linear-gradient(#f4fbff,#d9edfb); }
+.contents { display: grid; grid-template-columns: minmax(0, 1fr) 142px; gap: 12px; padding: 6px 12px 10px; border-inline: 1px solid #8e9ca5; background: #fff; }
+.month { display: flex; align-items: center; justify-content: space-between; min-height: 26px; margin-bottom: 3px; }
+.month strong { font-weight: 400; font-size: 11px; }
+.grid { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; text-align: center; font-size: 11px; }
+.grid th { height: 19px; font-size: 10px; font-weight: 400; color: #222; border-bottom: 1px solid #d6dfe5; }
 .grid abbr { text-decoration: none; }
-.grid td { height: 25px; border: 1px solid transparent; }
-.grid td[aria-current=date] { border-color: #4989b8; background: linear-gradient(#effaff,#cce7fa); box-shadow: inset 0 0 0 1px white; }
-.today { margin-top: 8px; width: 100%; min-height: 32px; border: 0; background: transparent; color: #075b9b; }
-.clockFace { align-self: center; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
-.clockFace svg { width: 120px; max-width: 100%; }
-.clockFace small { overflow-wrap: anywhere; color: #526779; }
+.grid td { height: 18px; border: 1px solid transparent; }
+.grid td[aria-current=date] { border-color: #7aa9ce; background: linear-gradient(#eaf6ff,#c5e3fa); outline: 1px dotted #406785; outline-offset: -3px; box-shadow: inset 0 0 0 1px white; }
+.footer { border: 1px solid #8e9ca5; border-top-color: #c5d5e5; background: linear-gradient(#f4f8fd,#edf3fa); padding: 7px; text-align: center; box-shadow: inset 0 1px #e2ebf5; }
+.today { min-height: 23px; padding: 2px 6px; border: 1px solid transparent; background: transparent; color: #075bbb; font: inherit; }
+.clockFace { align-self: start; display: flex; flex-direction: column; align-items: center; gap: 3px; text-align: center; font-size: 11px; }
+.clockFace svg { width: 136px; max-width: 100%; margin-top: -3px; margin-bottom: 3px; }
+.clockFace small { max-width: 100%; margin-top: 2px; overflow-wrap: anywhere; color: #526779; font-size: 9px; }
 .flyout button:focus-visible { outline: 2px solid #174e78; outline-offset: -2px; }
 @media (max-width: 500px) { .flyout { position: fixed; right: 12px; bottom: 63px; max-height: calc(100svh - 80px); overflow: auto; } .contents { grid-template-columns: 1fr; } .clockFace { display: none; } .flyout button { min-height: 44px; min-width: 44px; } }

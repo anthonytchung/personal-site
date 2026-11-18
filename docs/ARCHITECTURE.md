@@ -479,3 +479,30 @@ pointer cancellation and viewport-change rollback across that transition. Adding
 only top-edge maximize would leave the paired drag-away behavior incomplete.
 This milestone therefore preserves the validated controller rather than adding
 half of Snap. No second window manager or new dependencies were introduced.
+
+### Calendar and Peek reference refinement
+
+The fidelity pass used the actual flyout screenshot in Hitesh Sarda's
+[21 February 2010 Windows 7 post](https://hitesh.in/2010/windows-7-hidden-features/)
+(`images/image_thumb14.png`, showing additional clocks) and the Peek screenshot
+in [DevCurry's December 2009 post](https://www.devcurry.com/2009/12/show-desktop-and-aero-peek-feature-in.html).
+These were inspected as references only; no Microsoft bitmap or SVG is bundled.
+
+The calendar now has a narrow six-pixel glass frame around a white interior,
+centered blue full date, compact calendar at left, and an original beveled SVG
+clock at right. Its minute ticks, tapered hands, seconds hand and weekday text
+replace the previous flat clock. A pale footer retains the functioning Today
+command in place of the native settings link. The native screenshot's additional
+clocks and date-zoom views are outside this component's scope; the existing local
+timezone label, explicit close control, and larger mobile controls are retained.
+Day cells remain read-only: the blue/dotted current-day treatment does not imply
+an unsupported date selection or setting action.
+
+Peek now hides the window's direct contents visually and removes the normal
+frame surfaces. An empty, pointer-transparent pseudo-element on the positioning frame follows
+the actual window bounds and corner radius. During Peek only, 7.css's glass
+pseudo-elements are hidden, including their backdrop blur, so wallpaper remains
+clear rather than blurred or covered by ghost text. Normal window glass is
+unchanged. Geometry, routing and focus state do not change; leaving
+restores the window immediately. Existing hover/pointer and mobile gates remain.
+No animation was introduced, so reduced motion also remains immediate.

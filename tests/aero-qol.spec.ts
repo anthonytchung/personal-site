@@ -57,7 +57,8 @@ test("Peek is temporary and click still toggles Show Desktop without losing stat
   await page.getByRole("main").evaluate(m => { m.scrollTop = 100; });
   const peek = page.getByRole("button", { name: "Show desktop", exact: true });
   await peek.hover();
-  await expect(workspace).toHaveCSS("opacity", "0.08");
+  await expect(window).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await expect(window.locator(":scope > div").last()).toHaveCSS("opacity", "0");
   await expect(window).toBeVisible();
   await expect(page).toHaveURL("/about");
   await page.mouse.move(1200, 100);
@@ -72,7 +73,8 @@ test("Peek is temporary and click still toggles Show Desktop without losing stat
   await expect.poll(() => page.getByRole("main").evaluate(m => m.scrollTop)).toBe(100);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await peek.hover();
-  await expect(workspace).toHaveCSS("opacity", "0.08");
+  await expect(window).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await expect(window.locator(":scope > div").last()).toHaveCSS("opacity", "0");
   await page.mouse.move(1200, 100);
   await expect(workspace).toHaveCSS("opacity", "1");
 });
@@ -98,4 +100,31 @@ test("touch-only desktop pointers do not activate Peek", async ({ browser }) => 
   await page.getByRole("button", { name: "Show desktop", exact: true }).hover();
   await expect(page.locator("#primary-window").locator("../..")).toHaveCSS("opacity", "1");
   await context.close();
+});
+
+
+test("Peek leaves an empty outline at the live resized and maximized window bounds", async ({ page }, testInfo) => {
+  await page.goto("/about");
+  await expect(page.locator("time")).toHaveAttribute("datetime", /.+/);
+  const window = page.locator("#primary-window");
+  const grip = page.getByRole("button", { name: "Resize window", exact: true });
+  await grip.focus();
+  await page.keyboard.press("ArrowLeft");
+  const peek = page.getByRole("button", { name: "Show desktop", exact: true });
+  for (const state of ["resized", "maximized"]) {
+    if (state === "maximized") await window.getByRole("button", { name: "Maximize", exact: true }).click();
+    const bounds = await window.boundingBox();
+    await peek.hover();
+    expect(await window.boundingBox()).toEqual(bounds);
+    await expect(window).toHaveCSS("backdrop-filter", "none");
+    expect(await window.evaluate(element => Array.from(element.children).every(child => getComputedStyle(child).opacity === "0"))).toBe(true);
+    expect(await window.evaluate(element => {
+      const outline = getComputedStyle(element.parentElement!, "::after");
+      return { opacity: outline.opacity, top: outline.top, right: outline.right, bottom: outline.bottom, left: outline.left, radiusMatches: outline.borderRadius === getComputedStyle(element).borderRadius, backdrop: outline.backdropFilter };
+    })).toEqual({ opacity: "1", top: "0px", right: "0px", bottom: "0px", left: "0px", radiusMatches: true, backdrop: "none" });
+    await page.screenshot({ path: testInfo.outputPath(`peek-${state}.png`) });
+    await page.mouse.move(1200, 100);
+    await expect(window.locator(":scope > div").last()).toHaveCSS("opacity", "1");
+    expect(await window.boundingBox()).toEqual(bounds);
+  }
 });

@@ -106,3 +106,17 @@
   .position .resizeHandle { display: none; }
   .position .body, .position:not([data-home=true]) .body { container-type: normal; display: block; flex: auto; margin: 0; border: 0; overflow: visible; box-shadow: none; }
 }
+
+/* Empty glass silhouette uses the live window box, with no copied geometry. */
+.position::after {
+  backdrop-filter: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid #14344866;
+  border-radius: 7px;
+  background: linear-gradient(125deg, #ecf8ff09, #b2d6ef03 45%, #ecf8ff08);
+  box-shadow: inset 0 0 0 1px #f0faff70, inset 0 0 0 6px #bdd9ed0d, 0 1px 6px #001b3426;
+  opacity: var(--peek-outline, 0);
+  pointer-events: none;
+}

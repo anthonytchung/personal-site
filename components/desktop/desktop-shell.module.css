@@ -99,6 +99,10 @@
 /* Peek is a temporary visual treatment; visibility, focus and geometry stay
    owned by the existing window. Touch never depends on this hover affordance. */
 @media (min-width: 701px) and (hover: hover) and (pointer: fine) {
-  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace { opacity: 0.08; }
+  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace { --peek-outline: 1; }
+  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global(#primary-window) { background: transparent; border-color: transparent; box-shadow: none; backdrop-filter: none; }
+  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global(#primary-window) > * { opacity: 0; }
+  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global(#primary-window)::before,
+  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global(#primary-window)::after { display: none; }
   .desktop:has(.showDesktop:hover:not(:disabled)) .showDesktop { background: #e5f8ffb0; }
 }
