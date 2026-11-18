@@ -33,7 +33,7 @@ for (const width of [1366, 390]) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     if (width < 700) await expect(main).toHaveCSS("overflow-y", "visible");
     await page.goBack();
-    await expect(main.getByRole("heading", { name: "About", exact: true })).toBeVisible();
+    await expect(main.getByRole("heading", { name: "Hi, I’m Anthony.", exact: true })).toBeVisible();
     expect(errors).toEqual([]);
   });
 }

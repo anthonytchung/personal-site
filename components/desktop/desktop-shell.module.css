@@ -31,20 +31,22 @@
 .taskEntry > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .taskGroup { position: relative; min-width: 0; }
 .taskGroup .taskEntry { max-width: 210px; }
-.taskPreview { cursor: pointer; text-align: left; font-family: inherit; position: absolute; left: 0; bottom: 100%; width: 250px; padding: 7px; border: 1px solid #285373; border-radius: 6px; background: linear-gradient(125deg,#c3dceddd,#7299b8e8); backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px #ffffffb0, 0 2px 9px #001b4270; visibility: hidden; opacity: 0; transform: translateY(4px); transition: opacity 120ms, transform 120ms, visibility 120ms; }
-.taskGroup:not([data-preview-dismissed=true]):focus-within .taskPreview { visibility: visible; opacity: 1; transform: none; }
+.taskPreview { cursor: pointer; text-align: left; font: 12px/1.4 "Segoe UI", Tahoma, sans-serif; position: fixed; bottom: 50px; width: 220px; padding: 6px; border: 1px solid #24465f; border-radius: 5px; color: #172f42; background: linear-gradient(125deg,#d4e5efcc,#7298b4d9); backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px #ffffffa6, 0 3px 12px #001c3d80; visibility: hidden; opacity: 0; transition: opacity 100ms, visibility 100ms; }
+.taskPreview::after { content: ""; position: absolute; left: -1px; right: -1px; bottom: -10px; height: 10px; }
+.taskGroup:not([data-preview-dismissed=true]):focus-within .taskPreview { visibility: visible; opacity: 1; }
 @media (hover: hover) and (pointer: fine) {
-  .taskGroup:not([data-preview-dismissed=true]):hover .taskPreview { visibility: visible; opacity: 1; transform: none; transition-delay: 250ms; }
+  .taskGroup:not([data-preview-dismissed=true]):hover .taskPreview { visibility: visible; opacity: 1; transition-delay: 200ms; }
+  .taskPreview:hover { transition-delay: 0ms !important; }
 }
-.previewTitle { display: flex; align-items: center; gap: 6px; padding: 1px 3px 6px; color: #19344b; font-size: 12px; }
-.previewTitle strong { font-weight: 500; }
-.previewContent { display: flex; align-items: center; gap: 10px; padding: 14px 10px; border: 1px solid #7196af; border-radius: 2px; background: linear-gradient(#fff, #edf5fa); font-size: 13px; line-height: 1.5; }
-.previewContent svg { flex-shrink: 0; }
-.previewContent small { display: block; margin-top: 5px; color: #526779; font-size: 11px; }
+.previewTitle { display: flex; align-items: center; gap: 5px; padding: 0 1px 5px; white-space: nowrap; }
+.previewTitle > span { overflow: hidden; text-overflow: ellipsis; }
+.previewTitle svg { flex-shrink: 0; }
+.previewContent { display: block; border: 1px solid #6c8ea7; background: #eef5fa; overflow: hidden; }
+.miniature { display: block; width: 100%; height: 100%; }
 .startButton:active .orb, .startButton[aria-expanded=true] .orb { background: radial-gradient(ellipse at 50% 90%, #54dafb, transparent 60%), linear-gradient(#325a79, #0d2e51); }
 .taskbar :is(button, a):focus-visible { outline: 2px solid white; outline-offset: -3px; }
 .taskbar .programs a:focus-visible, .taskbar .taskPreview:focus-visible { outline-color: #174e78; }
-.taskPreview:hover .previewContent, .taskPreview:focus-visible .previewContent { border-color: #367aa8; background: linear-gradient(#fff, #dcefff); }
+.taskPreview:hover .previewContent, .taskPreview:focus-visible .previewContent { border-color: #235f8b; }
 .shortcut:active { background: #c8e8ff50; border-color: #e1f5ffbb; }
 .showDesktop[aria-pressed=true] { background: #d9f5ff99; box-shadow: inset 1px 0 #fff, inset 0 0 5px #204e70; }
 .showDesktop:disabled { cursor: default; }
@@ -152,3 +154,8 @@
   .desktop[data-mobile-utility=true] .workspace > :global([data-utility=false]) { display: none; }
   .startAside button { min-height: 44px; }
 }
+
+@media (max-width: 700px) { .taskGroup[data-application=utility] { display: block; } .taskPreview { display: none; } }
+
+
+.taskGroup:not([data-preview-dismissed=true]):focus-within .taskPreview { transition-property: opacity; transition-delay: 0ms; }

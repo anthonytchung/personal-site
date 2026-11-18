@@ -122,8 +122,8 @@
 }
 /* One shared frame/controller, with independent geometry per mounted instance. */
 .position[data-active=true] { z-index: 4; }
-.position[data-utility=true] { width: var(--window-width, min(760px, calc(100% - 100px))); left: var(--window-x, calc(50% + 90px)); }
-.position[data-utility=true] .window { height: var(--window-height, min(650px, calc(100dvh - 80px))); }
+.position[data-utility=true] { width: var(--window-width, min(580px, calc(100% - 100px))); left: var(--window-x, calc(50% + 90px)); }
+.position[data-utility=true] .window { height: var(--window-height, min(510px, calc(100dvh - 80px))); }
 .position[data-utility=true] .body { overflow: auto; }
 .position[data-utility=true][data-maximized=true] { inset: 8px; width: auto; }
 .position[data-utility=true][data-maximized=true] .window { height: 100%; }
@@ -137,3 +137,9 @@
 /* 7.css uses :target to reveal its dialog demo. React owns this nonmodal
    utility's visibility and the outer frame owns coordinates instead. */
 .position[data-utility=true] .window[role=dialog] { position: relative; inset: auto; transform: none; visibility: visible; opacity: 1; z-index: auto; transition: none; width: 100%; }
+
+/* Programmatic dialog focus activates the frame; its controls retain keyboard rings. */
+.position[data-utility=true] .window:focus { outline: none; }
+.position[data-active=false] .window { --w7-w-bg: #b3c6d3; }
+
+.position .titleBar :global(.title-bar-controls) button:focus-visible { outline: 2px solid #174e78; outline-offset: -3px; }

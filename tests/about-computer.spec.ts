@@ -35,13 +35,14 @@ test("utility is independent, persists across navigation, focuses without duplic
   await expect(utility(page)).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Start", exact: true })).toBeFocused();
   await openFromStart(page);
-  await utility(page).getByRole("link", { name: "Read more about Anthony" }).click();
+  await expect(utility(page).getByRole("navigation")).toHaveCount(0);
+  await expect(utility(page).getByRole("link")).toHaveCount(0);
+  await page.getByRole("button", { name: "Restore Projects", exact: true }).click();
+  await primary.getByRole("link", { name: "About", exact: true }).click();
   await expect(page).toHaveURL("/about");
-  await expect(utility(page)).toBeHidden();
-  await expect(page.getByRole("main")).toBeFocused();
   await page.reload();
   await expect(utility(page)).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "About", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Hi, I’m Anthony.", exact: true })).toBeVisible();
 });
 
 test("shared movement, Escape cancellation, focus stacking and Show Desktop preserve both geometries", async ({ page }) => {
@@ -60,7 +61,6 @@ test("shared movement, Escape cancellation, focus stacking and Show Desktop pres
   expect(maximized.width).toBe(1350);
   await utility(page).getByRole("button", { name: "Restore", exact: true }).click();
   expect(await utility(page).boundingBox()).toEqual(moved);
-  await utility(page).getByRole("link", { name: "Where it started", exact: true }).click();
   await expect(page).toHaveURL("/projects");
   const handle = (await title.boundingBox())!;
   await page.mouse.move(handle.x + 50, handle.y + 15);
@@ -104,7 +104,7 @@ test("mobile utility reads in document flow and returns to the biography", async
   await page.evaluate(() => scrollTo(0, 0));
   await page.screenshot({ path: testInfo.outputPath("utility-mobile.png"), fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await utility(page).getByRole("button", { name: "Return to the website" }).click();
+  await utility(page).getByRole("button", { name: "Close", exact: true }).click();
   await expect(page.locator("#primary-window")).toBeVisible();
   await expect(page.getByRole("button", { name: "Open About This Computer" })).toBeFocused();
   await page.evaluate(() => scrollTo(0, 0));
@@ -155,7 +155,7 @@ test("maximized biography uses balanced columns and a narrow utility keeps its c
   for (let step = 0; step < 23; step++) await page.keyboard.press("ArrowLeft");
   expect((await utility(page).boundingBox())!.width).toBe(520);
   expect(await utility(page).evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
-  const origin = utility(page).getByRole("link", { name: "Read more about Anthony" });
+  const origin = utility(page).getByText("My interest in technology began", { exact: false });
   await origin.scrollIntoViewIfNeeded();
   await expect(origin).toBeInViewport();
   await page.screenshot({ path: testInfo.outputPath("utility-narrow.png") });

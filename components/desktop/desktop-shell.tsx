@@ -1,7 +1,7 @@
 "use client";
 
 import type { SearchEntry } from "@/lib/site-search";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AboutComputer } from "@/components/apps/about-computer";
@@ -10,6 +10,7 @@ import { PrimaryWindow } from "@/components/windows/primary-window";
 import { primaryNavigation, secondaryNavigation } from "@/lib/navigation";
 import { DesktopIcon } from "./desktop-icon";
 import { StartMenu, sectionIcons } from "./start-menu";
+import { TaskbarWindow } from "./taskbar-window";
 import { SystemClock } from "./system-clock";
 import { setWelcomeDismissed, useWelcomeDismissed } from "./welcome-session";
 import styles from "./desktop-shell.module.css";
@@ -25,6 +26,7 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
   const [visibility, setVisibility] = useState({ pathname, minimized: false });
   const [utility, setUtility] = useState({ open: false, minimized: false, maximized: false });
   const [focused, setFocused] = useState<"primary" | "utility">("primary");
+  const [previewOwner, setPreviewOwner] = useState<"primary" | "utility" | null>(null);
   const opener = useRef<HTMLElement | null>(null);
   const [desktopSnapshot, setDesktopSnapshot] = useState<{ primary: boolean; utility: boolean; focused: "primary" | "utility" } | null>(null);
   function focusUtility() {
@@ -65,21 +67,6 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
     }
   }
   const [maximized, setMaximized] = useState(false);
-  const [previewDismissed, setPreviewDismissed] = useState(false);
-
-  useEffect(() => {
-    function dismissPreview(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        if (document.activeElement?.id === "primary-preview") {
-          document.getElementById("primary-task")?.focus();
-        }
-        setPreviewDismissed(true);
-      }
-    }
-    document.addEventListener("keydown", dismissPreview);
-    return () => document.removeEventListener("keydown", dismissPreview);
-  }, []);
-
   // Reset only presentation state on a committed route change, including history.
   // The URL still owns content; the shell and window geometry never remount.
   if (visibility.pathname !== pathname) {
@@ -91,7 +78,6 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
   const minimized = visibility.pathname === pathname && visibility.minimized;
   const section = sections.find(item => pathname === item.href || pathname.startsWith(`${item.href}/`));
   const label = home ? "Welcome" : pathname === "/travellogs/gilman" ? "Gilman" : section?.label ?? "Anthony's Desktop";
-  const summary = home ? "Meet Anthony and explore the site" : pathname === "/travellogs/gilman" ? "Scholarship information and resources" : section?.summary ?? "Website content";
   const title = home ? "Welcome to Anthony's Desktop" : label;
   const icon = section ? sectionIcons[section.href] ?? "welcome" : "welcome";
 
@@ -118,6 +104,7 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
   }
   function minimizeWindow() {
     setVisibility({ pathname, minimized: true });
+    if (utility.open && !utility.minimized) setFocused("utility");
     document.getElementById("primary-task")?.focus();
   }
   function closeWindow() {
@@ -162,7 +149,7 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
         {utility.open && <PrimaryWindow id="about-computer-window" utility active={focused === "utility"} onFocusWindow={() => setFocused("utility")} pathname="utility" title="About This Computer" icon="welcome" hidden={utility.minimized} maximized={utility.maximized}
           onMinimize={() => { setUtility(previous => ({ ...previous, minimized: true })); setFocused("primary"); document.getElementById("utility-task")?.focus(); }}
           onMaximize={() => setUtility(previous => ({ ...previous, maximized: !previous.maximized }))} onClose={closeUtility}>
-          <AboutComputer onAbout={() => { setUtility(previous => ({ ...previous, minimized: true })); restoreWindow(); }} onClose={closeUtility}/>
+          <AboutComputer onClose={closeUtility}/>
         </PrimaryWindow>}
       </div>
       <div className={styles.desktopSignature} aria-hidden="true"><span>Anthony&apos;s Desktop</span><small>Make yourself at home.</small></div>
@@ -171,28 +158,14 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
         <nav className={styles.pinned} aria-label="Pinned shortcuts">
           {["/projects", "/blog", "/travellogs"].filter(href => href !== section?.href).map(href => <Link key={href} href={href} onNavigate={restoreWindow} title={primaryNavigation.find(item => item.href === href)!.label} aria-label={primaryNavigation.find(item => item.href === href)!.label}><DesktopIcon kind={sectionIcons[href]} size={32}/></Link>)}
         </nav>
-        {(!home || !dismissed) && <div className={styles.taskGroup} data-preview-dismissed={previewDismissed} onPointerEnter={() => setPreviewDismissed(false)} onFocus={() => setPreviewDismissed(false)}><button
-          id="primary-task"
-          className={`${styles.taskEntry} ${!minimized && focused === "primary" ? styles.taskActive : ""}`}
-          aria-controls="primary-window"
-          aria-expanded={!minimized}
-          title={`${minimized || focused !== "primary" ? "Restore" : "Minimize"} ${label}`}
-          aria-label={`${minimized || focused !== "primary" ? "Restore" : "Minimize"} ${label}`}
-          onClick={() => minimized || focused !== "primary" ? restoreWindow() : minimizeWindow()}
-        ><DesktopIcon kind={icon} size={32}/><span>{label}</span></button>
-          <button id="primary-preview" className={styles.taskPreview} aria-label={`Switch to ${label}`} aria-controls="primary-window" onClick={() => {
-            restoreWindow();
-            setPreviewDismissed(true);
-          }}>
-            <span className={styles.previewTitle}><DesktopIcon kind={icon} size={20}/><strong>{title}</strong></span>
-            <span className={styles.previewContent}><DesktopIcon kind={icon} size={48}/><span>{summary}<small>{minimized ? "Minimized — click to restore" : "Open — click to switch"}</small></span></span>
-          </button>
-        </div>}
-        {utility.open && <button id="utility-task" className={`${styles.taskEntry} ${!utility.minimized && focused === "utility" ? styles.taskActive : ""}`} aria-label={utility.minimized || focused !== "utility" ? "Restore About This Computer" : "Minimize About This Computer"} title="About This Computer" aria-controls="about-computer-window" aria-expanded={!utility.minimized} onClick={() => {
-          setDesktopSnapshot(null);
-          if (!utility.minimized && focused === "utility") { setUtility(previous => ({ ...previous, minimized: true })); setFocused("primary"); }
-          else { setUtility(previous => ({ ...previous, minimized: false })); setFocused("utility"); focusUtility(); }
-        }}><DesktopIcon kind="welcome" size={32}/><span>About This Computer</span></button>}
+        {(!home || !dismissed) && <TaskbarWindow previewActive={previewOwner === "primary"} onPreview={() => setPreviewOwner("primary")} id="primary" label={label} title={title} icon={icon} active={!minimized && focused === "primary"} minimized={minimized}
+          onToggle={() => minimized || focused !== "primary" ? restoreWindow() : minimizeWindow()} onActivate={restoreWindow}/>}
+        {utility.open && <TaskbarWindow previewActive={previewOwner === "utility"} onPreview={() => setPreviewOwner("utility")} id="utility" label="About This Computer" title="About This Computer" icon="welcome" active={!utility.minimized && focused === "utility"} minimized={utility.minimized}
+          onToggle={() => {
+            setDesktopSnapshot(null);
+            if (!utility.minimized && focused === "utility") { setUtility(previous => ({ ...previous, minimized: true })); setFocused("primary"); }
+            else { setUtility(previous => ({ ...previous, minimized: false })); setFocused("utility"); focusUtility(); }
+          }} onActivate={() => { setDesktopSnapshot(null); setUtility(previous => ({ ...previous, minimized: false })); setFocused("utility"); focusUtility(); }}/>}
         <div className={styles.tray}><SystemClock/></div>
         <button className={styles.showDesktop} title={minimized ? "Restore window" : "Show desktop"} aria-label="Show desktop" aria-pressed={desktopSnapshot !== null || minimized} aria-controls={utility.open ? "primary-window about-computer-window" : "primary-window"} disabled={home && dismissed && !utility.open} onClick={toggleDesktop}/>
       </footer>

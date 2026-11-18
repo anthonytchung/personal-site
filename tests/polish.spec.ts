@@ -12,10 +12,10 @@ test("taskbar toggles, previews dismiss, and Show Desktop preserves reading stat
   const scroll = await main.evaluate(element => element.scrollTop);
   const geometry = await window.boundingBox();
   await task.hover();
-  await expect(page.getByText("Open — click to switch")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Switch to About", exact: true })).toBeVisible();
   await page.screenshot({ animations: "disabled", path: testInfo.outputPath("taskbar-preview.png") });
   await page.keyboard.press("Escape");
-  await expect(page.getByText("Open — click to switch")).toBeHidden();
+  await expect(page.getByRole("button", { name: "Switch to About", exact: true })).toBeHidden();
   await task.focus();
   await page.keyboard.press("Enter");
   await expect(window).toBeHidden();

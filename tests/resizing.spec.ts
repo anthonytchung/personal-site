@@ -82,7 +82,7 @@ test("size and position survive navigation, history, minimize, maximize and rest
   await expect(handle(page)).toBeHidden();
   await expectInsideDesktop(page);
   await page.goBack();
-  await expect(page.getByRole("heading", { name: "About", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Hi, I’m Anthony.", exact: true })).toBeVisible();
   await expect(page.getByRole("main")).toBeFocused();
   await control(page, "Restore").focus();
   await page.keyboard.press("Enter");
@@ -161,7 +161,7 @@ test("mobile ignores desktop size and hidden state, then restores desktop geomet
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(handle(page)).toBeHidden();
   await expect(control(page, "Maximize")).toBeHidden();
-  await expect(page.getByRole("heading", { name: "About", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Hi, I’m Anthony.", exact: true })).toBeVisible();
   await expect(page.getByRole("main")).toHaveCSS("overflow-y", "visible");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByRole("complementary", { name: "Explorer navigation" }).getByRole("link", { name: "Experience", exact: true }).click();

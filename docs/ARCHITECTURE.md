@@ -655,3 +655,59 @@ content access and mobile return behavior. Screenshots were visually inspected
 at desktop, maximized desktop, narrow utility and 390px mobile sizes. The
 existing About heading, calendar, Peek, resizing, Start search and navigation
 regressions passed.
+
+### About/preview design refinement
+
+This refinement supersedes the experiment's original sidebar, location strip,
+About backlinks and humor labels described above. About This Computer is now a
+single 580×510px information view with blue headings, native-style rows and the
+original monitor SVG. The short origin paragraph retains the supplied father /
+family Windows 7 / software and learning-sciences story. Curiosity and Nostalgia
+remain ordinary fields. Mobile uses a Close button; desktop uses its title-bar
+control. The main About page has one h1, “Hi, I’m Anthony.”, retains the original
+personal writing and two useful sections, and reduces introductory spacing.
+
+Reference checks used the February 2011 PC.net System screenshot linked above
+and Microsoft's Windows 7 Product Guide, printed page 28 (2009):
+https://core-docs.s3.amazonaws.com/documents/asset/uploaded_file/607323/OS_Windows7ProductGuide.pdf
+The guide's thumbnail images show compact glass frames, small icon/title headers
+and image-led content. TaskbarWindow now provides this organization for each
+application, replacing the descriptive preview card. A small SVG miniature
+reflects primary route/title/heading or the utility's edition and fields. Preview
+aspect is measured from the window when disclosed and bounded for legibility.
+This is a schematic representation, not a live screenshot: it does not mirror
+exact scroll position, all article content, or every responsive content detail.
+No capture dependency, rasterization loop, route duplication or fake preview
+close control is included. The optional thumbnail close button was omitted;
+window close controls remain available on the real windows.
+
+The shell tracks only which application's preview may be disclosed. Each entry
+supports pointer travel across a small transparent bridge, focus/Tab/Enter and
+Escape, and clamps its fixed position within viewport edges. Native title
+attributes were removed from the application buttons to avoid competing tooltips.
+Dismissal suppresses synthetic stationary-pointer re-entry; a fresh movement or
+focus reopens it. Escape only consumes a logically open, actually displayed
+thumbnail, so a fading or mobile-hidden preview cannot block utility closure.
+Mobile keeps direct taskbar toggles with previews hidden. Existing reduced-motion
+rules remove preview transitions; touch-only pointers do not depend on hover.
+
+Window activation and stacking retain the shared frame/controller. Programmatic
+utility focus has no perimeter outline; title-bar controls have explicit inset
+blue keyboard outlines. Inactive glass tint and title text are subdued. Minimizing
+the primary marks the remaining utility active. No new window manager is added.
+About horizontal overflow did not reproduce: normal and narrow browser captures
+measured main.scrollWidth === main.clientWidth, with matching regression checks
+for the main pane and both windows while overlapping. No overflow-x hiding rule
+was added to the About content to conceal a scrollbar.
+
+Refinement validation: lint and production build passed with no lint warnings;
+13 unit tests passed. Full Playwright: 63 passed, two fixture-only skips. The
+separate published-writing run passed all four cases, removed its temporary
+articles and rebuilt the real site. New tests cover heading hierarchy, absent
+utility navigation, window activation/stacking, control focus, horizontal bounds,
+exclusive per-window previews, pointer travel, Escape, keyboard activation and
+edge placement. The utility restore/close sequence was also repeated three times
+after correcting Escape handling during preview fade-out. Before/after captures
+cover normal/maximized About, utility alone, both activation states, each preview,
+narrow desktop and mobile. Additional moved-window captures expose inactive glass
+that would otherwise be fully occluded by the larger primary window.

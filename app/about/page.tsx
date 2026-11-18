@@ -9,9 +9,7 @@ export default function Page() {
   return <ExplorerLayout title="About" sectionHref="/about" icon="about" status="Biography & background">
     <article className={styles.about}>
       <header className={styles.introduction}>
-        <p className={styles.eyebrow}>The person behind the desktop</p>
-        <h1>About</h1>
-        <h2>Hi, I’m Anthony.</h2>
+        <h1>Hi, I’m Anthony.</h1>
         <p className={styles.lead}>I build software, explore new ideas, and do things for the fun of it.</p>
       </header>
       <div className={styles.chapters}>
