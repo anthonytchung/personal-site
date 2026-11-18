@@ -122,7 +122,7 @@ export function DesktopShell({ children }: { children: ReactNode }) {
           title={`${minimized ? "Restore" : "Minimize"} ${label}`}
           aria-label={`${minimized ? "Restore" : "Minimize"} ${label}`}
           onClick={() => minimized ? restoreWindow() : minimizeWindow()}
-        ><DesktopIcon kind={icon} size={24}/><span>{label}</span></button>
+        ><DesktopIcon kind={icon} size={32}/><span>{label}</span></button>
           <button id="primary-preview" className={styles.taskPreview} aria-label={`Switch to ${label}`} aria-controls="primary-window" onClick={() => {
             restoreWindow();
             setPreviewDismissed(true);

@@ -506,3 +506,32 @@ clear rather than blurred or covered by ghost text. Normal window glass is
 unchanged. Geometry, routing and focus state do not change; leaving
 restores the window immediately. Existing hover/pointer and mobile gates remain.
 No animation was introduced, so reduced motion also remains immediate.
+
+### Taskbar reference refinement
+
+Taskbar styling was compared directly with the January 2009 large/small-icon
+[measurement screenshot](https://istartedsomething.com/20090105/measuring-up-windows-7s-new-super-taskbar/)
+and Microsoft's historical [Windows 7 taskbar illustration and guidance](https://learn.microsoft.com/en-us/windows/win32/uxguide/winenv-taskbar).
+The former documents a 60-pixel large-icon slot and a smaller Start orb;
+the latter illustrates running-button borders and Aero preview chrome. References
+were inspected only; no Microsoft artwork is included.
+
+The previous mix of 32-pixel pinned icons and a 24-pixel labeled running button
+now uses 32-pixel icons throughout desktop taskbar applications. The running
+button is a compact icon slot; its route label remains in the accessible name,
+native tooltip, and preview. Pinned links retain navigation behavior, and the
+running button retains minimize/restore. State distinctions use inset light/dark
+borders, a stronger active reflection, bottom-centered hover illumination, and
+pressed shading. The taskbar strip has more restrained reflections and glass;
+the original CSS orb has a smaller silhouette and a separate upper reflection.
+Clock line spacing/type size and Show Desktop shading were also refined.
+
+The existing 46-pixel desktop taskbar height is retained to avoid changing the
+window-bounds contract (the native screenshot documents a 40-pixel large-icon
+bar). Mobile keeps the labeled Start control and 56-pixel bar. Preview content is
+still a useful summary rather than a real thumbnail; its glass frame and spacing
+are tighter. Stable native pinned/program grouping, Jump Lists and fabricated
+volume/network indicators were not introduced. Existing pinned destinations
+still omit the current section, so their positions may shift during navigation.
+The original vector icons and four-color CSS Start artwork are interpretations,
+not reproductions of Microsoft's assets.

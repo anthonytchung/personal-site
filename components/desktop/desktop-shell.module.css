@@ -8,35 +8,37 @@
 .desktopSignature { position: fixed; right: 38px; bottom: 82px; color: #edfcffb3; text-shadow: 0 1px 3px #04528a; text-align: right; pointer-events: none; z-index: 0; }
 .desktopSignature > span { display: block; font-size: 22px; font-weight: 300; }
 .desktopSignature small { font-size: 11px; letter-spacing: 1px; }
-.taskbar { position: fixed; bottom: 0; left: 0; right: 0; height: 46px; display: flex; align-items: center; gap: 5px; padding: 0 0 0 8px; z-index: 20; border-top: 1px solid #b3dcf8b3; box-shadow: 0 -1px 0 #123c62, inset 0 1px 0 #ffffff40; background: linear-gradient(#b6dcf75e 0%, #6c9abc66 45%, #123c659e 48%, #143858c9 100%); backdrop-filter: blur(16px); }
+.taskbar { position: fixed; bottom: 0; left: 0; right: 0; height: 46px; display: flex; align-items: center; gap: 0; padding: 0; z-index: 20; border-top: 1px solid #d6efff8c; box-shadow: 0 -1px 0 #0c273c99, inset 0 1px 0 #ffffff24; background: linear-gradient(110deg,#d4e9f019,transparent 35%,#d4e9f00d 70%,transparent), linear-gradient(#a5c4da45 0%,#779ab32e 47%,#1a3a536b 49%,#102c4299 100%); backdrop-filter: blur(12px); }
 .startRoot { align-self: stretch; display: flex; align-items: center; }
-.startButton { border: 0; background: none; padding: 0; width: 52px; height: 46px; cursor: pointer; }
-.orb { width: 43px; height: 43px; display: grid; place-items: center; border-radius: 50%; border: 1px solid #c9eaffb0; background: radial-gradient(ellipse at 50% 90%, #42d5fa, transparent 57%), linear-gradient(#75a7bd, #133e69 48%, #102e52 52%, #23608b); box-shadow: 0 0 4px #00152d, inset 0 1px 3px white; }
+.startButton { border: 0; background: none; padding: 0; width: 58px; height: 46px; display: grid; place-items: center; cursor: pointer; }
+.orb { position: relative; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; border: 1px solid #c9eaffb0; background: radial-gradient(ellipse at 50% 92%, #3ac6efaa, transparent 57%), linear-gradient(#9fbcc9, #204765 46%, #0d253c 52%, #215578); box-shadow: 0 1px 3px #001323dd, inset 0 1px 2px #fff, inset 0 -1px 2px #a5d6eb80; }
 .startButton:hover .orb, .startButton[aria-expanded=true] .orb { box-shadow: 0 0 14px #65dcff, inset 0 1px 3px white; }
+.orb::before { content: ""; position: absolute; inset: 2px 4px 19px; border-radius: 50%; background: linear-gradient(#fff7,#fff0); pointer-events: none; }
 .flag { display: grid; grid-template-columns: repeat(2, 11px); grid-template-rows: repeat(2, 11px); gap: 2px; transform: rotate(-9deg) skewY(5deg); filter: drop-shadow(0 1px 2px #173750); }
 .flag i { background: linear-gradient(130deg,#ffb66b,#e35323); }
 .flag i:nth-child(2) { background: linear-gradient(130deg,#c2ea6c,#67a72e); }
 .flag i:nth-child(3) { background: linear-gradient(130deg,#77cbf0,#238bc8); }
 .flag i:nth-child(4) { background: linear-gradient(130deg,#fff2a6,#efbd25); }
-.pinned { display: flex; gap: 2px; }
-.pinned a { width: 51px; height: 42px; display: grid; place-items: center; border: 1px solid transparent; border-radius: 3px; }
-.pinned a:hover { background: linear-gradient(#ffffff35,#b3e4ff50); border-color: #dbf1ff80; box-shadow: inset 0 0 0 1px #284c6e; }
-.taskEntry { display: flex; align-items: center; justify-content: center; gap: 8px; height: 39px; min-width: 120px; padding: 0 13px; border: 1px solid #183c5d; border-radius: 3px; color: white; font: 12px "Segoe UI", sans-serif; text-shadow: 0 1px 2px #123; background: linear-gradient(#ffffff40,#d4e8fa1a); box-shadow: inset 0 0 0 1px #ffffff4d; cursor: pointer; }
-.taskActive { background: linear-gradient(#ffffff85, #c4e6ff35 46%, #7eb5da55 48%, #c0eaff80); box-shadow: inset 0 0 0 1px #ffffff9c, 0 0 5px #001d40; }
-.taskEntry:hover { background: radial-gradient(ellipse at 50% 110%, #b4f0ffff, transparent 70%), linear-gradient(#ffffff70,#a6d4f140 50%,#d8f3ff66); }
-.taskEntry:active { box-shadow: inset 0 1px 5px #002541; }
+.pinned { display: flex; gap: 0; }
+.pinned a { width: 60px; height: 42px; display: grid; place-items: center; border: 1px solid transparent; border-radius: 3px; }
+.pinned a:hover { background: radial-gradient(ellipse at 50% 110%,#b9edff99,transparent 75%),linear-gradient(#fff2,#fff1); border-color: #d7f0ff88; box-shadow: inset 0 0 0 1px #183a5680; }
+.pinned a:active { background: #17394b66; box-shadow: inset 0 1px 4px #001b3b; }
+.taskEntry { position: relative; display: grid; place-items: center; width: 60px; height: 42px; min-width: 60px; padding: 0; border: 1px solid #163349bf; border-radius: 3px; color: white; background: linear-gradient(#ffffff26,#d4e8fa0d 48%,#173c592e 50%); box-shadow: inset 0 0 0 1px #ffffff57; cursor: pointer; }
+.taskActive { background: linear-gradient(#f5fbff66,#c7e1f33b 48%,#6387a54d 50%,#d3edff52); border-color: #102c43; box-shadow: inset 0 0 0 1px #effaff99, 0 0 3px #001d4055; }
+.taskEntry:hover { background: radial-gradient(ellipse at 50% 110%,#c5f3ffdd,transparent 72%),linear-gradient(#ffffff57,#bbd4e233 48%,#2d59774d 50%,#b5dded66); box-shadow: inset 0 0 0 1px #f4fcffbb; }
+.taskEntry:active { background: linear-gradient(#163b5866,#a0c7dc44); box-shadow: inset 0 1px 4px #002541, inset 0 0 0 1px #bdd8e780; }
 .taskEntry svg, .pinned svg { flex-shrink: 0; filter: drop-shadow(0 1px 2px #163c64); }
-.taskEntry > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.taskEntry > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .taskGroup { position: relative; min-width: 0; }
 .taskGroup .taskEntry { max-width: 210px; }
-.taskPreview { cursor: pointer; text-align: left; font-family: inherit; position: absolute; left: 0; bottom: 100%; width: 270px; padding: 9px; border: 1px solid #285373; border-radius: 6px; background: linear-gradient(125deg, #d6ecfaf2, #8db7d5f5); box-shadow: inset 0 0 0 1px #ffffffa8, 0 5px 20px #001b4280; visibility: hidden; opacity: 0; transform: translateY(4px); transition: opacity 120ms, transform 120ms, visibility 120ms; }
+.taskPreview { cursor: pointer; text-align: left; font-family: inherit; position: absolute; left: 0; bottom: 100%; width: 250px; padding: 7px; border: 1px solid #285373; border-radius: 6px; background: linear-gradient(125deg,#c3dceddd,#7299b8e8); backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px #ffffffb0, 0 2px 9px #001b4270; visibility: hidden; opacity: 0; transform: translateY(4px); transition: opacity 120ms, transform 120ms, visibility 120ms; }
 .taskGroup:not([data-preview-dismissed=true]):focus-within .taskPreview { visibility: visible; opacity: 1; transform: none; }
 @media (hover: hover) and (pointer: fine) {
   .taskGroup:not([data-preview-dismissed=true]):hover .taskPreview { visibility: visible; opacity: 1; transform: none; transition-delay: 250ms; }
 }
-.previewTitle { display: flex; align-items: center; gap: 7px; padding-bottom: 7px; color: #19344b; font-size: 12px; }
+.previewTitle { display: flex; align-items: center; gap: 6px; padding: 1px 3px 6px; color: #19344b; font-size: 12px; }
 .previewTitle strong { font-weight: 500; }
-.previewContent { display: flex; align-items: center; gap: 14px; padding: 18px 12px; border: 1px solid #7196af; border-radius: 2px; background: linear-gradient(#fff, #edf5fa); font-size: 13px; line-height: 1.5; }
+.previewContent { display: flex; align-items: center; gap: 10px; padding: 14px 10px; border: 1px solid #7196af; border-radius: 2px; background: linear-gradient(#fff, #edf5fa); font-size: 13px; line-height: 1.5; }
 .previewContent svg { flex-shrink: 0; }
 .previewContent small { display: block; margin-top: 5px; color: #526779; font-size: 11px; }
 .startButton:active .orb, .startButton[aria-expanded=true] .orb { background: radial-gradient(ellipse at 50% 90%, #54dafb, transparent 60%), linear-gradient(#325a79, #0d2e51); }
@@ -47,10 +49,10 @@
 .showDesktop[aria-pressed=true] { background: #d9f5ff99; box-shadow: inset 1px 0 #fff, inset 0 0 5px #204e70; }
 .showDesktop:disabled { cursor: default; }
 @keyframes startReveal { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
-.tray { margin-left: auto; display: flex; align-items: center; gap: 15px; height: 100%; padding-left: 12px; }
-.clock { min-width: 93px; color: white; font: 11px/1.6 "Segoe UI", sans-serif; text-shadow: 0 1px 2px #123; text-align: center; }
+.tray { margin-left: auto; display: flex; align-items: center; gap: 0; height: 100%; padding-left: 10px; }
+.clock { min-width: 93px; color: white; font: 12px/1.45 "Segoe UI", Tahoma, sans-serif; text-shadow: 0 1px 2px #123; text-align: center; }
 .clock span { display: block; }
-.showDesktop { padding: 0; border: 0; cursor: pointer; flex: 0 0 15px; width: 15px; align-self: stretch; border-left: 1px solid #0a2f4e; box-shadow: inset 1px 0 #d4efff80; background: linear-gradient(110deg,#effaff66,#9dd1f133); }
+.showDesktop { padding: 0; border: 0; cursor: pointer; flex: 0 0 15px; width: 15px; align-self: stretch; border-left: 1px solid #0a2f4e; box-shadow: inset 1px 0 #d4efff80; background: linear-gradient(100deg,#eefaff30,#9dbdd01a); }
 .showDesktop:hover { background: #d9f5ff88; }
 .startMenu { animation: startReveal 130ms ease-out; transform-origin: bottom left; backdrop-filter: blur(18px); position: absolute; bottom: 47px; left: 6px; width: 405px; max-height: calc(100svh - 64px); overflow-y: auto; display: grid; grid-template-columns: 250px 1fr; padding: 7px; border: 1px solid #183c5a; border-radius: 7px 7px 0 0; background: linear-gradient(100deg,#b1d9f2e8,#2b6089f5); box-shadow: inset 0 0 0 1px #e4f5ff90, 0 0 20px #001d4c70; }
 .programs { background: #fff; border: 1px solid #52718b; border-radius: 4px; padding: 6px; }
@@ -86,6 +88,7 @@
   .taskbar { height: 56px; background: #073b60f5; padding-inline: 18px; }
   .startButton { display: flex; align-items: center; gap: 10px; width: auto; }
   .orb { width: 34px; height: 34px; }
+  .orb::before { inset: 2px 4px 16px; }
   .flag { transform: scale(.75) rotate(-9deg); }
   .mobileStartLabel { display: inline; color: white; font-size: 15px; }
   .startMenu { width: calc(100vw - 20px); left: 10px; bottom: 57px; max-height: calc(100svh - 76px); grid-template-columns: minmax(0,1fr) 125px; }
