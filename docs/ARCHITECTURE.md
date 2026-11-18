@@ -102,8 +102,7 @@ sidebar, toolbar, status, and title-bar controls stay available. The sidebar can
 scroll separately on short desktops. Maximize/restore retains the same geometry
 contract, and Welcome keeps its intentionally smaller introductory presentation.
 
-The optional command bar contains functioning actions only, such as the Gilman
-Scholarship link or article archive return. Routes without useful actions omit
+The optional command bar contains functioning actions only, such as an article archive return. Routes without useful actions omit
 the bar entirely, without reserved height. Descriptive section subtitles do not
 belong in the command bar. Status information contains real archive counts,
 article publication dates, or page purpose; static information pages do not show
@@ -388,3 +387,219 @@ It covers same-route and new-route restoration, close-to-desktop, Back/Forward,
 direct loads and refresh, Welcome persistence, pointer and keyboard movement,
 maximize/restore geometry, viewport bounds, mobile transitions, and long content.
 Assertions wait for committed route content and asynchronous resize reconciliation.
+
+## Aero quality pass
+
+The persistent shell still owns one route-driven window. Its taskbar button now
+minimizes the visible window and restores a minimized one. Pinned links omit the
+current section so it has only one taskbar representation; other pinned links
+remain plain navigation. Experience and Contact use the existing original icons,
+and Gilman's taskbar/title-bar label reflects the nested route.
+
+Show Desktop is a button, not navigation. It toggles the existing minimized state
+without changing URL, history, scroll position, or geometry. It is disabled when
+Welcome is dismissed and hidden on mobile. With only one primary window, no
+second visibility store or window manager is needed. Future utility windows will
+need a snapshot of all previously visible windows before extending this action.
+
+The taskbar preview uses navigation summaries and existing icons, not screenshots
+or duplicated route content. It appears on keyboard focus or fine-pointer hover;
+Escape dismisses it even when keyboard focus is elsewhere. It is supplementary
+visual information; the taskbar button announces its current action. Preview and
+Start motion obey the existing reduced-motion rule. Start retains ordinary link
+semantics and Tab navigation, with Arrow Up/Down and Home/End shortcuts, a profile
+link, current-page feedback, and the existing Escape/outside dismissal.
+
+Double-clicking the title-bar drag handle invokes the same maximize/restore
+callback as its button. Pointer resizing, keyboard geometry controls, and the
+position controller are unchanged. Restoration schedules reading-pane focus but
+checks that the user has not already selected another control. The workspace now
+forms an explicit stacking context above the wallpaper signature, while empty
+workspace areas pass pointer events through to desktop shortcuts.
+
+The window body is an inline-size container on desktop. Explorer spacing,
+sidebar width, About cards, Experience padding, and heading sizes respond to
+custom window dimensions. The desktop sidebar remains independently scrollable
+at minimum height; mobile retains natural document scrolling and touch targets.
+
+The Welcome session snapshot remains hydration-safe and server-rendered. Its
+known dismissed-on-reload flash is not masked by hiding the introduction or by
+adding an early DOM mutation script. Snap, hover Peek, launcher search, calendar
+flyouts, and animated closing remain deferred; none is needed for access to the
+existing content. No dependencies, assets, route structure, or MDX loaders changed.
+
+### Quality-pass validation
+
+`bun run lint`, `bun run build`, and all 13 unit tests passed. The full production
+Playwright run passed 44 tests; its two fixture-only article tests were skipped
+as designed, then both passed in `bun run test:writing` (four tests total). That
+command removed its temporary MDX files and rebuilt the real production output.
+All eight existing resizing tests remain unchanged and pass.
+
+New browser coverage includes taskbar toggling, hover-preview Escape dismissal,
+Show Desktop preserving reading scroll and geometry, same-section focus,
+title-bar double-click, Start arrow/Home/End navigation, reduced motion, and
+minimum-size windows. Screenshot/overflow sweeps cover all nine landing routes
+at 1440×900, 800×600, 390×844, and 320×568, plus Start at 720×420 and resized
+520×360 windows. Existing tests also cover 1920×1080, 1366×768, history, direct
+URLs, refresh, pointer cancellation, and mobile/desktop transitions. Desktop and
+mobile route contact sheets, Start, and taskbar preview screenshots were visually
+reviewed. Browser automation used the configured Chromium runner, not Safari or
+Firefox; cross-browser verification remains a release check.
+
+Remaining issues by impact: existing unfinished portfolio/resume/contact/Gilman
+content is the primary launch limitation; the Welcome dismissal flash is a minor
+cosmetic limitation. No failing behavior was identified in this pass's browser
+coverage. The Aero frame, original icons/wallpaper, title controls, and existing
+bounded movement/resizing were retained rather than replaced.
+
+## Calendar and desktop Peek
+
+SystemClock now owns a transient date/time flyout. The trigger remains
+hydration-safe; dates and clock hands use the browser's local time. The default
+month follows today, while explicit month navigation remains fixed until Today
+or reopening resets it. Month arithmetic starts at day one to avoid month-end
+rollover. The nonmodal dialog has ordinary Tab navigation, labeled month controls,
+a semantic calendar table, today's date marker, and Close/Escape focus return.
+Outside pointer activation or focus leaving dismisses it. Mobile uses larger
+controls and a single calendar pane; the analog clock is desktop-only.
+
+Show Desktop hover uses a CSS visual treatment gated by desktop width, hover
+capability and a fine primary pointer. Leaving restores opacity immediately;
+there is no animation, including under reduced motion. Click keeps the existing
+minimize/restore contract. No URL, focus, scroll or geometry state changes during
+Peek, and touch-only pointers do not enable it.
+
+Top-edge Snap remains deferred after controller inspection. The existing
+`useWindowPosition` effect tears down active capture when its disabled state
+changes (including maximize). Reliable drag-away restoration would need a gesture
+transition that retains capture, restores clamped geometry, and defines Escape,
+pointer cancellation and viewport-change rollback across that transition. Adding
+only top-edge maximize would leave the paired drag-away behavior incomplete.
+This milestone therefore preserves the validated controller rather than adding
+half of Snap. No second window manager or new dependencies were introduced.
+
+### Calendar and Peek reference refinement
+
+The fidelity pass used the actual flyout screenshot in Hitesh Sarda's
+[21 February 2010 Windows 7 post](https://hitesh.in/2010/windows-7-hidden-features/)
+(`images/image_thumb14.png`, showing additional clocks) and the Peek screenshot
+in [DevCurry's December 2009 post](https://www.devcurry.com/2009/12/show-desktop-and-aero-peek-feature-in.html).
+These were inspected as references only; no Microsoft bitmap or SVG is bundled.
+
+The calendar now has a narrow six-pixel glass frame around a white interior,
+centered blue full date, compact calendar at left, and an original beveled SVG
+clock at right. Its minute ticks, tapered hands, seconds hand and weekday text
+replace the previous flat clock. A pale footer retains the functioning Today
+command in place of the native settings link. The native screenshot's additional
+clocks and date-zoom views are outside this component's scope; the existing local
+timezone label, explicit close control, and larger mobile controls are retained.
+Day cells remain read-only: the blue/dotted current-day treatment does not imply
+an unsupported date selection or setting action.
+
+Peek now hides the window's direct contents visually and removes the normal
+frame surfaces. An empty, pointer-transparent pseudo-element on the positioning frame follows
+the actual window bounds and corner radius. During Peek only, 7.css's glass
+pseudo-elements are hidden, including their backdrop blur, so wallpaper remains
+clear rather than blurred or covered by ghost text. Normal window glass is
+unchanged. Geometry, routing and focus state do not change; leaving
+restores the window immediately. Existing hover/pointer and mobile gates remain.
+No animation was introduced, so reduced motion also remains immediate.
+
+### Taskbar reference refinement
+
+Taskbar styling was compared directly with the January 2009 large/small-icon
+[measurement screenshot](https://istartedsomething.com/20090105/measuring-up-windows-7s-new-super-taskbar/)
+and Microsoft's historical [Windows 7 taskbar illustration and guidance](https://learn.microsoft.com/en-us/windows/win32/uxguide/winenv-taskbar).
+The former documents a 60-pixel large-icon slot and a smaller Start orb;
+the latter illustrates running-button borders and Aero preview chrome. References
+were inspected only; no Microsoft artwork is included.
+
+The previous mix of 32-pixel pinned icons and a 24-pixel labeled running button
+now uses 32-pixel icons throughout desktop taskbar applications. The running
+button is a compact icon slot; its route label remains in the accessible name,
+native tooltip, and preview. Pinned links retain navigation behavior, and the
+running button retains minimize/restore. State distinctions use inset light/dark
+borders, a stronger active reflection, bottom-centered hover illumination, and
+pressed shading. The taskbar strip has more restrained reflections and glass;
+the original CSS orb has a smaller silhouette and a separate upper reflection.
+Clock line spacing/type size and Show Desktop shading were also refined.
+
+The existing 46-pixel desktop taskbar height is retained to avoid changing the
+window-bounds contract (the native screenshot documents a 40-pixel large-icon
+bar). Mobile keeps the labeled Start control and 56-pixel bar. Preview content is
+still a useful summary rather than a real thumbnail; its glass frame and spacing
+are tighter. Stable native pinned/program grouping, Jump Lists and fabricated
+volume/network indicators were not introduced. Existing pinned destinations
+still omit the current section, so their positions may shift during navigation.
+The original vector icons and four-color CSS Start artwork are interpretations,
+not reproductions of Microsoft's assets.
+
+## Start and Explorer fidelity milestone
+
+Reference review used the actual Start menu screenshot on page 20 of Microsoft
+Press's April 2009 [Explore Windows 7 chapter](https://download.microsoft.com/download/9/a/3/9a36304d-cb64-427e-a184-4ed1bb556712/win7_sbs_earlycontent_ch1.pdf),
+and the [October 2009 Explorer screenshot](https://www.matthewb.id.au/computer/Windows_7_Review.html)
+(`Windows7_Libraries.jpg`). The screenshots were inspected as references only;
+all rendered icons, shortcut arrows and CSS remain original. The supplied chat
+screenshots were supporting context, not additional feature requirements.
+
+The ranked audit prioritized Explorer icon rows/selection (impact 5, usefulness
+4, complexity 2), Start layout/search (5/5/3), compact breadcrumbs (4/3/2),
+shortcut feedback (3/3/1), title glow/inactive cues (3/2/2), then the development
+indicator (3/3/1), on five-point scales. Browser-history controls ranked 3/3/4
+and remain deferred: correct availability across direct loads/external history
+requires tracking beyond a pair of decorative buttons. Ordinary browser history
+remains unchanged. No fake filesystem ancestors, redundant Desktop links,
+Shutdown command, expansion arrows, or Explorer search field were added.
+
+Start retains its ordinary navigation disclosure, two columns and first-link
+focus. Its darker system column, inset selection treatments, compact program
+rows and bottom search field borrow the historical visual organization. The
+existing user removal of the footer tagline is preserved by replacing the empty
+footer with useful search. Typing while a navigation link is focused moves into
+search; Arrow Down enters results, Enter follows the first result, and Escape
+retains dismissal/focus return. Text-input Home/End remain editing operations.
+Results are ordinary Next links; the right column remains accessible. Reopening
+clears the query. Mobile retains large input/link targets instead of copying
+native desktop metrics.
+
+The root server layout supplies a cached, serializable list of published article
+titles, summaries and canonical local paths. It reuses the existing MDX loader's
+published-only filtering; article bodies, compiled components and draft metadata
+never enter the search props. Static route labels/summaries come from the shared
+navigation registry. Search is a small client substring filter over title and
+summary words, not full-text article indexing. No API endpoint, dependency or
+external service is required. The shared icon registry was moved out of the
+Start client entry point so server Explorer navigation can use the same artwork.
+
+Explorer now has compact icon/label rows on desktop, distinct pale hover and
+blue current-section treatments, indentation, a subtle secondary-group separator,
+and smaller breadcrumb segments with functioning parent links. It keeps the
+existing independent sidebar/reading scrolling, command-bar omission and mobile
+flow. Shortcut arrows are original small bent-arrow SVGs; keyboard focus uses an
+inset dotted highlight and shaded label. Single-click activation is unchanged.
+Window title text has a softer multilevel glow, reduced while Start is open,
+with a more neutral frame tint. No movement/resizing or visibility controller
+changed; this is not a new general window-activation manager.
+
+The pre-existing `devIndicators: false` edit is retained and committed as part of
+the explicitly requested cleanup. The installed Next.js docs confirm this is the
+supported option and does not suppress compile/runtime errors. Actual localhost
+development inspection confirmed the badge has no visible bounds and Start is
+uncovered; no allowed-origin or production configuration changes were added.
+
+Validation: production build, lint and 13 unit tests passed. Full Playwright:
+55 passed, with the two fixture-only cases skipped by design. The separate
+writing-fixture run passed all four cases, including published article search in
+both Journal and Travel Logs, then removed fixtures and rebuilt the real site.
+New desktop/mobile search checks cover routes, keyboard activation, reset, no
+results and draft exclusion. Existing resizing, history, taskbar, calendar and
+Peek regressions pass. Before/after screenshots cover Explorer, Start, a 520px
+manually resized window and mobile; a separate development screenshot shows a
+live search result and no development indicator over Start.
+
+Travel Logs keeps its Gilman Scholarship link inside the archive introduction,
+not in a command bar above the navigation pane. Journal and Travel Logs therefore
+share the same navigation positions; the regression suite checks link geometry
+across that transition on desktop and mobile.

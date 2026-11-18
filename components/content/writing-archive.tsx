@@ -9,12 +9,12 @@ export async function WritingArchive({ kind }: { kind: WritingKind }) {
   const entries = await getEntries(kind);
   const section = writingSections[kind];
   return <ExplorerLayout title={section.title} sectionHref={section.href} icon={kind === "journal" ? "journal" : "travel"}
-    toolbar={kind === "travel" ? <Link href="/travellogs/gilman">Gilman Scholarship</Link> : undefined}
     status={`${entries.length} published ${entries.length === 1 ? "entry" : "entries"}`}>
     <div className={styles.archive} data-kind={kind}>
     <header className={styles.archiveHeader}>
       <p className={styles.eyebrow}>{kind === "journal" ? "Writing archive" : "Places & perspectives"}</p>
       <h1>{section.title}</h1><p>{section.summary}</p>
+      {kind === "travel" && <p><Link className={styles.archiveLink} href="/travellogs/gilman">Gilman Scholarship</Link></p>}
     </header>
     {entries.length === 0 ? <p className={styles.empty}>No {kind === "journal" ? "journal" : "travel"} entries published yet.</p> :
       <ul className={styles.entries}>{entries.map(entry => <li key={entry.slug}>

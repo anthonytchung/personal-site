@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { DesktopIcon, type IconKind } from "@/components/desktop/desktop-icon";
 import { primaryNavigation, secondaryNavigation } from "@/lib/navigation";
+import { sectionIcons } from "@/lib/section-icons";
 import styles from "./explorer-layout.module.css";
 
 type Props = {
@@ -20,7 +21,7 @@ export function ExplorerLayout({ children, title, sectionHref, icon = "welcome",
   return <div className={styles.explorer}>
     <div className={styles.addressBar}>
       <nav className={styles.breadcrumbs} aria-label="Breadcrumb">
-        <DesktopIcon kind={icon} size={22}/>
+        <DesktopIcon kind={icon} size={18}/>
         <ol>
           {parents.map(parent => <li key={parent.href}><Link href={parent.href}>{parent.title}</Link></li>)}
           <li><span aria-current="page">{title}</span></li>
@@ -31,11 +32,11 @@ export function ExplorerLayout({ children, title, sectionHref, icon = "welcome",
     <div className={styles.body}>
       <aside className={styles.sidebar} aria-label="Explorer navigation">
         <nav aria-label="Sections">
-          {primaryNavigation.map(({ href, label }) => <Link key={href} href={href} aria-current={href === sectionHref ? "page" : undefined}>{label}</Link>)}
+          {primaryNavigation.map(({ href, label }) => <Link key={href} href={href} aria-current={href === sectionHref ? "page" : undefined}><DesktopIcon kind={sectionIcons[href] ?? "projects"} size={18}/><span>{label}</span></Link>)}
         </nav>
         <nav aria-label="More about Anthony">
           <h2>More about Anthony</h2>
-          {secondaryNavigation.map(({ href, label }) => <Link key={href} href={href} aria-current={href === sectionHref ? "page" : undefined}>{label}</Link>)}
+          {secondaryNavigation.map(({ href, label }) => <Link key={href} href={href} aria-current={href === sectionHref ? "page" : undefined}><DesktopIcon kind={sectionIcons[href] ?? "projects"} size={18}/><span>{label}</span></Link>)}
         </nav>
       </aside>
       <main id="main-content" tabIndex={-1} className={styles.main}>{children}</main>

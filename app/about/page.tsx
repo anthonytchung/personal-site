@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ContentPage } from "@/components/content/content-page";
 import styles from "./about.module.css";
 
-export const metadata: Metadata = { title: "About", description: "Meet Anthony and the family Windows 7 computer that sparked his interest in technology." };
+export const metadata: Metadata = { title: "About", description: "Meet me and the family Windows 7 computer that sparked my interest in technology." };
 
 export default function Page() {
   return (
@@ -10,16 +10,16 @@ export default function Page() {
       <div className={styles.about}>
         <header className={styles.introduction}>
           <p className={styles.eyebrow}>The person behind the desktop</p>
-          <h2>Hey, I’m Anthony.</h2>
-          <p className={styles.lead}>I build software, explore ideas, and make things for the fun of it.</p>
-          <p>Welcome to my little corner of the internet. This is a personal digital home: a place for projects, writing, and travels, with a familiar desktop to hold it all.</p>
+          <h2>Hi, I’m Anthony.</h2>
+          <p className={styles.lead}>I build software, explore new ideas, and do things for the fun of it.</p>
+          <p>This is a website meant to be my living homepage, trying to capture my most important digital footprint. </p>
         </header>
 
         <section id="why-windows-7" className={styles.origin} aria-labelledby="origin-title">
           <p className={styles.eyebrow}>Where it started</p>
           <h2 id="origin-title">Why Windows 7?</h2>
-          <p>My interest in technology began at home, watching my father use our family Windows 7 computer. Watching him work sparked a curiosity that eventually led me to learn to develop software.</p>
-          <p>That’s why this site looks like a desktop. It’s a tribute to the computer that started it all, now filled with things of my own. The familiar windows are part of the story.</p>
+          <p>My interest in technology began at home, watching my father use our family Windows 7 computer. He seemed like a wizard in navigating the web and using this magical technology. This curiosity led me to pursue software and learning sciences later on. </p>
+          <p>That’s why this site looks like a desktop from years ago. It hopefully adds a bit of charm and serves as a little bit of a tribute to the computer that started it all. </p>
         </section>
 
         <section aria-labelledby="personal-title">
@@ -29,12 +29,12 @@ export default function Page() {
             <section className={styles.note} aria-labelledby="background-title">
               <span className={styles.placeholder}>Development placeholder</span>
               <h3 id="background-title">My background</h3>
-              <p>A personal introduction to my background and the places that have shaped me will go here.</p>
+              <p>I&apos;ve always really been interested in both people and technology, and the intersection between them. My sentimentality and curiosity are also big driving forces in my life, and the reason why I am where I am today. </p>
             </section>
             <section className={styles.note} aria-labelledby="interests-title">
               <span className={styles.placeholder}>Development placeholder</span>
               <h3 id="interests-title">Away from the keyboard</h3>
-              <p>Favorite interests, everyday pursuits, and a few personal details will go here.</p>
+              <p>Going down rabbit holes and learning about new topics is something I enjoy doing with a large part of my free time. The wealth of domain knowledge that&apos;s granted by access to the internet is something I deeply appreciate in modernity. Watching movies, watching the NBA (shoutout Sixers and Wizards) and keeping up to date on current news is a large part of my day-to-day.</p>
             </section>
           </div>
         </section>

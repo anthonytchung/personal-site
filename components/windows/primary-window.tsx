@@ -59,7 +59,8 @@ export function PrimaryWindow({ children, pathname, title, icon, hidden, maximiz
           role="group"
           aria-label={`${title} window title bar`}
           aria-describedby="window-move-help"
-          title="Drag to move. Arrow keys move; Home centers."
+          onDoubleClick={onMaximize}
+          title="Drag to move. Double-click to maximize or restore. Arrow keys move; Home centers."
         >{title}</div>
         <span id="window-move-help" className={styles.srOnly}>Use arrow keys to move the window, Shift for smaller steps, or Home to center it. Escape cancels a drag. Restore a maximized window before moving it.</span>
         <div className="title-bar-controls">

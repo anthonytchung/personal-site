@@ -11,7 +11,7 @@ for (const width of [1366, 390]) {
     await expect(origin).toBeInViewport();
     await expect(origin).toContainText("watching my father use our family Windows 7 computer");
     await expect(main.getByText("Development placeholder", { exact: true })).toHaveCount(3);
-    await expect(main.getByRole("heading", { name: "Hey, I’m Anthony." })).toHaveCount(1);
+    await expect(main.getByRole("heading", { name: "Hi, I’m Anthony." })).toHaveCount(1);
     await expect(main.getByRole("img")).toHaveCount(0);
     await page.goto("/about");
     await page.screenshot({ path: testInfo.outputPath("about.png"), fullPage: width < 700 });

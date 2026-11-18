@@ -40,3 +40,11 @@ export async function getStaticEntries(kind: WritingKind) {
   // This sentinel cannot be a valid content slug and always renders notFound().
   return entries.length ? entries.map(({ slug }) => ({ slug })) : [{ slug: "__empty__" }];
 }
+
+// Only public, serializable metadata crosses into the desktop search client.
+export async function getSearchEntries() {
+  "use cache";
+  const [journal, travel] = await Promise.all([getEntries("journal"), getEntries("travel")]);
+  return [...journal.map(entry => ({ title: entry.title, summary: entry.summary, href: `/blog/${entry.slug}` })),
+    ...travel.map(entry => ({ title: entry.title, summary: entry.summary, href: `/travellogs/${entry.slug}` }))];
+}

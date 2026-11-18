@@ -1,6 +1,7 @@
 /* Coordinates apply to this wrapper; 7.css only styles the inner window. */
 .position {
   position: absolute;
+  pointer-events: auto;
   z-index: 2;
   width: var(--window-width, min(900px, calc(100% - 160px)));
   left: var(--window-x, calc(50% + 45px));
@@ -41,7 +42,7 @@
   display: flex;
   align-items: center;
   color: #102d42;
-  text-shadow: 0 0 5px white, 0 0 8px white;
+  text-shadow: var(--window-title-glow, 0 0 2px white, 0 0 5px white, 0 0 9px #fff);
   cursor: move;
   touch-action: none;
   user-select: none;
@@ -50,7 +51,7 @@
   font-size: 12px;
 }
 .dragHandle:focus-visible { outline: 2px solid #174e78; outline-offset: -2px; }
-.position .body { flex: 1; min-height: 0; overflow: auto; background: white; }
+.position .body { container-type: inline-size; container-name: window-body; flex: 1; min-height: 0; overflow: auto; background: white; }
 .position:not([data-home=true]) .body { display: flex; flex-direction: column; overflow: hidden; }
 /* main is a programmatic reading target, not an interactive control. Its links
    and controls retain their normal :focus-visible indicators. */
@@ -103,5 +104,19 @@
   }
   .position .titleBar { display: none; }
   .position .resizeHandle { display: none; }
-  .position .body, .position:not([data-home=true]) .body { display: block; flex: auto; margin: 0; border: 0; overflow: visible; box-shadow: none; }
+  .position .body, .position:not([data-home=true]) .body { container-type: normal; display: block; flex: auto; margin: 0; border: 0; overflow: visible; box-shadow: none; }
+}
+
+/* Empty glass silhouette uses the live window box, with no copied geometry. */
+.position::after {
+  backdrop-filter: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid #14344866;
+  border-radius: 7px;
+  background: linear-gradient(125deg, #ecf8ff09, #b2d6ef03 45%, #ecf8ff08);
+  box-shadow: inset 0 0 0 1px #f0faff70, inset 0 0 0 6px #bdd9ed0d, 0 1px 6px #001b3426;
+  opacity: var(--peek-outline, 0);
+  pointer-events: none;
 }
