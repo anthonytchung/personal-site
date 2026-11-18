@@ -120,3 +120,20 @@
   opacity: var(--peek-outline, 0);
   pointer-events: none;
 }
+/* One shared frame/controller, with independent geometry per mounted instance. */
+.position[data-active=true] { z-index: 4; }
+.position[data-utility=true] { width: var(--window-width, min(760px, calc(100% - 100px))); left: var(--window-x, calc(50% + 90px)); }
+.position[data-utility=true] .window { height: var(--window-height, min(650px, calc(100dvh - 80px))); }
+.position[data-utility=true] .body { overflow: auto; }
+.position[data-utility=true][data-maximized=true] { inset: 8px; width: auto; }
+.position[data-utility=true][data-maximized=true] .window { height: 100%; }
+.position[data-active=false] .dragHandle { text-shadow: 0 0 4px #fff9; color: #415569; }
+@media (max-width: 700px) {
+  .position[data-utility=true] { width: 100%; }
+  .position[data-utility=true][data-hidden=true] { display: none; }
+  .position[data-utility=true] .window { height: auto; max-height: none; }
+  .position[data-utility=true] .body { overflow: visible; }
+}
+/* 7.css uses :target to reveal its dialog demo. React owns this nonmodal
+   utility's visibility and the outer frame owns coordinates instead. */
+.position[data-utility=true] .window[role=dialog] { position: relative; inset: auto; transform: none; visibility: visible; opacity: 1; z-index: auto; transition: none; width: 100%; }

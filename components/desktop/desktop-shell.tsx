@@ -1,9 +1,11 @@
 "use client";
 
 import type { SearchEntry } from "@/lib/site-search";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { AboutComputer } from "@/components/apps/about-computer";
+import { UtilityActions } from "@/components/apps/utility-actions";
 import { PrimaryWindow } from "@/components/windows/primary-window";
 import { primaryNavigation, secondaryNavigation } from "@/lib/navigation";
 import { DesktopIcon } from "./desktop-icon";
@@ -21,6 +23,47 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
   const home = pathname === "/";
   const dismissed = useWelcomeDismissed();
   const [visibility, setVisibility] = useState({ pathname, minimized: false });
+  const [utility, setUtility] = useState({ open: false, minimized: false, maximized: false });
+  const [focused, setFocused] = useState<"primary" | "utility">("primary");
+  const opener = useRef<HTMLElement | null>(null);
+  const [desktopSnapshot, setDesktopSnapshot] = useState<{ primary: boolean; utility: boolean; focused: "primary" | "utility" } | null>(null);
+  function focusUtility() {
+    requestAnimationFrame(() => {
+      const window = document.getElementById("about-computer-window");
+      window?.focus({ preventScroll: true });
+      if (matchMedia("(max-width: 700px)").matches) window?.scrollIntoView({ block: "start" });
+    });
+  }
+  function openUtility() {
+    opener.current = document.activeElement as HTMLElement;
+    setDesktopSnapshot(null);
+    setUtility(previous => ({ ...previous, open: true, minimized: false }));
+    setFocused("utility");
+    focusUtility();
+  }
+  function closeUtility() {
+    setUtility({ open: false, minimized: false, maximized: false });
+    setFocused("primary");
+    requestAnimationFrame(() => {
+      if (opener.current?.isConnected && opener.current.getClientRects().length) opener.current.focus({ preventScroll: !matchMedia("(max-width: 700px)").matches });
+      else document.getElementById("start-button")?.focus();
+    });
+  }
+  function toggleDesktop() {
+    if (desktopSnapshot) {
+      setVisibility({ pathname, minimized: desktopSnapshot.primary });
+      setUtility(previous => ({ ...previous, minimized: desktopSnapshot.utility }));
+      if (desktopSnapshot.focused === "utility" && !desktopSnapshot.utility && utility.open) focusUtility();
+      else if (!desktopSnapshot.primary) focusContent();
+      setDesktopSnapshot(null);
+    } else if (minimized && (!utility.open || utility.minimized)) {
+      restoreWindow();
+    } else {
+      setDesktopSnapshot({ primary: minimized, utility: utility.minimized, focused });
+      setVisibility({ pathname, minimized: true });
+      setUtility(previous => ({ ...previous, minimized: true }));
+    }
+  }
   const [maximized, setMaximized] = useState(false);
   const [previewDismissed, setPreviewDismissed] = useState(false);
 
@@ -41,6 +84,9 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
   // The URL still owns content; the shell and window geometry never remount.
   if (visibility.pathname !== pathname) {
     setVisibility({ pathname, minimized: false });
+    setFocused("primary");
+    setDesktopSnapshot(null);
+    if (matchMedia("(max-width: 700px)").matches) setUtility(previous => ({ ...previous, minimized: true }));
   }
   const minimized = visibility.pathname === pathname && visibility.minimized;
   const section = sections.find(item => pathname === item.href || pathname.startsWith(`${item.href}/`));
@@ -50,6 +96,9 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
   const icon = section ? sectionIcons[section.href] ?? "welcome" : "welcome";
 
   function restoreWindow() {
+    if (matchMedia("(max-width: 700px)").matches) setUtility(previous => ({ ...previous, minimized: true }));
+    setDesktopSnapshot(null);
+    setFocused("primary");
     setVisibility({ pathname, minimized: false });
     focusContent();
   }
@@ -78,7 +127,7 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
   }
 
   return (
-    <div className={styles.desktop}>
+    <UtilityActions value={openUtility}><div className={styles.desktop} data-mobile-utility={utility.open && !utility.minimized}>
       <a className={styles.skipLink} href="#main-content" onClick={event => {
         event.preventDefault();
         if (home) restoreWelcome();
@@ -97,6 +146,8 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
       </nav>
       <div className={styles.workspace}>
         <PrimaryWindow
+          active={focused === "primary"}
+          onFocusWindow={() => setFocused("primary")}
           pathname={pathname}
           title={title}
           icon={icon}
@@ -108,6 +159,11 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
         >
           {home ? <main id="main-content" tabIndex={-1}>{children}</main> : children}
         </PrimaryWindow>
+        {utility.open && <PrimaryWindow id="about-computer-window" utility active={focused === "utility"} onFocusWindow={() => setFocused("utility")} pathname="utility" title="About This Computer" icon="welcome" hidden={utility.minimized} maximized={utility.maximized}
+          onMinimize={() => { setUtility(previous => ({ ...previous, minimized: true })); setFocused("primary"); document.getElementById("utility-task")?.focus(); }}
+          onMaximize={() => setUtility(previous => ({ ...previous, maximized: !previous.maximized }))} onClose={closeUtility}>
+          <AboutComputer onAbout={() => { setUtility(previous => ({ ...previous, minimized: true })); restoreWindow(); }} onClose={closeUtility}/>
+        </PrimaryWindow>}
       </div>
       <div className={styles.desktopSignature} aria-hidden="true"><span>Anthony&apos;s Desktop</span><small>Make yourself at home.</small></div>
       <footer className={styles.taskbar}>
@@ -117,12 +173,12 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
         </nav>
         {(!home || !dismissed) && <div className={styles.taskGroup} data-preview-dismissed={previewDismissed} onPointerEnter={() => setPreviewDismissed(false)} onFocus={() => setPreviewDismissed(false)}><button
           id="primary-task"
-          className={`${styles.taskEntry} ${!minimized ? styles.taskActive : ""}`}
+          className={`${styles.taskEntry} ${!minimized && focused === "primary" ? styles.taskActive : ""}`}
           aria-controls="primary-window"
           aria-expanded={!minimized}
-          title={`${minimized ? "Restore" : "Minimize"} ${label}`}
-          aria-label={`${minimized ? "Restore" : "Minimize"} ${label}`}
-          onClick={() => minimized ? restoreWindow() : minimizeWindow()}
+          title={`${minimized || focused !== "primary" ? "Restore" : "Minimize"} ${label}`}
+          aria-label={`${minimized || focused !== "primary" ? "Restore" : "Minimize"} ${label}`}
+          onClick={() => minimized || focused !== "primary" ? restoreWindow() : minimizeWindow()}
         ><DesktopIcon kind={icon} size={32}/><span>{label}</span></button>
           <button id="primary-preview" className={styles.taskPreview} aria-label={`Switch to ${label}`} aria-controls="primary-window" onClick={() => {
             restoreWindow();
@@ -132,12 +188,14 @@ export function DesktopShell({ children, searchEntries }: { children: ReactNode;
             <span className={styles.previewContent}><DesktopIcon kind={icon} size={48}/><span>{summary}<small>{minimized ? "Minimized — click to restore" : "Open — click to switch"}</small></span></span>
           </button>
         </div>}
+        {utility.open && <button id="utility-task" className={`${styles.taskEntry} ${!utility.minimized && focused === "utility" ? styles.taskActive : ""}`} aria-label={utility.minimized || focused !== "utility" ? "Restore About This Computer" : "Minimize About This Computer"} title="About This Computer" aria-controls="about-computer-window" aria-expanded={!utility.minimized} onClick={() => {
+          setDesktopSnapshot(null);
+          if (!utility.minimized && focused === "utility") { setUtility(previous => ({ ...previous, minimized: true })); setFocused("primary"); }
+          else { setUtility(previous => ({ ...previous, minimized: false })); setFocused("utility"); focusUtility(); }
+        }}><DesktopIcon kind="welcome" size={32}/><span>About This Computer</span></button>}
         <div className={styles.tray}><SystemClock/></div>
-        <button className={styles.showDesktop} title={minimized ? "Restore window" : "Show desktop"} aria-label="Show desktop" aria-pressed={minimized} aria-controls="primary-window" disabled={home && dismissed} onClick={() => {
-          if (minimized) restoreWindow();
-          else setVisibility({ pathname, minimized: true });
-        }}/>
+        <button className={styles.showDesktop} title={minimized ? "Restore window" : "Show desktop"} aria-label="Show desktop" aria-pressed={desktopSnapshot !== null || minimized} aria-controls={utility.open ? "primary-window about-computer-window" : "primary-window"} disabled={home && dismissed && !utility.open} onClick={toggleDesktop}/>
       </footer>
-    </div>
+    </div></UtilityActions>
   );
 }

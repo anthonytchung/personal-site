@@ -59,7 +59,7 @@ test("title-bar double-click restores custom geometry and Start supports keyboar
   await expect(menu.getByRole("link", { name: "Projects", exact: true })).toBeFocused();
   await expect(menu.getByRole("link", { name: "Projects", exact: true })).toHaveAttribute("aria-current", "page");
   await page.keyboard.press("End");
-  await expect(menu.getByRole("link", { name: "Why Windows 7?" })).toBeFocused();
+  await expect(menu.getByRole("button", { name: "About This Computer", exact: true })).toBeFocused();
   await page.keyboard.press("Home");
   await expect(menu.getByRole("link", { name: /Welcome/ })).toBeFocused();
   await page.screenshot({ animations: "disabled", path: testInfo.outputPath("start-menu.png") });
@@ -115,7 +115,7 @@ test("short desktops and reduced motion retain accessible Start navigation", asy
   const menu = page.getByRole("navigation", { name: "Start menu" });
   await expect(menu).toHaveCSS("animation-name", "none");
   await page.keyboard.press("End");
-  await expect(menu.getByRole("link", { name: "Why Windows 7?" })).toBeInViewport();
+  await expect(menu.getByRole("button", { name: "About This Computer", exact: true })).toBeInViewport();
   await page.keyboard.press("Escape");
   await expect(start).toBeFocused();
   await page.setViewportSize({ width: 320, height: 568 });

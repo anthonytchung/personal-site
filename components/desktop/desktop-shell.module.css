@@ -103,10 +103,10 @@
    owned by the existing window. Touch never depends on this hover affordance. */
 @media (min-width: 701px) and (hover: hover) and (pointer: fine) {
   .desktop:has(.showDesktop:hover:not(:disabled)) .workspace { --peek-outline: 1; }
-  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global(#primary-window) { background: transparent; border-color: transparent; box-shadow: none; backdrop-filter: none; }
-  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global(#primary-window) > * { opacity: 0; }
-  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global(#primary-window)::before,
-  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global(#primary-window)::after { display: none; }
+  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global([data-app-window]) { background: transparent; border-color: transparent; box-shadow: none; backdrop-filter: none; }
+  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global([data-app-window]) > * { opacity: 0; }
+  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global([data-app-window])::before,
+  .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global([data-app-window])::after { display: none; }
   .desktop:has(.showDesktop:hover:not(:disabled)) .showDesktop { background: #e5f8ffb0; }
 }
 /* Start: white programs pane, darker system column, inset search footer. */
@@ -136,7 +136,7 @@
 .shortcut:focus-visible > span:last-child { background: #174f7e66; }
 .shortcutArrow { width: 15px; height: 15px; display: grid; place-items: center; border-color: #90a9bb; background: linear-gradient(#fff,#e8f1fa); box-shadow: 0 0 1px #244963; }
 .desktop:has(.startMenu) .workspace { --window-title-glow: 0 0 3px #ffffffb0; }
-.desktop:has(.startMenu) .workspace :global(#primary-window) { --w7-w-bg: #b1c6d5; }
+.desktop:has(.startMenu) .workspace :global([data-app-window]) { --w7-w-bg: #b1c6d5; }
 @media (max-width: 700px) {
   .startMenu { width: calc(100vw - 20px); grid-template-columns: minmax(0,1fr) 125px; }
   .programs { min-height: 300px; }
@@ -145,4 +145,10 @@
   .startSearch svg { top: 14px; }
   .startAside a { min-height: 44px; }
   .shortcutArrow { display: none; }
+}
+.startAside button { display: block; width: 100%; padding: 8px 5px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: white; text-align: left; font: 12px/1.5 "Segoe UI", sans-serif; text-shadow: 0 1px 2px #123; }
+.startAside button:hover, .startAside button:focus-visible { background: linear-gradient(#e9f5ff22,#00132922); border-color: #c7dced80; }
+@media (max-width: 700px) {
+  .desktop[data-mobile-utility=true] .workspace > :global([data-utility=false]) { display: none; }
+  .startAside button { min-height: 44px; }
 }

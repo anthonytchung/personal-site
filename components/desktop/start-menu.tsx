@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { AboutComputerButton } from "@/components/apps/utility-actions";
 import type { SearchEntry } from "@/lib/site-search";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -63,8 +64,8 @@ export function StartMenu({ onWelcome, onNavigate, searchEntries }: { searchEntr
         return;
       }
       if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key) || event.altKey || event.ctrlKey || event.metaKey) return;
-      const links = Array.from(event.currentTarget.querySelectorAll<HTMLAnchorElement>("a"));
-      const current = links.indexOf(document.activeElement as HTMLAnchorElement);
+      const links = Array.from(event.currentTarget.querySelectorAll<HTMLElement>("a, button"));
+      const current = links.indexOf(document.activeElement as HTMLElement);
       const next = event.key === "Home" ? 0 : event.key === "End" ? links.length - 1 : (current + (event.key === "ArrowDown" ? 1 : -1) + links.length) % links.length;
       event.preventDefault();
       links[next]?.focus();
@@ -84,7 +85,7 @@ export function StartMenu({ onWelcome, onNavigate, searchEntries }: { searchEntr
         {secondaryNavigation.map(({href, label}) => <Link key={href} href={href} aria-current={pathname === href ? "page" : undefined} onNavigate={() => { onNavigate(); setOpen(false); }}>{label}</Link>)}
         <Link href="/travellogs/gilman" aria-current={pathname === "/travellogs/gilman" ? "page" : undefined} onNavigate={() => { onNavigate(); setOpen(false); }}>Gilman</Link>
         <div className={styles.menuDivider}/>
-        <Link href="/about#why-windows-7" onNavigate={() => { onNavigate(); setOpen(false); }}>Why Windows 7?</Link>
+        <span onClick={() => setOpen(false)}><AboutComputerButton>About This Computer</AboutComputerButton></span>
       </div>
       <div className={styles.startFooter}><label className={styles.startSearch}><span className={styles.searchLabel}>Search pages and articles</span><input ref={searchInput} type="search" aria-label="Search pages and articles" placeholder="Search pages and articles" value={query} onChange={event => setQuery(event.target.value)}/><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16"><circle cx="6" cy="6" r="4" fill="none" stroke="currentColor"/><path d="m9 9 5 5" stroke="currentColor" strokeWidth="2"/></svg></label></div>
     </nav>}

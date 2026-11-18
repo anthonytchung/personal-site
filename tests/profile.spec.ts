@@ -9,8 +9,8 @@ for (const width of [1366, 390]) {
     const main = page.getByRole("main");
     const origin = page.getByRole("region", { name: "Why Windows 7?" });
     await expect(origin).toBeInViewport();
-    await expect(origin).toContainText("watching my father use our family Windows 7 computer");
-    await expect(main.getByText("Development placeholder", { exact: true })).toHaveCount(3);
+    await expect(origin).toContainText("family computer that first sparked my interest");
+    await expect(main.getByText("Development placeholder", { exact: true })).toHaveCount(0);
     await expect(main.getByRole("heading", { name: "Hi, I’m Anthony." })).toHaveCount(1);
     await expect(main.getByRole("img")).toHaveCount(0);
     await page.goto("/about");
