@@ -43,3 +43,5 @@
   .articleHeader { margin-bottom: 1.5rem; }
   .cardBody { padding: 1rem; }
 }
+
+.archiveLink { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; }

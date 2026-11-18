@@ -102,8 +102,7 @@ sidebar, toolbar, status, and title-bar controls stay available. The sidebar can
 scroll separately on short desktops. Maximize/restore retains the same geometry
 contract, and Welcome keeps its intentionally smaller introductory presentation.
 
-The optional command bar contains functioning actions only, such as the Gilman
-Scholarship link or article archive return. Routes without useful actions omit
+The optional command bar contains functioning actions only, such as an article archive return. Routes without useful actions omit
 the bar entirely, without reserved height. Descriptive section subtitles do not
 belong in the command bar. Status information contains real archive counts,
 article publication dates, or page purpose; static information pages do not show
@@ -599,3 +598,8 @@ results and draft exclusion. Existing resizing, history, taskbar, calendar and
 Peek regressions pass. Before/after screenshots cover Explorer, Start, a 520px
 manually resized window and mobile; a separate development screenshot shows a
 live search result and no development indicator over Start.
+
+Travel Logs keeps its Gilman Scholarship link inside the archive introduction,
+not in a command bar above the navigation pane. Journal and Travel Logs therefore
+share the same navigation positions; the regression suite checks link geometry
+across that transition on desktop and mobile.

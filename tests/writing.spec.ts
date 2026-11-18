@@ -10,7 +10,7 @@ test("archives hide draft templates and link directly to scholarship information
     }
   }
   await page.goto("/travellogs");
-  await page.getByRole("group", { name: "Section tools", exact: true }).getByRole("link", { name: "Gilman Scholarship", exact: true }).click();
+  await page.getByRole("main").getByRole("link", { name: "Gilman Scholarship", exact: true }).click();
   await expect(page).toHaveURL(/\/travellogs\/gilman$/);
   await page.getByRole("link", { name: "Back to Travel Logs", exact: true }).click();
   await expect(page).toHaveURL(/\/travellogs$/);

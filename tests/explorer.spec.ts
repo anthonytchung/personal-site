@@ -21,10 +21,8 @@ test("primary routes share chrome, dimensions, and direct content navigation", a
     await expect(window.getByRole("navigation", { name: "Main navigation", exact: true })).toHaveCount(0);
     await expect(window.getByRole("navigation", { name: "Breadcrumb", exact: true })).toHaveCount(1);
     const commands = window.getByRole("group", { name: "Section tools", exact: true });
-    await expect(commands).toHaveCount(route === "/travellogs" ? 1 : 0);
-    const chromeBottom = route === "/travellogs"
-      ? await commands.evaluate(element => element.getBoundingClientRect().bottom)
-      : await window.getByRole("navigation", { name: "Breadcrumb", exact: true }).evaluate(element => element.parentElement!.getBoundingClientRect().bottom);
+    await expect(commands).toHaveCount(0);
+    const chromeBottom = await window.getByRole("navigation", { name: "Breadcrumb", exact: true }).evaluate(element => element.parentElement!.getBoundingClientRect().bottom);
     expect((await page.getByRole("main").boundingBox())!.y).toBe(chromeBottom);
     await expect(window.getByRole("group", { name: "Section information", exact: true })).toBeVisible();
     const sidebar = window.getByRole("complementary", { name: "Explorer navigation" });
@@ -82,19 +80,30 @@ for (const viewport of [{ width: 1366, height: 768 }, { width: 390, height: 844 
 }
 
 
-test("Travel Logs command remains useful and keyboard accessible on desktop and mobile", async ({ page }) => {
+test("Travel Logs keeps navigation stationary and its content link keyboard accessible", async ({ page }) => {
   for (const width of [1366, 390]) {
     await page.setViewportSize({ width, height: 844 });
-    await page.goto("/travellogs");
-    const commands = page.getByRole("group", { name: "Section tools", exact: true });
-    await expect(commands).toHaveText("Gilman Scholarship");
-    await expect(commands.getByRole("link")).toHaveCount(1);
-    await commands.getByRole("link", { name: "Gilman Scholarship", exact: true }).focus();
+    await page.goto("/blog");
+    const sidebar = page.getByRole("complementary", { name: "Explorer navigation" });
+    const links = sidebar.getByRole("link");
+    const before = await links.evaluateAll(elements => elements.map(element => {
+      const { x, y, width, height } = element.getBoundingClientRect();
+      return { x, y, width, height };
+    }));
+    await sidebar.getByRole("link", { name: "Travel Logs", exact: true }).click();
+    await expect(page.getByRole("heading", { name: "Travel Logs", exact: true })).toBeVisible();
+    expect(await links.evaluateAll(elements => elements.map(element => {
+      const { x, y, width, height } = element.getBoundingClientRect();
+      return { x, y, width, height };
+    }))).toEqual(before);
+    await expect(page.getByRole("group", { name: "Section tools", exact: true })).toHaveCount(0);
+    const gilman = page.getByRole("main").getByRole("link", { name: "Gilman Scholarship", exact: true });
+    await gilman.focus();
     await page.keyboard.press("Enter");
     await expect(page).toHaveURL(/\/travellogs\/gilman$/);
     await expect(page.getByRole("heading", { name: "Gilman", exact: true })).toBeVisible();
     await expect(page.getByRole("group", { name: "Section tools", exact: true })).toHaveCount(0);
     await page.goBack();
-    await expect(commands).toBeVisible();
+    await expect(gilman).toBeVisible();
   }
 });
