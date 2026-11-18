@@ -109,3 +109,40 @@
   .desktop:has(.showDesktop:hover:not(:disabled)) .workspace :global(#primary-window)::after { display: none; }
   .desktop:has(.showDesktop:hover:not(:disabled)) .showDesktop { background: #e5f8ffb0; }
 }
+/* Start: white programs pane, darker system column, inset search footer. */
+.startMenu { width: 405px; grid-template-columns: 250px minmax(0,1fr); gap: 0; padding: 7px; border-color: #1a3348; background: linear-gradient(110deg,#b2c7d9c9,#355976eb 70%,#51728fef); box-shadow: inset 0 0 0 1px #f5fbffc0, 0 3px 14px #00132488; }
+.programs { min-height: 340px; padding: 4px; box-shadow: inset 0 0 0 1px #fff; }
+.programs a { min-height: 46px; gap: 8px; padding: 4px 6px; font-size: 12px; }
+.programs a svg { flex-shrink: 0; width: 32px; height: 32px; }
+.programs a:hover, .programs a:focus-visible, .programs a[aria-current=page] { background: linear-gradient(#f4faff,#e1eef9 48%,#d7e9f8 50%,#e7f3fc); border-color: #9dc3de; box-shadow: inset 0 0 0 1px #fff; }
+.startAside { padding: 5px 7px 7px 12px; gap: 6px; }
+.startAside a { padding: 8px 5px; border-radius: 3px; }
+.startAside a:hover, .startAside a:focus-visible, .startAside a[aria-current=page] { background: linear-gradient(#e9f5ff22,#d7eaff11 48%,#00132922 50%,#dcefff22); border-color: #c7dced80; box-shadow: inset 0 0 0 1px #15384b4d; }
+.startAside .userPortrait { width: 58px; margin-bottom: 2px; border: 1px solid #29465c; box-shadow: inset 0 0 0 2px #e6f3ffb0, 0 1px 5px #00172faa; }
+.startFooter { grid-column: 1; padding: 9px 5px 3px; }
+.startSearch { position: relative; display: block; color: #447393; }
+.startSearch input { box-sizing: border-box; width: 100%; min-height: 28px; padding: 3px 27px 3px 7px; border: 1px solid #607c93; border-radius: 0; background: #fff; box-shadow: inset 0 1px 2px #28425833, 0 0 0 1px #fff6; color: #203247; font: 12px "Segoe UI", Tahoma, sans-serif; }
+.startSearch input::placeholder { color: #667781; font-style: italic; }
+.startSearch input:focus-visible { outline: 2px solid #174e78; outline-offset: 1px; }
+.startSearch svg { position: absolute; right: 6px; top: 6px; pointer-events: none; }
+.searchLabel { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.searchResults { max-height: 340px; overflow: auto; }
+.searchResults > p { margin: 5px 7px; color: #526779; font-size: 11px; }
+.searchResults a { min-width: 0; }
+.searchResults a span { min-width: 0; overflow-wrap: anywhere; }
+.searchResults small { line-height: 1.35; margin-top: 3px; }
+.shortcut:focus-visible { outline: 1px dotted #effaff; outline-offset: -4px; background: linear-gradient(#d2ecff4d,#b3dbff33); border-color: #ddf4ffc0; }
+.shortcut > span:last-child { padding-inline: 2px; border-radius: 2px; }
+.shortcut:focus-visible > span:last-child { background: #174f7e66; }
+.shortcutArrow { width: 15px; height: 15px; display: grid; place-items: center; border-color: #90a9bb; background: linear-gradient(#fff,#e8f1fa); box-shadow: 0 0 1px #244963; }
+.desktop:has(.startMenu) .workspace { --window-title-glow: 0 0 3px #ffffffb0; }
+.desktop:has(.startMenu) .workspace :global(#primary-window) { --w7-w-bg: #b1c6d5; }
+@media (max-width: 700px) {
+  .startMenu { width: calc(100vw - 20px); grid-template-columns: minmax(0,1fr) 125px; }
+  .programs { min-height: 300px; }
+  .programs a { min-height: 48px; }
+  .startSearch input { min-height: 44px; font-size: 16px; }
+  .startSearch svg { top: 14px; }
+  .startAside a { min-height: 44px; }
+  .shortcutArrow { display: none; }
+}

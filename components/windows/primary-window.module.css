@@ -42,7 +42,7 @@
   display: flex;
   align-items: center;
   color: #102d42;
-  text-shadow: 0 0 5px white, 0 0 8px white;
+  text-shadow: var(--window-title-glow, 0 0 2px white, 0 0 5px white, 0 0 9px #fff);
   cursor: move;
   touch-action: none;
   user-select: none;

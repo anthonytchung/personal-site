@@ -31,6 +31,11 @@ test.describe("published MDX verification", () => {
       const errors: string[] = [];
       page.on("pageerror", error => errors.push(error.message));
       await page.goto(route);
+      await page.getByRole("button", { name: "Start", exact: true }).click();
+      const startMenu = page.getByRole("navigation", { name: "Start menu" });
+      await startMenu.getByRole("searchbox").fill("Publishing verification fixture");
+      await expect(startMenu.locator(`[data-search-results] a[href="${route}/publishing-verification-fixture"]`)).toBeVisible();
+      await page.keyboard.press("Escape");
       await page.getByRole("link", { name: "Publishing verification fixture", exact: true }).click();
       await expect(page).toHaveURL(`${route}/publishing-verification-fixture`);
       await expect(page).toHaveTitle("Publishing verification fixture | Anthony's Desktop");

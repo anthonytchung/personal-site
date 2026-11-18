@@ -1,5 +1,6 @@
 "use client";
 
+import type { SearchEntry } from "@/lib/site-search";
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -14,7 +15,7 @@ import styles from "./desktop-shell.module.css";
 const shortcutOrder = ["/projects", "/blog", "/travellogs", "/about", "/resume"];
 const sections = [...primaryNavigation, ...secondaryNavigation];
 
-export function DesktopShell({ children }: { children: ReactNode }) {
+export function DesktopShell({ children, searchEntries }: { children: ReactNode; searchEntries: SearchEntry[] }) {
   const pathname = usePathname();
   const router = useRouter();
   const home = pathname === "/";
@@ -89,7 +90,7 @@ export function DesktopShell({ children }: { children: ReactNode }) {
         {shortcutOrder.map(href => {
           const item = primaryNavigation.find(item => item.href === href)!;
           return <Link className={styles.shortcut} key={href} href={href} onNavigate={restoreWindow}>
-            <span className={styles.shortcutArt}><DesktopIcon kind={sectionIcons[href]}/><span className={styles.shortcutArrow} aria-hidden="true">↗</span></span>
+            <span className={styles.shortcutArt}><DesktopIcon kind={sectionIcons[href]}/><span className={styles.shortcutArrow} aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M2 13V9c0-3 2-5 6-5V1l6 5-6 5V8c-3 0-4 1-6 5Z" fill="#3b6c9d" stroke="white" strokeWidth=".7"/></svg></span></span>
             <span>{href === "/about" ? "About Me" : item.label}</span>
           </Link>;
         })}
@@ -110,7 +111,7 @@ export function DesktopShell({ children }: { children: ReactNode }) {
       </div>
       <div className={styles.desktopSignature} aria-hidden="true"><span>Anthony&apos;s Desktop</span><small>Make yourself at home.</small></div>
       <footer className={styles.taskbar}>
-        <StartMenu onWelcome={restoreWelcome} onNavigate={restoreWindow}/>
+        <StartMenu searchEntries={searchEntries} onWelcome={restoreWelcome} onNavigate={restoreWindow}/>
         <nav className={styles.pinned} aria-label="Pinned shortcuts">
           {["/projects", "/blog", "/travellogs"].filter(href => href !== section?.href).map(href => <Link key={href} href={href} onNavigate={restoreWindow} title={primaryNavigation.find(item => item.href === href)!.label} aria-label={primaryNavigation.find(item => item.href === href)!.label}><DesktopIcon kind={sectionIcons[href]} size={32}/></Link>)}
         </nav>

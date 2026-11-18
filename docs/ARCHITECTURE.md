@@ -535,3 +535,67 @@ volume/network indicators were not introduced. Existing pinned destinations
 still omit the current section, so their positions may shift during navigation.
 The original vector icons and four-color CSS Start artwork are interpretations,
 not reproductions of Microsoft's assets.
+
+## Start and Explorer fidelity milestone
+
+Reference review used the actual Start menu screenshot on page 20 of Microsoft
+Press's April 2009 [Explore Windows 7 chapter](https://download.microsoft.com/download/9/a/3/9a36304d-cb64-427e-a184-4ed1bb556712/win7_sbs_earlycontent_ch1.pdf),
+and the [October 2009 Explorer screenshot](https://www.matthewb.id.au/computer/Windows_7_Review.html)
+(`Windows7_Libraries.jpg`). The screenshots were inspected as references only;
+all rendered icons, shortcut arrows and CSS remain original. The supplied chat
+screenshots were supporting context, not additional feature requirements.
+
+The ranked audit prioritized Explorer icon rows/selection (impact 5, usefulness
+4, complexity 2), Start layout/search (5/5/3), compact breadcrumbs (4/3/2),
+shortcut feedback (3/3/1), title glow/inactive cues (3/2/2), then the development
+indicator (3/3/1), on five-point scales. Browser-history controls ranked 3/3/4
+and remain deferred: correct availability across direct loads/external history
+requires tracking beyond a pair of decorative buttons. Ordinary browser history
+remains unchanged. No fake filesystem ancestors, redundant Desktop links,
+Shutdown command, expansion arrows, or Explorer search field were added.
+
+Start retains its ordinary navigation disclosure, two columns and first-link
+focus. Its darker system column, inset selection treatments, compact program
+rows and bottom search field borrow the historical visual organization. The
+existing user removal of the footer tagline is preserved by replacing the empty
+footer with useful search. Typing while a navigation link is focused moves into
+search; Arrow Down enters results, Enter follows the first result, and Escape
+retains dismissal/focus return. Text-input Home/End remain editing operations.
+Results are ordinary Next links; the right column remains accessible. Reopening
+clears the query. Mobile retains large input/link targets instead of copying
+native desktop metrics.
+
+The root server layout supplies a cached, serializable list of published article
+titles, summaries and canonical local paths. It reuses the existing MDX loader's
+published-only filtering; article bodies, compiled components and draft metadata
+never enter the search props. Static route labels/summaries come from the shared
+navigation registry. Search is a small client substring filter over title and
+summary words, not full-text article indexing. No API endpoint, dependency or
+external service is required. The shared icon registry was moved out of the
+Start client entry point so server Explorer navigation can use the same artwork.
+
+Explorer now has compact icon/label rows on desktop, distinct pale hover and
+blue current-section treatments, indentation, a subtle secondary-group separator,
+and smaller breadcrumb segments with functioning parent links. It keeps the
+existing independent sidebar/reading scrolling, command-bar omission and mobile
+flow. Shortcut arrows are original small bent-arrow SVGs; keyboard focus uses an
+inset dotted highlight and shaded label. Single-click activation is unchanged.
+Window title text has a softer multilevel glow, reduced while Start is open,
+with a more neutral frame tint. No movement/resizing or visibility controller
+changed; this is not a new general window-activation manager.
+
+The pre-existing `devIndicators: false` edit is retained and committed as part of
+the explicitly requested cleanup. The installed Next.js docs confirm this is the
+supported option and does not suppress compile/runtime errors. Actual localhost
+development inspection confirmed the badge has no visible bounds and Start is
+uncovered; no allowed-origin or production configuration changes were added.
+
+Validation: production build, lint and 13 unit tests passed. Full Playwright:
+55 passed, with the two fixture-only cases skipped by design. The separate
+writing-fixture run passed all four cases, including published article search in
+both Journal and Travel Logs, then removed fixtures and rebuilt the real site.
+New desktop/mobile search checks cover routes, keyboard activation, reset, no
+results and draft exclusion. Existing resizing, history, taskbar, calendar and
+Peek regressions pass. Before/after screenshots cover Explorer, Start, a 520px
+manually resized window and mobile; a separate development screenshot shows a
+live search result and no development indicator over Start.
