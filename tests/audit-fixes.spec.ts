@@ -54,10 +54,10 @@ test("Start identifies Welcome and Gilman and uses a contrasting program focus o
 test("About starts at its heading after navigation and preserves only intentional reading scroll on restore", async ({ page }) => {
   const main = page.getByRole("main");
   async function headingIsUnclipped() {
-    await expect(main.getByRole("heading", { name: "About", exact: true })).toBeVisible();
+    await expect(main.getByRole("heading", { name: "Hi, I’m Anthony.", exact: true })).toBeVisible();
     await expect.poll(() => main.evaluate(m => m.scrollTop)).toBe(0);
     const pane = (await main.boundingBox())!;
-    for (const name of ["About", "Hi, I’m Anthony."]) {
+    for (const name of ["Hi, I’m Anthony."]) {
       const heading = (await main.getByRole("heading", { name, exact: true }).boundingBox())!;
       expect(heading.y).toBeGreaterThanOrEqual(pane.y);
       expect(heading.y + heading.height).toBeLessThanOrEqual(pane.y + pane.height);

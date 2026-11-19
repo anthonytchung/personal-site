@@ -603,3 +603,111 @@ Travel Logs keeps its Gilman Scholarship link inside the archive introduction,
 not in a command bar above the navigation pane. Journal and Travel Logs therefore
 share the same navigation positions; the regression suite checks link geometry
 across that transition on desktop and mobile.
+
+## About This Computer experiment
+
+Implemented on `codex/about-computer-experiment`, based on the completed fidelity
+branch. This is an isolated proposal; it does not replace `/about` or change any
+public routes. Historical reference: PC.net's [February 21, 2011 Windows 7 System
+Control Panel screenshot](https://pc.net/helpcenter/view-system-properties-windows-7).
+The pale navigation pane, blue headings, thin section rules, compact information
+rows and edition area follow that reference. The monitor artwork is existing,
+original SVG; no Microsoft assets or fake system settings are included.
+
+DesktopShell owns one optional utility's open/minimized/maximized state and a
+primary/utility focus flag. Both instances reuse PrimaryWindow and its existing
+movement/resizing controller, with separate geometry per mounted frame. Opening
+an existing utility focuses it; minimizing preserves its geometry and reading
+position, closing removes it, and refreshing does not reopen it. Pointer and
+keyboard focus raise the relevant frame. Escape closes the utility, except when
+the movement controller consumes Escape to cancel a drag. Closing returns focus
+to the opener or Start when that opener is no longer available.
+
+A small context supplies the About and Start launch buttons. Launching changes
+neither the URL nor the primary window's geometry/minimized state. Section links
+scroll within the utility without changing the URL. Actual About links navigate
+to `/about` and minimize the utility. Desktop route changes retain the utility;
+on mobile, navigation/history reveal the primary content. Mobile presents the
+utility in normal document flow with a return button and taskbar restore entry.
+This deliberately adapts the reference's desktop metrics for readable touch use.
+
+Show Desktop snapshots both minimized states and restores them, so an already
+minimized window stays minimized. Peek uses the existing glass silhouette for
+both frames. Existing calendar and taskbar artwork/preview behavior are retained.
+This is a single additional application, not a general multi-application manager.
+
+The biography uses only the previously supplied introduction, people/technology
+background, learning interests, film/NBA/news interests, and motivation. Its
+short Windows 7 reference launches the fuller origin story. Wide primary windows
+use two readable columns; narrow windows stack the same sections. Public
+placeholder cards and the empty photo frame are omitted. An approved personal
+photo/caption and more specific background details still require Anthony's
+input; the source comment reserves these additions without public placeholder
+labels. Playful utility values are explicitly labeled nonliteral.
+
+Validation for this experiment: lint and production build passed; 13 unit tests
+passed. Full Playwright: 60 passed, two fixture-only cases skipped. The separate
+published-writing fixture run passed all four cases, removed its temporary
+articles and rebuilt the real site. Five new browser tests cover simultaneous
+windows, focus/reopening, route and history preservation, minimizing, shared
+movement/maximization/resizing, Escape cancellation, Show Desktop/Peek, narrow
+content access and mobile return behavior. Screenshots were visually inspected
+at desktop, maximized desktop, narrow utility and 390px mobile sizes. The
+existing About heading, calendar, Peek, resizing, Start search and navigation
+regressions passed.
+
+### About/preview design refinement
+
+This refinement supersedes the experiment's original sidebar, location strip,
+About backlinks and humor labels described above. About This Computer is now a
+single 580×510px information view with blue headings, native-style rows and the
+original monitor SVG. The short origin paragraph retains the supplied father /
+family Windows 7 / software and learning-sciences story. Curiosity and Nostalgia
+remain ordinary fields. Mobile uses a Close button; desktop uses its title-bar
+control. The main About page has one h1, “Hi, I’m Anthony.”, retains the original
+personal writing and two useful sections, and reduces introductory spacing.
+
+Reference checks used the February 2011 PC.net System screenshot linked above
+and Microsoft's Windows 7 Product Guide, printed page 28 (2009):
+https://core-docs.s3.amazonaws.com/documents/asset/uploaded_file/607323/OS_Windows7ProductGuide.pdf
+The guide's thumbnail images show compact glass frames, small icon/title headers
+and image-led content. TaskbarWindow now provides this organization for each
+application, replacing the descriptive preview card. A small SVG miniature
+reflects primary route/title/heading or the utility's edition and fields. Preview
+aspect is measured from the window when disclosed and bounded for legibility.
+This is a schematic representation, not a live screenshot: it does not mirror
+exact scroll position, all article content, or every responsive content detail.
+No capture dependency, rasterization loop, route duplication or fake preview
+close control is included. The optional thumbnail close button was omitted;
+window close controls remain available on the real windows.
+
+The shell tracks only which application's preview may be disclosed. Each entry
+supports pointer travel across a small transparent bridge, focus/Tab/Enter and
+Escape, and clamps its fixed position within viewport edges. Native title
+attributes were removed from the application buttons to avoid competing tooltips.
+Dismissal suppresses synthetic stationary-pointer re-entry; a fresh movement or
+focus reopens it. Escape only consumes a logically open, actually displayed
+thumbnail, so a fading or mobile-hidden preview cannot block utility closure.
+Mobile keeps direct taskbar toggles with previews hidden. Existing reduced-motion
+rules remove preview transitions; touch-only pointers do not depend on hover.
+
+Window activation and stacking retain the shared frame/controller. Programmatic
+utility focus has no perimeter outline; title-bar controls have explicit inset
+blue keyboard outlines. Inactive glass tint and title text are subdued. Minimizing
+the primary marks the remaining utility active. No new window manager is added.
+About horizontal overflow did not reproduce: normal and narrow browser captures
+measured main.scrollWidth === main.clientWidth, with matching regression checks
+for the main pane and both windows while overlapping. No overflow-x hiding rule
+was added to the About content to conceal a scrollbar.
+
+Refinement validation: lint and production build passed with no lint warnings;
+13 unit tests passed. Full Playwright: 63 passed, two fixture-only skips. The
+separate published-writing run passed all four cases, removed its temporary
+articles and rebuilt the real site. New tests cover heading hierarchy, absent
+utility navigation, window activation/stacking, control focus, horizontal bounds,
+exclusive per-window previews, pointer travel, Escape, keyboard activation and
+edge placement. The utility restore/close sequence was also repeated three times
+after correcting Escape handling during preview fade-out. Before/after captures
+cover normal/maximized About, utility alone, both activation states, each preview,
+narrow desktop and mobile. Additional moved-window captures expose inactive glass
+that would otherwise be fully occluded by the larger primary window.

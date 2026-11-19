@@ -200,7 +200,7 @@ test("mobile content ignores desktop hidden state and geometry", async ({ page }
   await expect(control(page, "Close")).toBeHidden();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await shortcut(page, "About Me").click();
-  await expect(page.getByRole("heading", { name: "About", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Hi, I’m Anthony.", exact: true })).toBeVisible();
   await page.setViewportSize({ width: 1366, height: 768 });
   await expect(primary(page)).toBeVisible();
   await expectInsideDesktop(page);
@@ -210,7 +210,7 @@ test("mobile content ignores desktop hidden state and geometry", async ({ page }
 
 test("long window content scrolls without moving the desktop or hiding controls", async ({ page }) => {
   await shortcut(page, "About Me").click();
-  await expect(page.getByRole("heading", { name: "About", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Hi, I’m Anthony.", exact: true })).toBeVisible();
   await expect(page.locator("main")).toBeFocused();
   // A long article fixture exercises the same content slot as future MDX.
   await page.locator("main").evaluate(main => {

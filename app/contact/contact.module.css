@@ -1,0 +1,20 @@
+.contact { max-width: 560px; }
+.email { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; font-size: clamp(1rem,2.5cqi,1.2rem); }
+.email svg, .profiles svg { flex-shrink: 0; }
+.email span { overflow-wrap: anywhere; }
+.copy { margin: 10px 0 20px 40px; }
+.copy button { min-height: 44px; padding: 6px 14px; cursor: pointer; }
+.copy p { min-height: 1.5em; margin: 6px 0 0; color: #526779; font-size: 13px; }
+.contact ul.profiles { list-style: none; padding: 0; margin: 0; border-top: 1px solid #d6e2ed; }
+.contact .profiles li { margin: 0; border-bottom: 1px solid #e5edf3; }
+.contact .profiles a { display: flex; gap: 12px; align-items: center; min-height: 76px; padding: 12px 4px; text-decoration: none; }
+.profiles a:hover { background: #eef6fc; }
+.profiles strong { display: block; font-size: 16px; font-weight: 500; }
+.profiles a > span > span { display: block; color: #526779; font-size: 13px; overflow-wrap: anywhere; }
+.external { margin-left: auto; color: #6388a5; }
+@media (max-width: 700px) {
+  .copy { margin-left: 0; }
+  .profiles a > span > span { font-size: 14px; }
+}
+
+.copy button:focus-visible { outline: 2px solid #174e78; outline-offset: 2px; }

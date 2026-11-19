@@ -1,25 +1,14 @@
-.about { display: grid; gap: 2.25rem; }
-.about h2 { margin: 0 0 0.75rem; }
-.about h3 { margin: 0.5rem 0; color: #244e6d; font-size: 1.1rem; font-weight: 600; }
-.about p:last-child { margin-bottom: 0; }
-.about .eyebrow { margin: 0 0 0.5rem; color: #526b7f; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
-.introduction h2 { font-size: clamp(1.8rem, 5cqi, 2.5rem); line-height: 1.2; color: #203247; }
+.about { max-width: 1120px; margin-inline: auto; color: #203247; }
+.about p { max-width: 65ch; margin-block: 0.9rem; }
+.introduction { max-width: 70ch; margin-bottom: 1.5rem; }
+.introduction h1 { margin: 0 0 0.8rem; font-size: clamp(1.8rem,4cqi,2.75rem); font-weight: 500; line-height: 1.2; }
 .introduction .lead { font-size: 1.2rem; color: #244e6d; }
-.origin { scroll-margin-top: 2rem; padding: 1.5rem; border: 1px solid #c7dce9; border-left: 4px solid #4988b7; border-radius: 4px; background: linear-gradient(135deg, #eef7fc, #f8fbfd); }
-.notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-.note { padding: 1rem; border-top: 2px solid #b8cfb6; background: #f7faf6; }
-.placeholder { display: inline-block; color: #62604f; font-size: 0.75rem; }
-.photo { display: grid; grid-template-columns: 8rem minmax(0, 1fr); align-items: center; gap: 1.25rem; padding-top: 1.5rem; border-top: 1px solid #dce5ed; }
-.photo h2 { margin-top: 0.5rem; font-size: 1.15rem; }
-.photoFrame { display: grid; place-items: center; aspect-ratio: 4 / 5; padding: 0.5rem; border: 1px dashed #a0b4c4; background: #f3f6f8; color: #526b7f; font-size: 0.8rem; }
-@media (max-width: 480px) {
-  .notes, .photo { grid-template-columns: 1fr; }
-  .photoFrame { max-width: 12rem; width: 100%; aspect-ratio: 4 / 3; }
-  .origin { padding: 1.25rem; }
-}
-
-@container window-body (max-width: 650px) {
-  .notes, .photo { grid-template-columns: 1fr; }
-  .photoFrame { max-width: 12rem; width: 100%; aspect-ratio: 4 / 3; }
-  .origin { padding: 1rem; }
+.chapters { display: grid; gap: 1.5rem; }
+.chapters section { border-top: 1px solid #cbdce9; padding-top: 1rem; }
+.chapters h2, .origin h2 { color: #174c78; font-size: 1.25rem; font-weight: 500; margin: 0 0 0.75rem; line-height: 1.35; }
+.origin { margin-top: 1.75rem; border-top: 1px solid #cbdce9; padding-top: 1.25rem; scroll-margin-top: 1.5rem; }
+.origin button { min-height: 44px; padding: 6px 0; border: 0; background: transparent; color: #075b9b; font: inherit; text-decoration: underline; text-underline-offset: 0.2em; }
+@container window-body (min-width: 1050px) {
+  .chapters { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 3rem; }
+  .origin { max-width: 65ch; }
 }

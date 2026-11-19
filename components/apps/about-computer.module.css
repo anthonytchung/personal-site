@@ -1,0 +1,22 @@
+.system { color: #172b3c; font: 12px/1.5 "Segoe UI", Tahoma, sans-serif; background: #fff; min-height: 100%; padding: 22px 26px 26px; }
+.system h1 { margin: 0 0 20px; color: #0755a0; font-size: 16px; line-height: 1.4; font-weight: 400; }
+.system h2 { display: flex; align-items: center; gap: 9px; margin: 18px 0 10px; color: #0755a0; font-size: 12px; font-weight: 400; }
+.system h2::after { content: ""; flex: 1; height: 1px; background: #ccd4dc; }
+.edition { display: flex; align-items: center; gap: 16px; padding-inline: 8px; }
+.edition strong { font-size: 19px; font-weight: 400; }
+.edition svg { flex-shrink: 0; margin-left: auto; }
+.edition p { margin: 3px 0 8px; }
+.system dl { display: grid; grid-template-columns: 125px minmax(0,1fr); gap: 5px 12px; padding-inline: 8px; margin: 10px 0; }
+.system dd { margin: 0; overflow-wrap: anywhere; }
+.system section > p { max-width: 66ch; margin: 10px 8px 0; }
+.returnButton { display: none; }
+@media (max-width: 700px) {
+  .system { padding: 22px 20px; font-size: 15px; }
+  .system h1 { font-size: 21px; }
+  .system h2 { font-size: 16px; }
+  .system dl { grid-template-columns: 110px minmax(0,1fr); padding: 0; }
+  .edition { padding: 0; }
+  .edition svg { width: 64px; height: 64px; }
+  .system section > p { margin-inline: 0; }
+  .returnButton { display: inline-block; min-height: 44px; margin-top: 24px; padding: 8px 14px; cursor: pointer; }
+}

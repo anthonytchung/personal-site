@@ -1,0 +1,16 @@
+.resume { max-width: 960px; margin-inline: auto; }
+.resume h1 { margin: 0 0 8px; font-size: clamp(1.6rem,4cqi,2.25rem); font-weight: 500; line-height: 1.25; }
+.fileInfo { margin: 0 0 16px; color: #526779; font-size: 13px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.actions a { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 44px; padding: 6px 14px; border: 1px solid #8ba6bb; border-radius: 3px; background: linear-gradient(#fff,#e8f0f7); box-shadow: inset 0 0 0 1px #fff; color: #174c78; font-size: 14px; text-decoration: none; }
+.actions a:first-child { border-color: #6896b6; background: linear-gradient(#f5fbff,#dcebf7); }
+.actions a:hover { border-color: #4b91bf; background: linear-gradient(#f5fcff,#d3eafb); }
+.actions a:active { box-shadow: inset 0 1px 3px #5f7d9366; }
+.paper { display: block; max-width: 816px; margin-inline: auto; border: 1px solid #b5c2cc; background: white; box-shadow: 0 3px 12px #243e551f; }
+.paper img { display: block; width: 100%; height: auto; }
+@media (max-width: 700px) {
+  .paper { display: none; }
+  .actions { display: grid; margin-bottom: 0; }
+  .actions a { min-height: 48px; justify-content: flex-start; font-size: 16px; }
+  .fileInfo { font-size: 14px; }
+}

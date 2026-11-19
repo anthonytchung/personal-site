@@ -11,7 +11,7 @@ test("primary routes share chrome, dimensions, and direct content navigation", a
   let initial: { width: number; height: number } | undefined;
   for (const [route, title, sectionHref] of sections) {
     expect((await page.goto(route))!.status()).toBe(200);
-    await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: route === "/about" ? "Hi, I’m Anthony." : title, exact: true })).toBeVisible();
     const window = page.locator("#primary-window");
     const box = (await window.boundingBox())!;
     initial ??= box;
@@ -68,7 +68,7 @@ for (const viewport of [{ width: 1366, height: 768 }, { width: 390, height: 844 
     await page.setViewportSize(viewport);
     for (const [route, title] of sections.filter(([route]) => ["/projects", "/blog", "/travellogs", "/travellogs/gilman"].includes(route))) {
       await page.goto(route);
-      await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+      await expect(page.getByRole("heading", { name: route === "/about" ? "Hi, I’m Anthony." : title, exact: true })).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       if (viewport.width < 700) {
         await expect(page.getByRole("main")).toHaveCSS("overflow-y", "visible");
