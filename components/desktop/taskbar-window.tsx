@@ -1,11 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { Photo } from "@/lib/photos";
 import { DesktopIcon, type IconKind } from "./desktop-icon";
 import styles from "./desktop-shell.module.css";
 
 type Props = {
-  id: "primary" | "utility";
+  id: "primary" | "utility" | "photo";
+  photo?: Photo;
   label: string;
   title: string;
   icon: IconKind;
@@ -18,13 +20,19 @@ type Props = {
 };
 
 // A state-driven miniature, not a screenshot or a second mounted route tree.
-function Miniature({ utility, title, heading }: { utility: boolean; title: string; heading: string }) {
+function Miniature({ utility, title, heading, photo }: { utility: boolean; title: string; heading: string; photo?: Photo }) {
   return <svg viewBox="0 0 400 260" preserveAspectRatio="none" aria-hidden="true" className={styles.miniature}>
     <rect x="1" y="1" width="398" height="258" rx="3" fill="#b5cfdf" stroke="#55758d"/>
     <text x="9" y="15" fontSize="8" fill="#173448">{title}</text>
     <path d="M350 8h10m8-3h8v7h-8m17-6 7 7m0-7-7 7" fill="none" stroke="#37546c" strokeWidth="1.5"/>
     <rect x="5" y="23" width="390" height="232" fill="white" stroke="#8fa9bb"/>
-    {utility ? <g fontFamily="Segoe UI,Arial,sans-serif">
+    {photo ? <g>
+      <rect x="5" y="23" width="390" height="232" fill="#eef3fa"/>
+      <image href={photo.src} x="6" y="25" width="388" height="201" preserveAspectRatio="xMidYMid meet"/>
+      <rect x="5" y="228" width="390" height="27" fill="#d5e4f4"/>
+      <circle cx="200" cy="241" r="10" fill="#4386c6" stroke="#8ab7db"/><path d="m197 235 8 6-8 6Z" fill="white"/>
+      <path d="m180 237-7 4 7 4m40-8 7 4-7 4" stroke="#6388b1" fill="none"/>
+    </g> : utility ? <g fontFamily="Segoe UI,Arial,sans-serif">
       <text x="21" y="45" fontSize="10" fill="#0755a0">System information</text>
       <text x="21" y="65" fontSize="7" fill="#0755a0">Personal edition</text><path d="M85 63h290" stroke="#ccd4dc"/>
       <text x="27" y="86" fontSize="13" fill="#172b3c">Anthony&apos;s Desktop</text><text x="27" y="99" fontSize="8">Personal Edition</text>
@@ -50,12 +58,12 @@ function Miniature({ utility, title, heading }: { utility: boolean; title: strin
   </svg>;
 }
 
-export function TaskbarWindow({ id, label, title, icon, active, minimized, onToggle, onActivate, previewActive, onPreview }: Props) {
+export function TaskbarWindow({ id, label, title, icon, active, minimized, onToggle, onActivate, previewActive, onPreview, photo }: Props) {
   const task = useRef<HTMLButtonElement>(null);
   const pointerSuppressed = useRef(false);
   const [dismissed, setDismissed] = useState(false);
   const [preview, setPreview] = useState({ left: 6, ratio: 1.5, heading: title === "About" ? "Hi, I’m Anthony." : title });
-  const windowId = id === "primary" ? "primary-window" : "about-computer-window";
+  const windowId = { primary: "primary-window", utility: "about-computer-window", photo: "photo-viewer-window" }[id];
   const measure = useCallback(() => {
     const button = task.current?.getBoundingClientRect();
     const frame = document.getElementById(windowId);
@@ -94,7 +102,7 @@ export function TaskbarWindow({ id, label, title, icon, active, minimized, onTog
     </button>
     <button id={`${id}-preview`} className={styles.taskPreview} aria-label={`Switch to ${label}`} aria-controls={windowId} style={{ left: preview.left }} onClick={() => { onActivate(); pointerSuppressed.current = true; setDismissed(true); }}>
       <span className={styles.previewTitle}><DesktopIcon kind={icon} size={16}/><span>{title}</span></span>
-      <span className={styles.previewContent} style={{ aspectRatio: Math.max(1.25, Math.min(2.3, preview.ratio)) }}><Miniature utility={id === "utility"} title={title} heading={preview.heading}/></span>
+      <span className={styles.previewContent} style={{ aspectRatio: Math.max(1.25, Math.min(2.3, preview.ratio)) }}><Miniature photo={photo} utility={id === "utility"} title={title} heading={preview.heading}/></span>
     </button>
   </div>;
 }

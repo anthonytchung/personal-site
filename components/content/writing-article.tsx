@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getEntry } from "@/lib/content/writing";
 import { formatDate, writingSections, type WritingKind } from "@/lib/content/metadata";
 import styles from "./writing.module.css";
+import { PhotoGallery } from "./photo-gallery";
 import { ExplorerLayout } from "./explorer-layout";
 
 export async function writingMetadata(kind: WritingKind, slug: string): Promise<Metadata> {
@@ -39,6 +40,7 @@ export async function WritingArticle({ kind, slug }: { kind: WritingKind; slug: 
     </header>
     {entry.cover && <Image className={styles.hero} {...entry.cover} alt={entry.cover.alt} sizes="(max-width: 700px) 90vw, 750px" loading="eager"/>}
     <div className={styles.prose}><Content components={{
+      PhotoGallery,
       img: ({ src, alt, width, height }) => <Image src={src ?? ""} alt={alt ?? ""} width={Number(width) || 1600} height={Number(height) || 1000} unoptimized className={styles.inlineImage}/>,
       a: ({ href, children, ...props }) => href ? <Link href={href} {...props}>{children}</Link> : <a {...props}>{children}</a>,
     }}/></div>

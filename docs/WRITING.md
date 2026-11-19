@@ -69,6 +69,12 @@ For precise inline image dimensions, MDX also accepts
 `<img src="/images/your-photo.jpg" alt="Description" width={2400} height={1600} />`.
 Local cover images are required; no remote image hosting configuration is needed.
 
+For an independent Windows 7-inspired viewer with multiple images, captions and
+fit/actual-size controls, use the registered `<PhotoGallery photos={[...]}/>`
+component in MDX. See [PHOTOGRAPHY.md](./PHOTOGRAPHY.md) for exact file locations,
+the typed fields, and a complete authoring example. Plain Markdown images and
+covers keep their existing behavior.
+
 ## Preview and publish
 
 Drafts are excluded from archives, metadata, static params, and direct article

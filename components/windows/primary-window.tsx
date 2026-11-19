@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import { DesktopIcon, type IconKind } from "@/components/desktop/desktop-icon";
+import { useMediaQuery } from "./use-media-query";
 import { useWindowPosition } from "./use-window-position";
 import styles from "./primary-window.module.css";
 
@@ -9,6 +10,10 @@ type Props = {
   children: ReactNode;
   id?: string;
   utility?: boolean;
+  photo?: boolean;
+  inert?: boolean;
+  layer?: number;
+  accessibleTitle?: string;
   active?: boolean;
   onFocusWindow?: () => void;
   pathname: string;
@@ -21,7 +26,8 @@ type Props = {
   onClose: () => void;
 };
 
-export function PrimaryWindow({ children, pathname, title, icon, hidden, maximized, onMinimize, onMaximize, onClose, id = "primary-window", utility = false, active = true, onFocusWindow }: Props) {
+export function PrimaryWindow({ children, pathname, title, icon, hidden, maximized, onMinimize, onMaximize, onClose, id = "primary-window", utility = false, active = true, onFocusWindow, photo = false, inert = false, layer, accessibleTitle }: Props) {
+  const mobile = useMediaQuery("(max-width: 700px)");
   const { frameRef, style, positioned, center, handleProps, resizeProps } = useWindowPosition(maximized || hidden);
   const bodyRef = useRef<HTMLDivElement>(null);
   const previousPath = useRef(pathname);
@@ -46,6 +52,8 @@ export function PrimaryWindow({ children, pathname, title, icon, hidden, maximiz
     ref={frameRef}
     className={`win7 ${styles.position}`}
     data-utility={utility}
+    data-photo={photo}
+    inert={inert}
     onPointerDownCapture={onFocusWindow}
     onFocusCapture={onFocusWindow}
     data-active={active}
@@ -53,9 +61,16 @@ export function PrimaryWindow({ children, pathname, title, icon, hidden, maximiz
     data-hidden={hidden}
     data-maximized={maximized}
     data-positioned={positioned}
-    style={style}
+    style={{ ...style, zIndex: photo && mobile ? 50 : layer }}
   >
-    <section id={id} data-app-window className={`window glass ${active ? "active" : ""} ${styles.window}`} aria-label={title} role={utility ? "dialog" : undefined} tabIndex={utility ? -1 : undefined} onKeyDown={event => { if (utility && event.key === "Escape" && !event.defaultPrevented) { event.stopPropagation(); onClose(); } }}>
+    <section id={id} data-app-window className={`window glass ${active ? "active" : ""} ${styles.window}`} aria-label={accessibleTitle ?? title} aria-modal={photo && mobile ? true : undefined} role={utility ? "dialog" : undefined} tabIndex={utility ? -1 : undefined} onKeyDown={event => {
+      if (photo && mobile && event.key === "Tab") {
+        const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>("button:not(:disabled), a[href], [tabindex='0']")).filter(element => element.getClientRects().length > 0);
+        const first = controls[0]; const last = controls.at(-1);
+        if (event.shiftKey && (document.activeElement === first || (document.activeElement === event.currentTarget || document.activeElement?.hasAttribute("data-photo-content")))) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && (document.activeElement === last || (document.activeElement === event.currentTarget || document.activeElement?.hasAttribute("data-photo-content")))) { event.preventDefault(); first?.focus(); }
+      }
+      if (utility && event.key === "Escape" && !event.defaultPrevented) { event.stopPropagation(); onClose(); } }}>
       <div className={`title-bar ${styles.titleBar}`}>
         <button className={styles.centerButton} aria-label="Center window" title="Center window" disabled={maximized} onClick={center}>
           <DesktopIcon kind={icon} size={18}/>

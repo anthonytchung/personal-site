@@ -1,6 +1,6 @@
 # Anthony's Desktop architecture
 
-Status: route foundation, visual desktop shell, and primary content window implemented; independent utility windows remain proposed.
+Status: route-controlled desktop shell, shared Explorer, About This Computer and Photo Viewer utilities implemented. Later milestone notes below supersede the early foundation proposals.
 The confirmed choices in DESIGN.md remain authoritative.
 
 ## Configuration review
@@ -711,3 +711,65 @@ after correcting Escape handling during preview fade-out. Before/after captures
 cover normal/maximized About, utility alone, both activation states, each preview,
 narrow desktop and mobile. Additional moved-window captures expose inactive glass
 that would otherwise be fully occluded by the larger primary window.
+
+## Photo Viewer milestone
+
+Photo Viewer is the second independent utility, built on the existing
+PrimaryWindow frame and useWindowPosition controller. DesktopShell still owns
+one route-controlled primary window and one instance of each utility. A small
+three-ID focus/order list handles activation and the order of inactive windows;
+it is not a second window manager. Each frame retains its own geometry. Show
+Desktop snapshots all three minimized states; Peek uses the existing live glass
+outline. Closing/minimizing a utility activates the most recently used visible
+window, and a gallery close returns focus to its opener without scrolling.
+
+PhotoGallery is a typed client entry point registered with the existing server
+MDX renderer. A serializable list of local image paths, required alt text and
+pixel dimensions reaches the shell through a small context action. One gallery
+request replaces the current Photo Viewer session without duplicating the
+window; changing images preserves frame geometry. Current URL, article trees
+and reading scroll are untouched. Standard Markdown images/covers retain their
+existing semantics. Gallery links remain real original-image links without JS.
+
+PhotoViewer renders the original image without rasterization, EXIF processing
+or a new dependency. Fit uses a bounded canvas and scale-down; actual size uses
+the source pixel size with a scrollable pane. Navigation wraps within the
+supplied gallery. Captions and optional location/date/camera strings are author
+supplied. Slideshow is manual opt-in, five seconds, suspended while inactive or
+minimized and while the tab is hidden; reduced motion disables automatic
+advancement. There are no photo transitions. Missing images produce an honest
+error and retain access to the original-image link.
+
+On mobile the shared frame becomes a full-screen modal: background regions are
+inert, the page scroll is locked/restored, controls are at least 44px and Tab
+loops inside the viewer. The programmatic focus target is the photo content,
+so arrows and Escape work immediately after opening/restoring. The frame's
+movement/resize handlers continue to consume Escape for gesture cancellation.
+Changing viewport releases modal state on desktop. Mobile route/history changes
+minimize the viewer so it cannot obstruct route content.
+
+The taskbar reuses TaskbarWindow with a third typed ID and a miniature containing
+the actual selected local image. Existing primary/About thumbnail behavior is
+retained. No empty Start entry, fake filesystem, fake File/Print/Burn menus,
+rotation/deletion control or additional application was added.
+
+The visual reference, explicit adaptations, authoring contract and exact image
+placement are documented in [PHOTOGRAPHY.md](./PHOTOGRAPHY.md). Synthetic chart
+assets and the MDX gallery fixture live under tests/fixtures. test:writing copies
+them temporarily, refuses existing fixture paths, runs the browser checks and
+removes/rebuilds in finally. A real-build regression verifies their URLs return
+404 and the fixture article is absent. No travel photographs or stories are
+invented or published by this milestone.
+
+Photo Viewer validation: lint and production build passed, with 15 unit tests.
+The full real-content browser suite passed 68 tests; eight fixture-only cases
+were skipped in that run. The separate writing/viewer fixture run passed all
+10 enabled cases (one real-build-only assertion skipped there), then removed
+its assets/articles and rebuilt the real site. The final suite also verifies
+that generated photo/article URLs return 404. Coverage includes fit bounds,
+actual pixel size, captions, arrows, slideshow timing/minimization/reduced motion,
+three-window activation, taskbar images, movement/cancellation, resize/maximize,
+Peek/Show Desktop, missing images, reload/history, mobile focus/scroll restoration,
+viewport changes and closing the last utility after its article is gone.
+Desktop, narrow, maximized, thumbnail and mobile captures were visually inspected
+against the 2009 Photo Viewer reference. No new dependencies were introduced.

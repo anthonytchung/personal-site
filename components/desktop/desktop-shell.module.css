@@ -159,3 +159,5 @@
 
 
 .taskGroup:not([data-preview-dismissed=true]):focus-within .taskPreview { transition-property: opacity; transition-delay: 0ms; }
+
+@media (max-width: 700px) { .taskGroup[data-application=photo] { display: block; } }

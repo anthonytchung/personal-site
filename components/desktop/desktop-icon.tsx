@@ -1,6 +1,6 @@
 import { useId } from "react";
 
-export type IconKind = "projects" | "journal" | "travel" | "about" | "resume" | "welcome";
+export type IconKind = "projects" | "journal" | "travel" | "about" | "resume" | "welcome" | "photo";
 
 // Original small vector illustrations: no platform emoji or remote icon assets.
 export function DesktopIcon({ kind, size = 48 }: { kind: IconKind; size?: number }) {
@@ -41,6 +41,13 @@ export function DesktopIcon({ kind, size = 48 }: { kind: IconKind; size?: number
         <circle cx="33" cy="25" r="9" fill="#fff4d8" stroke="#c69b64"/>
         <path d="M19 49v-5q1-14 14-14t14 14v5" fill="#f5fafb"/>
         <path d="M24 22q0-13 13-8l5 9-6-6-12 5" fill="#77533e"/>
+      </>}
+      {kind === "photo" && <>
+        <rect x="8" y="8" width="48" height="46" rx="2" fill={paint("paper")} stroke="#6c8ba6"/>
+        <rect x="12" y="12" width="40" height="34" fill={paint("blue")}/>
+        <circle cx="42" cy="21" r="5" fill="#ffe599"/>
+        <path d="m12 40 12-17 12 16 7-9 9 12v4H12Z" fill="#72a87a" stroke="#507d61"/>
+        <path d="M14 50h36" stroke="#bacbda"/>
       </>}
       {kind === "welcome" && <>
         <rect x="5" y="9" width="54" height="37" rx="3" fill="#d9e5ec" stroke="#577b97" strokeWidth="2"/>
