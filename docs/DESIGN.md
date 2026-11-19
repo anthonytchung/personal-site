@@ -121,7 +121,7 @@ No Playground icon should appear until it contains something visitors can actual
 
 **Introduction:** Hey, I'm Anthony. I build software, explore ideas, and make things for the fun of it.
 
-**Origin reference:** This desktop is a tribute to the computer that first sparked my interest in technology.
+Keep Welcome concise: one introduction, three navigation actions and the optional origin link. Omit repeated welcome labels, action subtitles and the status tagline.
 
 **Navigation actions:** View Projects, About Me, Read My Journal
 
